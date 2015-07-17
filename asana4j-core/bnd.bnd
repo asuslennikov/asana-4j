@@ -1,0 +1,7 @@
+-classpath: target/classes 
+-dsannotations: *
+Private-Package: \
+    ru.jewelline.asana4j.core.impl, \
+    ru.jewelline.asana4j.core.impl.*
+Export-Package:  \
+	ru.jewelline.asana4j.core

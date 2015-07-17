@@ -1,0 +1,202 @@
+package ru.jewelline.asana4j.core.impl.api.entity;
+
+import org.json.JSONObject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import ru.jewelline.asana4j.api.ApiException;
+import ru.jewelline.asana4j.api.entity.User;
+import ru.jewelline.asana4j.core.impl.api.entity.writers.UserImplWriter;
+import ru.jewelline.asana4j.core.impl.api.entity.writers.WorkspaceImplWriter;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(MockitoJUnitRunner.class)
+public class UserImplTest {
+
+    private static JSONObject getJsonResponse() {
+        JSONObject json = new JSONObject();
+        json.put(UserImplWriter.ID.getFieldName(), 354185431);
+        json.put(UserImplWriter.NAME.getFieldName(), "User for test");
+        json.put(UserImplWriter.EMAIL.getFieldName(), "test@example.com");
+        json.put(UserImplWriter.PHOTO.getFieldName(), "http://example.com");
+        json.put(UserImplWriter.WORKSPACES.getFieldName(), Collections.emptyList());
+        return json;
+    }
+
+    @Test
+    public void test_hasConstructorWithoutParameters(){
+        new UserImpl();
+        // asserts no exceptions
+    }
+
+    @Test
+    public void test_implementsApiEntity(){
+        assertThat(new UserImpl()).isInstanceOf(ApiEntity.class);
+    }
+
+    @Test
+    public void test_tryFillFromNull(){
+        UserImpl user = new UserImpl();
+        assertThat(user.fromJson(null)).isNull();
+    }
+
+    @Test(expected = ApiException.class)
+    public void test_fillFromIncorrectJson(){
+        JSONObject json = new JSONObject();
+        json.put("data", getJsonResponse());
+        new UserImpl().fromJson(json);
+    }
+
+    @Test
+    public void test_fillFromJsonWithMissedId(){
+        JSONObject json = getJsonResponse();
+        json.remove(UserImplWriter.ID.getFieldName());
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithBadId(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.ID.getFieldName(), "string_id");
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithMissedName(){
+        JSONObject json = getJsonResponse();
+        json.remove(UserImplWriter.NAME.getFieldName());
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithBadName(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.NAME.getFieldName(), 123);
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithMissedMail(){
+        JSONObject json = getJsonResponse();
+        json.remove(UserImplWriter.EMAIL.getFieldName());
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithMBadMail(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.EMAIL.getFieldName(), 123);
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithMissedPhoto(){
+        JSONObject json = getJsonResponse();
+        json.remove(UserImplWriter.PHOTO.getFieldName());
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.PHOTO.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithBadPhoto(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.PHOTO.getFieldName(), 123);
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.PHOTO.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithMissedWorkspaces(){
+        JSONObject json = getJsonResponse();
+        json.remove(UserImplWriter.WORKSPACES.getFieldName());
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.WORKSPACES.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithBadWorkspaces(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.WORKSPACES.getFieldName(), new HashMap<String, Object>());
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.WORKSPACES.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillWithCorrectJson(){
+        JSONObject json = getJsonResponse();
+        User user = new UserImpl().fromJson(json);
+        assertThat(user).isNotNull();
+        assertThat(user.getId()).isEqualTo(354185431L);
+        assertThat(user.getName()).isEqualTo("User for test");
+        assertThat(user.getEmail()).isEqualTo("test@example.com");
+        assertThat(user.getPhotoUrl()).isEqualTo("http://example.com");
+        assertThat(user.getWorkspaces()).isEmpty();
+    }
+
+    public void test_fillWithWorkspaces(){
+        JSONObject json = getJsonResponse();
+        Map<Object, Object> workspace1 = new HashMap<>();
+        workspace1.put(WorkspaceImplWriter.ID.getFieldName(), 4654361);
+        workspace1.put(WorkspaceImplWriter.NAME.getFieldName(), "workspace1");
+        Map<Object, Object> workspace2 = new HashMap<>();
+        workspace2.put(WorkspaceImplWriter.ID.getFieldName(), 7694335);
+        workspace2.put(WorkspaceImplWriter.NAME.getFieldName(), "workspace2");
+        json.put(UserImplWriter.WORKSPACES.getFieldName(), Arrays.asList(workspace1, workspace2));
+        User user = new UserImpl().fromJson(json);
+        assertThat(user).isNotNull();
+        assertThat(user.getWorkspaces()).hasSize(2);
+        assertThat(user.getWorkspaces().get(0).getName()).contains("workspace");
+    }
+}
