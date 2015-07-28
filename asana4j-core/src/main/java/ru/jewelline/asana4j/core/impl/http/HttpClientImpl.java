@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Map;
 
@@ -76,15 +77,13 @@ public class HttpClientImpl implements HttpClient {
                 NetworkException netException = new NetworkException(NetworkException.MALFORMED_URL);
                 netException.setRequestUrl(requestedUrl);
                 throw netException;
-            /*
-            } catch (ConnectTimeoutException timeoutEx) {
+            } catch (SocketTimeoutException timeoutEx) {
                 if (retryCount >= current){
                     NetworkException netException = new NetworkException(NetworkException.CONNECTION_TIMED_OUT);
                     netException.setRequestUrl(requestedUrl);
                     throw netException;
                 }
                 break;
-            */
             } catch (IOException ioEx) {
                 if (retryCount >= current){
                     NetworkException netException = new NetworkException(NetworkException.COMMUNICATION_FAILED,
