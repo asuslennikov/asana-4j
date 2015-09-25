@@ -1,6 +1,7 @@
 package ru.jewelline.asana4j.http;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -24,6 +25,14 @@ public interface HttpRequest {
 
     /**
      * This method launches the request
+     * @return HTTP server response code
      */
-    void execute();
+    int send();
+
+    /**
+     * This method launches the request
+     * @param destinationStream output stream in which the server response will be copied
+     * @return HTTP server response code
+     */
+    int sendAndReadResponse(OutputStream destinationStream);
 }

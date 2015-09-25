@@ -1,9 +1,7 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
-import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.URLBuilder;
@@ -19,6 +17,7 @@ import java.net.URL;
 import java.util.Map;
 
 public class HttpClientImpl implements HttpClient {
+    private static final int NO_SERVER_RESPONSE_CODE = -1;
 
     private final URLBuilder urlBuilder;
     private final PreferencesService preferencesService;
@@ -28,86 +27,7 @@ public class HttpClientImpl implements HttpClient {
         this.preferencesService = preferencesService;
     }
 
-    @Override
-    public HttpRequestBuilder newRequest() {
-        return new HttpRequestBuilderImpl(this.urlBuilder, this);
-    }
-
-    public HttpResponse execute(HttpRequestImpl request, HttpMethodWorker requestMethod) {
-        if (request == null || requestMethod == null) {
-            new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
-                    "You are trying to send an empty request. It is not allowed.");
-        }
-        HttpResponseImpl response = new HttpResponseImpl(request);
-        int retryCount = this.preferencesService.getInteger(PreferencesService.NETWORK_MAX_RETRY_COUNT, 3);
-        int connectionTimeout = this.preferencesService.getInteger(PreferencesService.NETWORK_CONNECTION_TIMEOUT, 30000);
-        String requestedUrl = request.getUrl();
-        for(int current = 0; current < retryCount; current++) {
-            try {
-                URL url = new URL(requestedUrl);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                Map<String, String> headers = request.getHeaders();
-                if (!headers.isEmpty()) {
-                    for (Map.Entry<String, String> header : headers.entrySet()) {
-                        connection.setRequestProperty(header.getKey(), header.getValue());
-                    }
-                }
-                connection.setConnectTimeout(connectionTimeout);
-                connection.setDoInput(true);
-                requestMethod.handleRequest(request, connection);
-                InputStream serverAnswerStream = null;
-                response.setResponseCode(connection.getResponseCode());
-                if (response.status() == -1){
-                    break; // retry the request
-                } else if (response.status() >= 400 && response.status() < 600){
-                    serverAnswerStream = connection.getErrorStream();
-                } else {
-                    serverAnswerStream = connection.getInputStream();
-                }
-                if (serverAnswerStream != null){
-                    OutputStream responseStream = request.getResponseStream(getContentLength(connection));
-                    copyStreams(serverAnswerStream, responseStream);
-                }
-                break;
-            } catch (MalformedURLException badUrlEx) {
-                // do not try again, a client provided a bad url
-                NetworkException netException = new NetworkException(NetworkException.MALFORMED_URL);
-                netException.setRequestUrl(requestedUrl);
-                throw netException;
-            } catch (SocketTimeoutException timeoutEx) {
-                if (retryCount >= current){
-                    NetworkException netException = new NetworkException(NetworkException.CONNECTION_TIMED_OUT);
-                    netException.setRequestUrl(requestedUrl);
-                    throw netException;
-                }
-                break;
-            } catch (IOException ioEx) {
-                if (retryCount >= current){
-                    NetworkException netException = new NetworkException(NetworkException.COMMUNICATION_FAILED,
-                            ioEx.getLocalizedMessage());
-                    netException.setRequestUrl(requestedUrl);
-                    throw netException;
-                }
-                break;
-            }
-        }
-        return response;
-    }
-
-    private int getContentLength(HttpURLConnection connection) {
-        int contentLength = 32; // See javadoc for ByteArrayOutputStream
-        String contentLengthAsString = connection.getHeaderField("Content-length");
-        if (contentLengthAsString != null) {
-            try {
-                contentLength = Integer.parseInt(contentLengthAsString);
-            } catch (NumberFormatException ex){
-                contentLength = 1024;
-            }
-        }
-        return contentLength;
-    }
-
-    public static void copyStreams(InputStream source, OutputStream destination) throws IOException{
+    public static void copyStreams(InputStream source, OutputStream destination) throws IOException {
         if (source != null && destination != null) {
             try {
                 int length = 0;
@@ -122,12 +42,88 @@ public class HttpClientImpl implements HttpClient {
             }
         }
     }
-    private static void close(Closeable stream){
+
+    private static void close(Closeable stream) {
         if (stream != null) {
             try {
                 stream.close();
-            } catch (Exception ex){
+            } catch (Exception ex) {
             }
         }
+    }
+
+    @Override
+    public HttpRequestBuilder newRequest() {
+        return new HttpRequestBuilderImpl(this.urlBuilder, this);
+    }
+
+    public int execute(HttpRequestImpl request, HttpMethodWorker requestWorker) {
+        if (request == null || requestWorker == null) {
+            new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
+                    "You are trying to send an empty request. It is not allowed.");
+        }
+        int retryCount = this.preferencesService.getInteger(PreferencesService.NETWORK_MAX_RETRY_COUNT, 3);
+        int responseCode = 0;
+        for (int current = 0; current < retryCount; current++) {
+            try {
+                HttpURLConnection connection = configureConnection(request, openConnection(request));
+                requestWorker.process(request, connection);
+                responseCode = readServerResponse(request, connection);
+                if (responseCode == NO_SERVER_RESPONSE_CODE) {
+                    continue; // retry the request
+                }
+            } catch (MalformedURLException badUrlEx) {
+                // do not try again, a client provided a bad url
+                NetworkException netException = new NetworkException(NetworkException.MALFORMED_URL);
+                netException.setRequestUrl(request.getUrl());
+                throw netException;
+            } catch (SocketTimeoutException timeoutEx) {
+                if (retryCount >= current) {
+                    NetworkException netException = new NetworkException(NetworkException.CONNECTION_TIMED_OUT);
+                    netException.setRequestUrl(request.getUrl());
+                    throw netException;
+                }
+            } catch (IOException ioEx) {
+                if (retryCount >= current) {
+                    NetworkException netException = new NetworkException(NetworkException.COMMUNICATION_FAILED,
+                            ioEx.getLocalizedMessage());
+                    netException.setRequestUrl(request.getUrl());
+                    throw netException;
+                }
+            }
+        }
+        return responseCode;
+    }
+
+    protected HttpURLConnection openConnection(HttpRequestImpl request) throws IOException {
+        URL url = new URL(request.getUrl());
+        return (HttpURLConnection) url.openConnection();
+    }
+
+    protected HttpURLConnection configureConnection(HttpRequestImpl request, HttpURLConnection connection) {
+        int connectionTimeout = this.preferencesService.getInteger(PreferencesService.NETWORK_CONNECTION_TIMEOUT, 30000);
+        Map<String, String> headers = request.getHeaders();
+        if (!headers.isEmpty()) {
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                connection.setRequestProperty(header.getKey(), header.getValue());
+            }
+        }
+        connection.setConnectTimeout(connectionTimeout);
+        connection.setDoInput(request.getDestinationStream() != null);
+        return connection;
+    }
+
+    protected int readServerResponse(HttpRequestImpl request, HttpURLConnection connection) throws IOException {
+        int responseCode = connection.getResponseCode();
+        InputStream serverAnswerStream = null;
+        if (responseCode == NO_SERVER_RESPONSE_CODE) {
+            return responseCode;
+        } else if (responseCode >= 400 && responseCode < 600) {
+            serverAnswerStream = connection.getErrorStream();
+        } else {
+            serverAnswerStream = connection.getInputStream();
+        }
+        copyStreams(serverAnswerStream, request.getDestinationStream());
+        return responseCode;
     }
 }

@@ -14,7 +14,7 @@ public class GrantImplicitWorker extends AuthenticationWorker {
     void authenticate() throws AuthenticationException {
         // do nothing, just check that we have all required properties and throw exception if not
         String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN);
-        if (accessToken == null){
+        if (accessToken == null) {
             throw new AuthenticationException(AuthenticationException.NOT_ENOUGH_INFO_FOR_AUTHENTICATION,
                     "The property 'AuthenticationType.Properties.ACCESS_TOKEN' must be specified, see Java doc for " +
                             "AuthenticationService#setAuthenticationProperty(String, String). " +
@@ -33,16 +33,16 @@ public class GrantImplicitWorker extends AuthenticationWorker {
                 .addQueryParameter("redirect_uri", redirectUrl)
                 .addQueryParameter("response_type", "token");
         String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE);
-        if (appState != null){
+        if (appState != null) {
             urlBuilder.addQueryParameter("state", appState);
         }
-        return  urlBuilder.build();
+        return urlBuilder.build();
     }
 
     @Override
     void parseOAuthResponse(String data) {
         getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN,
-                getProperty(data, "#access_token="));
+                getProperty(data, "access_token="));
         getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.TOKEN_TYPE,
                 getProperty(data, "token_type="));
         getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.EXPIRES_IN,

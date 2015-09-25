@@ -41,14 +41,6 @@ public abstract class AuthenticationWorker {
 
     abstract void parseOAuthResponse(String data);
 
-    protected int getPropertyEndPosition(String data, int startPosition) {
-        int accessTokenEndPosition = data.indexOf("&", startPosition);
-        if (accessTokenEndPosition < 0) {
-            accessTokenEndPosition = data.length();
-        }
-        return accessTokenEndPosition;
-    }
-
     protected String getProperty(String data, String propertyMarker){
         int propertyMarkerPosition = data.indexOf(propertyMarker);
         if (propertyMarkerPosition >= 0){
@@ -56,6 +48,14 @@ public abstract class AuthenticationWorker {
             return data.substring(propertyStartPosition, getPropertyEndPosition(data, propertyStartPosition));
         }
         return null;
+    }
+
+    private int getPropertyEndPosition(String data, int startPosition) {
+        int accessTokenEndPosition = data.indexOf("&", startPosition);
+        if (accessTokenEndPosition < 0) {
+            accessTokenEndPosition = data.length();
+        }
+        return accessTokenEndPosition;
     }
 
     protected String getClientIdOrThrowException() {

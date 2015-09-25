@@ -1,11 +1,8 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.HttpResponse;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -19,27 +16,15 @@ public class HttpRequestImpl implements HttpRequest {
     private String url;
     private Map<String, String> headers;
     private InputStream entityStream;
-    private OutputStream responseStream;
+    private OutputStream destinationStream;
 
     public HttpRequestImpl(HttpMethod httpMethod, HttpClientImpl httpClient) {
         this.httpMethod = httpMethod;
         this.httpClient = httpClient;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = new HashMap<>(headers);
-    }
-
     public void setEntityStream(InputStream entityStream) {
         this.entityStream = entityStream;
-    }
-
-    public void setResponseStream(OutputStream responseStream) {
-        this.responseStream = responseStream;
     }
 
     @Override
@@ -47,9 +32,17 @@ public class HttpRequestImpl implements HttpRequest {
         return this.url;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public Map<String, String> getHeaders() {
         return this.headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = new HashMap<>(headers);
     }
 
     @Override
@@ -57,15 +50,18 @@ public class HttpRequestImpl implements HttpRequest {
         return this.entityStream;
     }
 
-    public OutputStream getResponseStream(int expectedLength) {
-        if (this.responseStream == null){
-            this.responseStream = new ByteArrayOutputStream(expectedLength);
-        }
-        return this.responseStream;
+    public OutputStream getDestinationStream() {
+        return this.destinationStream;
     }
 
     @Override
-    public void execute() {
+    public int send() {
+        return this.sendAndReadResponse(null);
+    }
 
+    @Override
+    public int sendAndReadResponse(OutputStream destinationStream) {
+        this.destinationStream = destinationStream;
+        return this.httpClient.execute(this, HttpMethodWorker.getWorker(this.httpMethod));
     }
 }

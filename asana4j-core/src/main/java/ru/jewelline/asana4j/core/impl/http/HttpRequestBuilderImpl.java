@@ -22,7 +22,6 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
     private URLBuilder urlBuilder;
     private Map<String, String> headers;
     private InputStream entityStream;
-    private OutputStream responseStream;
 
     HttpRequestBuilderImpl(URLBuilder urlBuilder, HttpClientImpl httpClient) {
         this.headers = new HashMap<>();
@@ -66,12 +65,6 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
     }
 
     @Override
-    public HttpRequestBuilder setResponseStream(OutputStream responseStream) {
-        this.responseStream = responseStream;
-        return this;
-    }
-
-    @Override
     public HttpRequest buildAs(HttpMethod method) {
         if (method == null) {
             throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify a request method");
@@ -84,7 +77,6 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
         request.setUrl(url);
         request.setHeaders(this.headers);
         request.setEntityStream(this.entityStream);
-        request.setResponseStream(this.responseStream);
         return request;
     }
 }

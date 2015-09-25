@@ -53,12 +53,6 @@ public interface HttpRequestBuilder {
     HttpRequestBuilder entity(InputStream entityStream);
 
     /**
-     * Allow for user to set a destination for server response
-     * @param responseStream output stream in which the server response will be copied
-     * @return The request builder
-     */
-    HttpRequestBuilder setResponseStream(OutputStream responseStream);
-    /**
      * Creates an instance of HttpRequest
      * @return an instance of HttpRequest with specified headers, query parameters and body
      * @throws NetworkException with {@link NetworkException#MALFORMED_URL} code will be thrown if you didn't specify
