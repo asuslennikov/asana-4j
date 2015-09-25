@@ -30,9 +30,10 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
         HttpResponse httpResponse = httpResponseProvider.run();
         //TODO handle auth errors
         if (httpResponse.status() == HttpURLConnection.HTTP_FORBIDDEN ||
-                httpResponse.status() == HttpURLConnection.HTTP_NOT_AUTHORITATIVE){
+                httpResponse.status() == HttpURLConnection.HTTP_UNAUTHORIZED){
             //try to reconnect
             this.serviceLocator.getAuthenticationService().authenticate();
+            httpResponse = httpResponseProvider.run();
 
         }
         return new ApiResponseImpl<AT, T>(httpResponse, this);

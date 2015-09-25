@@ -69,6 +69,18 @@ public class WorkspaceImplTest {
     }
 
     @Test
+    public void test_fillFromJsonWithNullId(){
+        JSONObject json = getJsonResponse();
+        json.put(WorkspaceImplWriter.ID.getFieldName(), JSONObject.NULL);
+        try {
+            new WorkspaceImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + WorkspaceImplWriter.ID.getFieldName() + "'");
+        }
+    }
+
+    @Test
     public void test_fillFromJsonWithMissedName(){
         JSONObject json = getJsonResponse();
         json.remove(WorkspaceImplWriter.NAME.getFieldName());
@@ -84,6 +96,18 @@ public class WorkspaceImplTest {
     public void test_fillFromJsonWithBadName(){
         JSONObject json = getJsonResponse();
         json.put(WorkspaceImplWriter.NAME.getFieldName(), 123);
+        try {
+            new WorkspaceImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + WorkspaceImplWriter.NAME.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithNullName(){
+        JSONObject json = getJsonResponse();
+        json.put(WorkspaceImplWriter.NAME.getFieldName(), JSONObject.NULL);
         try {
             new WorkspaceImpl().fromJson(json);
         } catch (ApiException ex){

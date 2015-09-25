@@ -20,11 +20,9 @@ public abstract class ApiEntityImpl<A> implements ApiEntity<A> {
             List<ApiEntityFieldWriter<A, ApiEntityImpl<A>>> fieldWriters = getFieldWriters();
             if (fieldWriters != null) {
                 for (ApiEntityFieldWriter<A, ApiEntityImpl<A>> writer : fieldWriters) {
-                    if (!writer.containsRequired(object)){
-                        throw new ApiException(ApiException.INCORRECT_RESPONSE_FORMAT,
-                                "Api response must contain the '" + writer.getFieldName() + "' field");
+                    if (object.has(writer.getFieldName())){
+                        writer.convert(object, this);
                     }
-                    writer.convert(object, this);
                 }
                 return clazz.cast(this);
             }

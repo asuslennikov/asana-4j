@@ -2,14 +2,12 @@ package ru.jewelline.asana4j.core.impl.http;
 
 
 import ru.jewelline.asana4j.http.HttpClient;
-import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.PreferencesService;
-import ru.jewelline.asana4j.utils.ServiceLocator;
+import ru.jewelline.asana4j.utils.URLBuilder;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,27 +20,27 @@ import java.util.Map;
 
 public class HttpClientImpl implements HttpClient {
 
-    private final ServiceLocator serviceLocator;
+    private final URLBuilder urlBuilder;
+    private final PreferencesService preferencesService;
 
-    public HttpClientImpl(ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
+    public HttpClientImpl(URLBuilder urlBuilder, PreferencesService preferencesService) {
+        this.urlBuilder = urlBuilder;
+        this.preferencesService = preferencesService;
     }
 
     @Override
     public HttpRequestBuilder newRequest() {
-        return new HttpRequestBuilderImpl(this.serviceLocator, this);
+        return new HttpRequestBuilderImpl(this.urlBuilder, this);
     }
 
-    public HttpResponse execute(HttpRequest request, HttpRequestTypeImpl requestMethod) {
+    public HttpResponse execute(HttpRequestImpl request, HttpMethodWorker requestMethod) {
         if (request == null || requestMethod == null) {
             new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
                     "You are trying to send an empty request. It is not allowed.");
         }
         HttpResponseImpl response = new HttpResponseImpl(request);
-        int retryCount = this.serviceLocator.getPreferencesService()
-                .getInteger(PreferencesService.NETWORK_MAX_RETRY_COUNT, 3);
-        int connectionTimeout = this.serviceLocator.getPreferencesService()
-                .getInteger(PreferencesService.NETWORK_CONNECTION_TIMEOUT, 30000);
+        int retryCount = this.preferencesService.getInteger(PreferencesService.NETWORK_MAX_RETRY_COUNT, 3);
+        int connectionTimeout = this.preferencesService.getInteger(PreferencesService.NETWORK_CONNECTION_TIMEOUT, 30000);
         String requestedUrl = request.getUrl();
         for(int current = 0; current < retryCount; current++) {
             try {
@@ -67,9 +65,8 @@ public class HttpClientImpl implements HttpClient {
                     serverAnswerStream = connection.getInputStream();
                 }
                 if (serverAnswerStream != null){
-                    ByteArrayOutputStream responseStream = new ByteArrayOutputStream(getContentLength(connection));
+                    OutputStream responseStream = request.getResponseStream(getContentLength(connection));
                     copyStreams(serverAnswerStream, responseStream);
-                    response.setResponseBody(responseStream.toByteArray());
                 }
                 break;
             } catch (MalformedURLException badUrlEx) {

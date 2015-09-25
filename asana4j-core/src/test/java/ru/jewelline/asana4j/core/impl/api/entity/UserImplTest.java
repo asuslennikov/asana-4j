@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,6 +67,18 @@ public class UserImplTest {
     }
 
     @Test
+    public void test_fillFromJsonWithNullId(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.ID.getFieldName(), JSONObject.NULL);
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
+        }
+    }
+
+    @Test
     public void test_fillFromJsonWithBadId(){
         JSONObject json = getJsonResponse();
         json.put(UserImplWriter.ID.getFieldName(), "string_id");
@@ -81,6 +94,18 @@ public class UserImplTest {
     public void test_fillFromJsonWithMissedName(){
         JSONObject json = getJsonResponse();
         json.remove(UserImplWriter.NAME.getFieldName());
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithNullName(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.NAME.getFieldName(), JSONObject.NULL);
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
@@ -114,7 +139,19 @@ public class UserImplTest {
     }
 
     @Test
-    public void test_fillFromJsonWithMBadMail(){
+    public void test_fillFromJsonWithNullMail(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.EMAIL.getFieldName(), JSONObject.NULL);
+        try {
+            new UserImpl().fromJson(json);
+        } catch (ApiException ex){
+            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
+            assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
+        }
+    }
+
+    @Test
+    public void test_fillFromJsonWithBadMail(){
         JSONObject json = getJsonResponse();
         json.put(UserImplWriter.EMAIL.getFieldName(), 123);
         try {
@@ -135,6 +172,15 @@ public class UserImplTest {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.PHOTO.getFieldName() + "'");
         }
+    }
+
+    @Test
+    public void test_fillFromJsonWithNullPhoto(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.PHOTO.getFieldName(),JSONObject.NULL);
+
+        User user = new UserImpl().fromJson(json);
+        assertThat(user.getPhotoUrl()).isNull();
     }
 
     @Test
@@ -171,6 +217,15 @@ public class UserImplTest {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.WORKSPACES.getFieldName() + "'");
         }
+    }
+
+    @Test
+    public void test_fillFromJsonWithNullWorkspaces(){
+        JSONObject json = getJsonResponse();
+        json.put(UserImplWriter.WORKSPACES.getFieldName(),JSONObject.NULL);
+
+        User user = new UserImpl().fromJson(json);
+        assertThat(user.getWorkspaces()).isNull();
     }
 
     @Test

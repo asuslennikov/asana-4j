@@ -1,102 +1,90 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-import org.json.JSONObject;
+import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
-import ru.jewelline.asana4j.http.HttpResponse;
-import ru.jewelline.asana4j.utils.ServiceLocator;
+import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.URLBuilder;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpRequestBuilderImpl implements HttpRequestBuilder, HttpRequest {
+public class HttpRequestBuilderImpl implements HttpRequestBuilder {
 
-    private final ServiceLocator serviceLocator;
+    private static final String HTTP_PREFIX = "http://";
+    private static final String HTTPS_PREFIX = "https://";
+
     private final HttpClientImpl httpClient;
+
     private URLBuilder urlBuilder;
-
     private Map<String, String> headers;
-    private byte[] requestBody;
+    private InputStream entityStream;
+    private OutputStream responseStream;
 
-    HttpRequestBuilderImpl(ServiceLocator serviceLocator, HttpClientImpl httpClient) {
+    HttpRequestBuilderImpl(URLBuilder urlBuilder, HttpClientImpl httpClient) {
         this.headers = new HashMap<>();
-        this.serviceLocator = serviceLocator;
-        this.urlBuilder = serviceLocator.getUrlBuilder();
+        this.urlBuilder = urlBuilder;
         this.httpClient = httpClient;
     }
 
     @Override
-    public String getUrl() {
-        return this.urlBuilder.build();
-    }
-
-    @Override
-    public Map<String, String> getHeaders() {
-        return this.headers;
-    }
-
-    @Override
-    public byte[] getRequestBody() {
-        return this.requestBody;
-    }
-
-
-    @Override
     public HttpRequestBuilder path(String baseUrl) {
-        this.urlBuilder.path(baseUrl);
+        if (baseUrl != null) {
+            if (baseUrl.startsWith(HTTP_PREFIX) || baseUrl.startsWith(HTTPS_PREFIX)) {
+                this.urlBuilder.path(baseUrl);
+            } else {
+                this.urlBuilder.path(HTTP_PREFIX + baseUrl);
+            }
+        }
         return this;
     }
 
     @Override
-    public HttpRequestBuilder addQueryParameter(String parameterKey, String parameterValue) {
+    public HttpRequestBuilder setQueryParameter(String parameterKey, String parameterValue) {
         this.urlBuilder.addQueryParameter(parameterKey, parameterValue);
         return this;
     }
 
     @Override
-    public HttpRequestBuilder addHeaders(String headerKey, String headerValue) {
+    public HttpRequestBuilder setHeader(String headerKey, String headerValue) {
         this.headers.put(headerKey, headerValue);
         return this;
     }
 
     @Override
     public HttpRequestBuilder entity(byte[] requestBody) {
-        this.requestBody = requestBody;
+        return this.entity(new ByteArrayInputStream(requestBody));
+    }
+
+    @Override
+    public HttpRequestBuilder entity(InputStream entityStream) {
+        this.entityStream = entityStream;
         return this;
     }
 
     @Override
-    public HttpRequestBuilder entity(JSONObject object) {
-        if (object != null){
-            this.entity(object.toString().getBytes());
+    public HttpRequestBuilder setResponseStream(OutputStream responseStream) {
+        this.responseStream = responseStream;
+        return this;
+    }
+
+    @Override
+    public HttpRequest buildAs(HttpMethod method) {
+        if (method == null) {
+            throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify a request method");
         }
-        return this;
-    }
-
-    @Override
-    public HttpRequest build() {
-        // TODO validation here
-        return this;
-    }
-
-    @Override
-    public HttpResponse get() {
-        return this.httpClient.execute(this, HttpRequestTypeImpl.GET);
-    }
-
-    @Override
-    public HttpResponse put() {
-        return this.httpClient.execute(this, HttpRequestTypeImpl.PUT);
-    }
-
-    @Override
-    public HttpResponse post() {
-        return this.httpClient.execute(this, HttpRequestTypeImpl.POST);
-    }
-
-    @Override
-    public HttpResponse delete() {
-        return this.httpClient.execute(this, HttpRequestTypeImpl.DELETE);
+        String url = this.urlBuilder.build();
+        if (url == null || !url.startsWith(HTTPS_PREFIX) && !url.startsWith(HTTPS_PREFIX)) {
+            throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify the base url for your request");
+        }
+        HttpRequestImpl request = new HttpRequestImpl(method, httpClient);
+        request.setUrl(url);
+        request.setHeaders(this.headers);
+        request.setEntityStream(this.entityStream);
+        request.setResponseStream(this.responseStream);
+        return request;
     }
 }

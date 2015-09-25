@@ -25,7 +25,7 @@ public class GrantCodeWorker extends AuthenticationWorker {
         try {
             HttpResponse httpResponse = httpClient.newRequest()
                     .path(ACCESS_TOKEN_ENDPOINT)
-                    .addHeaders("Content-Type", "application/x-www-form-urlencoded")
+                    .setHeader("Content-Type", "application/x-www-form-urlencoded")
                     .entity(getAccessTokenRequestBody())
                     .build()
                     .post();

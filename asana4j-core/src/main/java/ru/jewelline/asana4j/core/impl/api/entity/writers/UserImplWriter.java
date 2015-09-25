@@ -14,39 +14,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum UserImplWriter implements ApiEntityFieldWriter<User, UserImpl> {
-    ID ("id") {
+    ID("id") {
         @Override
         protected void convertInternal(JSONObject source, UserImpl target) throws JSONException {
             target.setId(source.getLong(getFieldName()));
         }
     },
-    EMAIL ("email") {
+    EMAIL("email") {
         @Override
         protected void convertInternal(JSONObject source, UserImpl target) throws JSONException {
             target.setEmail(source.getString(getFieldName()));
         }
     },
-    NAME ("name") {
+    NAME("name") {
         @Override
         protected void convertInternal(JSONObject source, UserImpl target) throws JSONException {
             target.setName(source.getString(getFieldName()));
         }
     },
-    PHOTO ("photo") {
+    PHOTO("photo") {
         @Override
         protected void convertInternal(JSONObject source, UserImpl target) throws JSONException {
-            target.setPhotoUrl(source.getString(getFieldName()));
+            if (!source.isNull(getFieldName())) {
+                target.setPhotoUrl(source.getString(getFieldName()));
+            }
         }
     },
-    WORKSPACES ("workspaces") {
+    WORKSPACES("workspaces") {
         @Override
         protected void convertInternal(JSONObject source, UserImpl target) throws JSONException {
-            JSONArray workspaces = source.getJSONArray(getFieldName());
-            List<Workspace> converted = new ArrayList<>();
-            for (int i=0; i < workspaces.length(); i++){
-                converted.add(new WorkspaceImpl().fromJson(workspaces.getJSONObject(i)));
+            if (!source.isNull(getFieldName())) {
+                Object workspacesAsObj = source.get(getFieldName());
+                if (workspacesAsObj instanceof JSONArray) {
+                    JSONArray workspaces = (JSONArray) workspacesAsObj;
+                    List<Workspace> converted = new ArrayList<>();
+                    for (int i = 0; i < workspaces.length(); i++) {
+                        converted.add(new WorkspaceImpl().fromJson(workspaces.getJSONObject(i)));
+                    }
+                    target.setWorkspaces(converted);
+                }
             }
-            target.setWorkspaces(converted);
         }
     },
     ;
@@ -62,15 +69,10 @@ public enum UserImplWriter implements ApiEntityFieldWriter<User, UserImpl> {
     }
 
     @Override
-    public boolean containsRequired(JSONObject source) {
-        return source.has(getFieldName());
-    }
-
-    @Override
-    public void convert(JSONObject source, UserImpl target){
+    public void convert(JSONObject source, UserImpl target) {
         try {
             convertInternal(source, target);
-        } catch (JSONException ex){
+        } catch (JSONException ex) {
             throw new ApiException(ApiException.INCORRECT_RESPONSE_FIELD_FORMAT,
                     "Unable parse field '" + this.getFieldName() + "' from json response " + source.toString());
         }

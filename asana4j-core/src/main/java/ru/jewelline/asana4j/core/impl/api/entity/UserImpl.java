@@ -65,6 +65,32 @@ public class UserImpl extends ApiEntityImpl<User> implements User {
     }
 
     @Override
+    public boolean equals(Object candidate) {
+        if (this == candidate){
+            return true;
+        }
+        if (candidate == null || getClass() != candidate.getClass()){
+            return false;
+        }
+        return id == ((UserImpl) candidate).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder("User [");
+        out.append("id = ").append(getId());
+        out.append(", name = ").append(getName());
+        out.append(", email = ").append(getEmail());
+        out.append("]");
+        return out.toString();
+    }
+
+    @Override
     protected List<ApiEntityFieldWriter<User, UserImpl>> getFieldWriters() {
         List<ApiEntityFieldWriter<User, UserImpl>> writers = new ArrayList<>(UserImplWriter.values().length);
         for (UserImplWriter field : UserImplWriter.values()) {

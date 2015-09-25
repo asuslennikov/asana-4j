@@ -34,6 +34,31 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
     }
 
     @Override
+    public boolean equals(Object candidate) {
+        if (this == candidate){
+            return true;
+        }
+        if (candidate == null || getClass() != candidate.getClass()){
+            return false;
+        }
+        return id == ((WorkspaceImpl) candidate).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder("Workspace [");
+        out.append("id = ").append(getId());
+        out.append(", name = ").append(getName());
+        out.append("]");
+        return out.toString();
+    }
+
+    @Override
     protected List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> getFieldWriters() {
         List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> writers = new ArrayList<>(WorkspaceImplWriter.values().length);
         for (WorkspaceImplWriter field : WorkspaceImplWriter.values()) {

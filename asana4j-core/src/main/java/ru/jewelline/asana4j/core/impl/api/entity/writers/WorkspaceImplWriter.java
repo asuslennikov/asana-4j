@@ -33,11 +33,6 @@ public enum  WorkspaceImplWriter implements ApiEntityFieldWriter<Workspace, Work
     }
 
     @Override
-    public boolean containsRequired(JSONObject source) {
-        return source.has(getFieldName());
-    }
-
-    @Override
     public void convert(JSONObject source, WorkspaceImpl target){
         try {
             convertInternal(source, target);

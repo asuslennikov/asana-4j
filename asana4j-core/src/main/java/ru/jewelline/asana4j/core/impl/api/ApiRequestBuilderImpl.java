@@ -31,20 +31,20 @@ public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T>, ApiReques
     }
 
     @Override
-    public ApiRequestBuilder<T> path(String baseUrl) {
-        this.httpRequestBuilder.path(BASE_API_URL + baseUrl);
+    public ApiRequestBuilder<T> path(String apiSuffix) {
+        this.httpRequestBuilder.path(BASE_API_URL + apiSuffix);
         return this;
     }
 
     @Override
-    public ApiRequestBuilder<T> addQueryParameter(String parameterKey, String parameterValue) {
-        this.httpRequestBuilder.addQueryParameter(parameterKey, parameterValue);
+    public ApiRequestBuilder<T> setQueryParameter(String parameterKey, String parameterValue) {
+        this.httpRequestBuilder.setQueryParameter(parameterKey, parameterValue);
         return this;
     }
 
     @Override
-    public ApiRequestBuilder<T> addHeaders(String headerKey, String headerValue) {
-        this.httpRequestBuilder.addHeaders(headerKey, headerValue);
+    public ApiRequestBuilder<T> setHeader(String headerKey, String headerValue) {
+        this.httpRequestBuilder.setHeader(headerKey, headerValue);
         return this;
     }
 
@@ -77,7 +77,7 @@ public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T>, ApiReques
     @Override
     public ApiRequest<T> build() {
         if (this.serviceLocator.getAuthenticationService().isAuthenticated()) {
-            this.addHeaders("Authorization", this.serviceLocator.getAuthenticationService().getHeader());
+            this.setHeader("Authorization", this.serviceLocator.getAuthenticationService().getHeader());
         }
         this.httpRequest = this.httpRequestBuilder.build();
         return this;
@@ -125,7 +125,7 @@ public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T>, ApiReques
         Function<HttpResponse> httpResponseProvider = new Function<HttpResponse>() {
             @Override
             public HttpResponse run(){
-                return ApiRequestBuilderImpl.this.httpRequest.delete();
+                return ApiRequestBuilderImpl.this.httpRequest.post();
             }
         };
         return this.apiClient.wrapResponse(httpResponseProvider);
@@ -136,7 +136,7 @@ public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T>, ApiReques
         Function<HttpResponse> httpResponseProvider = new Function<HttpResponse>() {
             @Override
             public HttpResponse run(){
-                return ApiRequestBuilderImpl.this.httpRequest.get();
+                return ApiRequestBuilderImpl.this.httpRequest.delete();
             }
         };
         return this.apiClient.wrapResponse(httpResponseProvider);
