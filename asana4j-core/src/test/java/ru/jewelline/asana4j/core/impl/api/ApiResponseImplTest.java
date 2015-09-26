@@ -1,24 +1,8 @@
 package ru.jewelline.asana4j.core.impl.api;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntity;
-import ru.jewelline.asana4j.http.HttpResponse;
-import ru.jewelline.asana4j.http.NetworkException;
-
-import java.net.HttpURLConnection;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @Ignore

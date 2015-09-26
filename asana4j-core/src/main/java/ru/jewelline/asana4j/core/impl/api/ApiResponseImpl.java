@@ -7,7 +7,6 @@ import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiResponse;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntity;
 import ru.jewelline.asana4j.http.HttpResponse;
-import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 
 import java.util.ArrayList;

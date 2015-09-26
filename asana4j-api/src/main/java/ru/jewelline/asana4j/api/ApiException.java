@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.api;
 public class ApiException extends RuntimeException {
     public static final int INCORRECT_RESPONSE_FORMAT = 1 << 0;
     public static final int INCORRECT_RESPONSE_FIELD_FORMAT = 1 << 1;
+    public static final int BAD_REQUEST = 1 << 2;
 
     private final int errorCode;
     private String requestUrl;

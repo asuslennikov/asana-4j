@@ -7,8 +7,8 @@ import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpResponse;
-import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.http.NetworkException;
+import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.ServiceLocator;
 import ru.jewelline.asana4j.utils.URLBuilder;
 

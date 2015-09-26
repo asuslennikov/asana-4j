@@ -16,7 +16,7 @@ public class AsanaExample {
         UserApiClient userApiClient = new UserApiClientImpl(serviceLocator);
         User currentUser = userApiClient.getCurrentUser();
         System.out.println(currentUser);
-        if (currentUser != null && !currentUser.getWorkspaces().isEmpty()){
+        if (currentUser != null && currentUser.getWorkspaces() != null){
             for (Workspace workspace : currentUser.getWorkspaces()) {
                 System.out.println("Workspace for current user is: " + workspace);
             }

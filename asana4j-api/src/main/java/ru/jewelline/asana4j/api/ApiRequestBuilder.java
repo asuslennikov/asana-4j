@@ -1,6 +1,5 @@
 package ru.jewelline.asana4j.api;
 
-import org.json.JSONObject;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public interface ApiRequestBuilder<T> {
