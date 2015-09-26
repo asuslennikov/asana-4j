@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.http;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -58,5 +60,5 @@ public interface HttpRequestBuilder {
      * @throws NetworkException with {@link NetworkException#MALFORMED_URL} code will be thrown if you didn't specify
      * a base url (see {@link #path(String)})
      */
-    HttpRequest buildAs(HttpMethod method) throws NetworkException;
+    <O extends OutputStream> HttpRequest<O> buildAs(HttpMethod method) throws NetworkException;
 }

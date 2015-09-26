@@ -6,7 +6,8 @@ import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.JsonOutputStream;
+import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.ServiceLocator;
 import ru.jewelline.asana4j.utils.URLBuilder;
@@ -23,17 +24,17 @@ public class GrantCodeWorker extends AuthenticationWorker {
     void authenticate() throws AuthenticationException {
         HttpClient httpClient = getServiceLocator().getHttpClient();
         try {
-            JsonOutputStream jsonResponse = new JsonOutputStream();
-            int responseCode = httpClient.newRequest()
+            JsonOutputStream responseBody = new JsonOutputStream();
+            HttpResponse response = httpClient.newRequest()
                     .path(ACCESS_TOKEN_ENDPOINT)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
                     .entity(getAccessTokenRequestBody())
                     .buildAs(HttpMethod.POST)
-                    .sendAndReadResponse(jsonResponse);
-            if (responseCode != HttpURLConnection.HTTP_OK) {
+                    .sendAndReadResponse(responseBody);
+            if (response.code() != HttpURLConnection.HTTP_OK) {
                 throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE);
             }
-            JSONObject authResponse = jsonResponse.asJson();
+            JSONObject authResponse = responseBody.asJson();
 
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN,
                     getStringPropertyFromJson(authResponse, "access_token"));

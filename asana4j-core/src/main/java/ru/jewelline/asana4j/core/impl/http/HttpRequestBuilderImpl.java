@@ -65,7 +65,7 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
     }
 
     @Override
-    public HttpRequest buildAs(HttpMethod method) {
+    public <O extends OutputStream> HttpRequest<O> buildAs(HttpMethod method) {
         if (method == null) {
             throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify a request method");
         }
@@ -73,7 +73,7 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
         if (url == null || !url.startsWith(HTTPS_PREFIX) && !url.startsWith(HTTPS_PREFIX)) {
             throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify the base url for your request");
         }
-        HttpRequestImpl request = new HttpRequestImpl(method, httpClient);
+        HttpRequestImpl<O> request = new HttpRequestImpl<O>(method, httpClient);
         request.setUrl(url);
         request.setHeaders(this.headers);
         request.setEntityStream(this.entityStream);

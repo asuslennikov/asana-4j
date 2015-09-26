@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Java object which encapsulates all request parameters and properties (body, headers and etc).
  */
-public interface HttpRequest {
+public interface HttpRequest<O extends OutputStream> {
     /**
      * @return a full target url
      */
@@ -24,15 +24,15 @@ public interface HttpRequest {
     InputStream getRequestBody();
 
     /**
-     * This method launches the request
+     * TSend this HTTP request
      * @return HTTP server response code
      */
-    int send();
+    HttpResponse<O> send();
 
     /**
-     * This method launches the request
-     * @param destinationStream output stream in which the server response will be copied
-     * @return HTTP server response code
+     * Send this HTTP request and read a server response
+     * @param destinationStream output stream in which a server response will be copied
+     * @return response object
      */
-    int sendAndReadResponse(OutputStream destinationStream);
+   HttpResponse<O> sendAndReadResponse(O destinationStream);
 }

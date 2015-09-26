@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.http;
 
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
+import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.URLBuilder;
@@ -57,21 +58,22 @@ public class HttpClientImpl implements HttpClient {
         return new HttpRequestBuilderImpl(this.urlBuilder, this);
     }
 
-    public int execute(HttpRequestImpl request, HttpMethodWorker requestWorker) {
+    public <O extends OutputStream> HttpResponse<O> execute(HttpRequestImpl<O> request, HttpMethodWorker requestWorker) {
         if (request == null || requestWorker == null) {
             new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
                     "You are trying to send an empty request. It is not allowed.");
         }
         int retryCount = this.preferencesService.getInteger(PreferencesService.NETWORK_MAX_RETRY_COUNT, 3);
-        int responseCode = 0;
+        HttpResponseImpl<O> response = new HttpResponseImpl<>(request.getDestinationStream());
         for (int current = 0; current < retryCount; current++) {
             try {
                 HttpURLConnection connection = configureConnection(request, openConnection(request));
                 requestWorker.process(request, connection);
-                responseCode = readServerResponse(request, connection);
-                if (responseCode == NO_SERVER_RESPONSE_CODE) {
+                response.setCode(readServerResponse(request, connection));
+                if (response.code() == NO_SERVER_RESPONSE_CODE) {
                     continue; // retry the request
                 }
+                break;
             } catch (MalformedURLException badUrlEx) {
                 // do not try again, a client provided a bad url
                 NetworkException netException = new NetworkException(NetworkException.MALFORMED_URL);
@@ -92,7 +94,7 @@ public class HttpClientImpl implements HttpClient {
                 }
             }
         }
-        return responseCode;
+        return response;
     }
 
     protected HttpURLConnection openConnection(HttpRequestImpl request) throws IOException {
@@ -116,7 +118,7 @@ public class HttpClientImpl implements HttpClient {
     protected int readServerResponse(HttpRequestImpl request, HttpURLConnection connection) throws IOException {
         int responseCode = connection.getResponseCode();
         InputStream serverAnswerStream = null;
-        if (responseCode == NO_SERVER_RESPONSE_CODE) {
+        if (responseCode == NO_SERVER_RESPONSE_CODE || request.getDestinationStream() == null) {
             return responseCode;
         } else if (responseCode >= 400 && responseCode < 600) {
             serverAnswerStream = connection.getErrorStream();

@@ -8,6 +8,7 @@ import ru.jewelline.asana4j.api.ApiResponse;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntity;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.http.NetworkException;
+import ru.jewelline.asana4j.utils.JsonOutputStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +16,22 @@ import java.util.List;
 public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse<AT> {
 
     public static final String DATA_ROOT = "data";
-    private final HttpResponse httpResponse;
+    private final HttpResponse<JsonOutputStream> httpResponse;
     private final ApiEntityInstanceProvider<T> instanceProvider;
 
-    public ApiResponseImpl(HttpResponse httpResponse, ApiEntityInstanceProvider<T> instanceProvider) {
+    public ApiResponseImpl(HttpResponse<JsonOutputStream> httpResponse, ApiEntityInstanceProvider<T> instanceProvider) {
         this.httpResponse = httpResponse;
         this.instanceProvider = instanceProvider;
     }
 
     @Override
+    public int code() {
+        return this.httpResponse.code();
+    }
+
+    @Override
     public AT asApiObject() {
-        JSONObject jsonObj = asJsonObject();
+        JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)){
             try {
                 Object dataRoot = jsonObj.get(DATA_ROOT);
@@ -44,7 +50,7 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
 
     @Override
     public List<AT> asApiCollection() {
-        JSONObject jsonObj = asJsonObject();
+        JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)){
             try {
                 Object dataRoot = jsonObj.get(DATA_ROOT);
@@ -73,31 +79,6 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
 
     private ApiException unableToExtractException() {
         return new ApiException(ApiException.INCORRECT_RESPONSE_FORMAT, "Unable to extract entity from response, maybe the root object '" + DATA_ROOT +
-                "' is missed, response: " + asString());
-    }
-
-
-    @Override
-    public int status() {
-        return this.httpResponse.status();
-    }
-
-    @Override
-    public String asString() {
-        return this.httpResponse.asString();
-    }
-
-    @Override
-    public byte[] asByteArray() {
-        return this.httpResponse.asByteArray();
-    }
-
-    @Override
-    public JSONObject asJsonObject() {
-        try {
-            return this.httpResponse.asJsonObject();
-        } catch (NetworkException ex){
-            throw unableToExtractException();
-        }
+                "' is missed, response: " + httpResponse.output().asString());
     }
 }

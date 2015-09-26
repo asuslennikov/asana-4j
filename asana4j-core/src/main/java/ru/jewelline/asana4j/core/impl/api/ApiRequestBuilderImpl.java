@@ -1,38 +1,43 @@
 package ru.jewelline.asana4j.core.impl.api;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.ApiResponse;
+import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.http.HttpClient;
+import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
-import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.ServiceLocator;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T>, ApiRequest<T> {
+public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T> {
     protected static final String BASE_API_URL = "https://app.asana.com/api/1.0/";
 
-    private final ServiceLocator serviceLocator;
+    private final AuthenticationService authenticationService;
+
     private final ApiClientImpl<T, ?> apiClient;
     private final HttpRequestBuilder httpRequestBuilder;
-    private JSONObject entity;
     private Map<String, Object> requestOptions;
-    private HttpRequest httpRequest;
 
-    public ApiRequestBuilderImpl(ServiceLocator serviceLocator, ApiClientImpl<T, ?> apiClient) {
-        this.serviceLocator = serviceLocator;
+    public ApiRequestBuilderImpl(AuthenticationService authenticationService, HttpClient httpClient, ApiClientImpl<T, ?> apiClient) {
+        this.authenticationService = authenticationService;
+        this.httpRequestBuilder = httpClient.newRequest();
         this.apiClient = apiClient;
-        this.httpRequestBuilder = this.serviceLocator.getHttpClient().newRequest();
         this.requestOptions = new HashMap<>(8);
     }
 
     @Override
     public ApiRequestBuilder<T> path(String apiSuffix) {
         this.httpRequestBuilder.path(BASE_API_URL + apiSuffix);
+        return this;
+    }
+
+    @Override
+    public ApiRequestBuilder<T> setApiOption(String option, Object value) {
+        this.requestOptions.put(option, value);
         return this;
     }
 
@@ -49,96 +54,12 @@ public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T>, ApiReques
     }
 
     @Override
-    public ApiRequestBuilder<T> entity(byte[] requestBody) {
-        if (requestBody != null && requestBody.length != 0){
-            try {
-                this.entity(new JSONObject(new String(requestBody)));
-            } catch (JSONException ex){
-                // TODO throw API exception
-            }
-        } else {
-            this.entity = null;
+    public ApiRequest<T> buildAs(HttpMethod method) {
+        if (this.authenticationService.isAuthenticated()) {
+            this.setHeader("Authorization", this.authenticationService.getHeader());
         }
-        return this;
-    }
-
-    @Override
-    public ApiRequestBuilder<T> entity(JSONObject object) {
-        this.entity = object;
-        return this;
-    }
-
-    @Override
-    public ApiRequestBuilder<T> addApiOption(String option, Object value) {
-        this.requestOptions.put(option, value);
-        return this;
-    }
-
-    @Override
-    public ApiRequest<T> build() {
-        if (this.serviceLocator.getAuthenticationService().isAuthenticated()) {
-            this.setHeader("Authorization", this.serviceLocator.getAuthenticationService().getHeader());
-        }
-        this.httpRequest = this.httpRequestBuilder.build();
-        return this;
-    }
-
-    @Override
-    public String getUrl() {
-        return this.httpRequest.getUrl();
-    }
-
-    @Override
-    public byte[] getRequestBody() {
-        return this.httpRequest.getRequestBody();
-    }
-
-    @Override
-    public Map<String, String> getHeaders() {
-        return this.httpRequest.getHeaders();
-    }
-
-    @Override
-    public ApiResponse<T> get() {
-        Function<HttpResponse> httpResponseProvider = new Function<HttpResponse>() {
-            @Override
-            public HttpResponse run(){
-                return ApiRequestBuilderImpl.this.httpRequest.get();
-            }
-        };
-        return this.apiClient.wrapResponse(httpResponseProvider);
-    }
-
-    @Override
-    public ApiResponse<T> put() {
-        Function<HttpResponse> httpResponseProvider = new Function<HttpResponse>() {
-            @Override
-            public HttpResponse run(){
-                return ApiRequestBuilderImpl.this.httpRequest.put();
-            }
-        };
-        return this.apiClient.wrapResponse(httpResponseProvider);
-    }
-
-    @Override
-    public ApiResponse<T> post() {
-        Function<HttpResponse> httpResponseProvider = new Function<HttpResponse>() {
-            @Override
-            public HttpResponse run(){
-                return ApiRequestBuilderImpl.this.httpRequest.post();
-            }
-        };
-        return this.apiClient.wrapResponse(httpResponseProvider);
-    }
-
-    @Override
-    public ApiResponse<T> delete() {
-        Function<HttpResponse> httpResponseProvider = new Function<HttpResponse>() {
-            @Override
-            public HttpResponse run(){
-                return ApiRequestBuilderImpl.this.httpRequest.delete();
-            }
-        };
-        return this.apiClient.wrapResponse(httpResponseProvider);
+        ApiRequestImpl<T> apiRequest = new ApiRequestImpl<>(this.httpRequestBuilder.<JsonOutputStream>buildAs(method), this.apiClient);
+        // TODO set entity for post, put, delete
+        return apiRequest;
     }
 }

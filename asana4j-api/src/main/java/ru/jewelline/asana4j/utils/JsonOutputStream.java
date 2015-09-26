@@ -1,7 +1,8 @@
-package ru.jewelline.asana4j.http;
+package ru.jewelline.asana4j.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.jewelline.asana4j.http.NetworkException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

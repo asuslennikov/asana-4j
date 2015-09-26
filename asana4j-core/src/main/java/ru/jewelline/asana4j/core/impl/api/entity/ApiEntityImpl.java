@@ -19,10 +19,16 @@ public abstract class ApiEntityImpl<A> implements ApiEntity<A> {
         if (object != null) {
             List<ApiEntityFieldWriter<A, ApiEntityImpl<A>>> fieldWriters = getFieldWriters();
             if (fieldWriters != null) {
+                boolean hasAtLeastOneField = false;
                 for (ApiEntityFieldWriter<A, ApiEntityImpl<A>> writer : fieldWriters) {
                     if (object.has(writer.getFieldName())){
                         writer.convert(object, this);
+                        hasAtLeastOneField = true;
                     }
+                }
+                if (!hasAtLeastOneField){
+                    throw new ApiException(ApiException.INCORRECT_RESPONSE_FORMAT,
+                            "Api response must contain at least one field");
                 }
                 return clazz.cast(this);
             }

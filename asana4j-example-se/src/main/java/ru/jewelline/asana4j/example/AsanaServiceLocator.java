@@ -20,11 +20,11 @@ public class AsanaServiceLocator implements ServiceLocator {
 
 
     public AsanaServiceLocator() {
-        this.httpClient = new HttpClientImpl(this);
         this.urlBuilder = new UrlBuilderJavaSeUtil();
         this.base64 = new Base64JavaSeUtil();
         this.authenticationService = new AuthenticationServiceImpl(this);
         this.preferencesService = new InMemoryPreferenceService();
+        this.httpClient = new HttpClientImpl(this.urlBuilder, this.preferencesService);
     }
 
     @Override
