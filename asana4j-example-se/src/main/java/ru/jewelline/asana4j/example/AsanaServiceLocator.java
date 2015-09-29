@@ -22,8 +22,8 @@ public class AsanaServiceLocator implements ServiceLocator {
     public AsanaServiceLocator() {
         this.urlBuilder = new UrlBuilderJavaSeUtil();
         this.base64 = new Base64JavaSeUtil();
-        this.authenticationService = new AuthenticationServiceImpl(this);
         this.preferencesService = new InMemoryPreferenceService();
+        this.authenticationService = new AuthenticationServiceImpl(preferencesService, this);
         this.httpClient = new HttpClientImpl(this.urlBuilder, this.preferencesService);
     }
 
@@ -45,10 +45,5 @@ public class AsanaServiceLocator implements ServiceLocator {
     @Override
     public AuthenticationService getAuthenticationService() {
         return this.authenticationService;
-    }
-
-    @Override
-    public PreferencesService getPreferencesService() {
-        return this.preferencesService;
     }
 }

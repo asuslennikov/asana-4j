@@ -84,7 +84,9 @@ public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T> {
     private void appendApiOptionsToUrl(){
         for (Map.Entry<String, Object> option : requestOptions.entrySet()) {
             Object value = option.getValue();
-            if (Boolean.TRUE.equals(value)){
+            if (value == null){
+                continue;
+            } else if (Boolean.TRUE.equals(value)){
                 this.httpRequestBuilder.setQueryParameter(GET_API_OPTION_PREFIX + option.getKey(), "true");
             } else if (value instanceof String){
                 this.httpRequestBuilder.setQueryParameter(GET_API_OPTION_PREFIX + option.getKey(), (String) value);

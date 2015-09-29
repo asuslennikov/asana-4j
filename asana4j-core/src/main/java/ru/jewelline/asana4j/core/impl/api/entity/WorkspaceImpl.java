@@ -10,6 +10,7 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
 
     private long id;
     private String name;
+    private boolean organisation;
 
     public WorkspaceImpl() {
         super(Workspace.class);
@@ -34,6 +35,15 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
     }
 
     @Override
+    public boolean isOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(boolean organisation) {
+        this.organisation = organisation;
+    }
+
+    @Override
     public boolean equals(Object candidate) {
         if (this == candidate){
             return true;
@@ -54,6 +64,7 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
         StringBuilder out = new StringBuilder("Workspace [");
         out.append("id = ").append(getId());
         out.append(", name = ").append(getName());
+        out.append(", organisation = ").append(isOrganisation());
         out.append("]");
         return out.toString();
     }

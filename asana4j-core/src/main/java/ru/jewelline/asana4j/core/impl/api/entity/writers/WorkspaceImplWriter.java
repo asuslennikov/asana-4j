@@ -20,6 +20,12 @@ public enum  WorkspaceImplWriter implements ApiEntityFieldWriter<Workspace, Work
             target.setName(source.getString(getFieldName()));
         }
     },
+    ORGANISATION ("is_organization") {
+        @Override
+        protected void convertInternal(JSONObject source, WorkspaceImpl target) throws JSONException {
+            target.setOrganisation(source.getBoolean(getFieldName()));
+        }
+    },
     ;
     private String fieldName;
 

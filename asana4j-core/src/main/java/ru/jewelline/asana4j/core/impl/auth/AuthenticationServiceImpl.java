@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.core.impl.auth;
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.auth.AuthenticationType;
+import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.ServiceLocator;
 
 import java.io.UnsupportedEncodingException;
@@ -16,13 +17,13 @@ import java.util.Map;
  */
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final ServiceLocator serviceLocator;
     private final Map<AuthenticationType, AuthenticationWorker> authenticationWorkers;
+    private final PreferencesService preferencesService;
 
     private volatile AuthenticationType authenticationType;
 
-    public AuthenticationServiceImpl(ServiceLocator serviceLocator) {
-        this.serviceLocator = serviceLocator;
+    public AuthenticationServiceImpl(PreferencesService preferencesService, ServiceLocator serviceLocator) {
+        this.preferencesService = preferencesService;
         this.authenticationWorkers = new HashMap<>();
         this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(serviceLocator));
         this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(serviceLocator));
@@ -61,12 +62,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void setAuthenticationProperty(String name, String value) {
-        this.serviceLocator.getPreferencesService().setString(name, value);
+        this.preferencesService.setString(name, value);
     }
 
     @Override
     public String getAuthenticationProperty(String name) {
-        return this.serviceLocator.getPreferencesService().getString(name);
+        return this.preferencesService.getString(name);
     }
 
     @Override

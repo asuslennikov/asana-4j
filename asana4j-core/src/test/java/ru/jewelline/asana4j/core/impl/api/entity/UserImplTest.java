@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserImplTest {
@@ -54,18 +55,6 @@ public class UserImplTest {
     }
 
     @Test
-    public void test_fillFromJsonWithMissedId(){
-        JSONObject json = getJsonResponse();
-        json.remove(UserImplWriter.ID.getFieldName());
-        try {
-            new UserImpl().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
-        }
-    }
-
-    @Test
     public void test_fillFromJsonWithNullId(){
         JSONObject json = getJsonResponse();
         json.put(UserImplWriter.ID.getFieldName(), JSONObject.NULL);
@@ -74,7 +63,9 @@ public class UserImplTest {
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
+            return;
         }
+        fail("Exception expected!");
     }
 
     @Test
@@ -86,19 +77,9 @@ public class UserImplTest {
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
+            return;
         }
-    }
-
-    @Test
-    public void test_fillFromJsonWithMissedName(){
-        JSONObject json = getJsonResponse();
-        json.remove(UserImplWriter.NAME.getFieldName());
-        try {
-            new UserImpl().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
-        }
+        fail("Exception expected!");
     }
 
     @Test
@@ -110,7 +91,9 @@ public class UserImplTest {
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
+            return;
         }
+        fail("Exception expected!");
     }
 
     @Test
@@ -122,19 +105,9 @@ public class UserImplTest {
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
+            return;
         }
-    }
-
-    @Test
-    public void test_fillFromJsonWithMissedMail(){
-        JSONObject json = getJsonResponse();
-        json.remove(UserImplWriter.EMAIL.getFieldName());
-        try {
-            new UserImpl().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
-        }
+        fail("Exception expected!");
     }
 
     @Test
@@ -146,7 +119,9 @@ public class UserImplTest {
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
+            return;
         }
+        fail("Exception expected!");
     }
 
     @Test
@@ -158,19 +133,9 @@ public class UserImplTest {
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
+            return;
         }
-    }
-
-    @Test
-    public void test_fillFromJsonWithMissedPhoto(){
-        JSONObject json = getJsonResponse();
-        json.remove(UserImplWriter.PHOTO.getFieldName());
-        try {
-            new UserImpl().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.PHOTO.getFieldName() + "'");
-        }
+        fail("Exception expected!");
     }
 
     @Test
@@ -191,31 +156,17 @@ public class UserImplTest {
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + UserImplWriter.PHOTO.getFieldName() + "'");
+            return;
         }
-    }
-
-    @Test
-    public void test_fillFromJsonWithMissedWorkspaces(){
-        JSONObject json = getJsonResponse();
-        json.remove(UserImplWriter.WORKSPACES.getFieldName());
-        try {
-            new UserImpl().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.WORKSPACES.getFieldName() + "'");
-        }
+        fail("Exception expected!");
     }
 
     @Test
     public void test_fillFromJsonWithBadWorkspaces(){
         JSONObject json = getJsonResponse();
         json.put(UserImplWriter.WORKSPACES.getFieldName(), new HashMap<String, Object>());
-        try {
-            new UserImpl().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.WORKSPACES.getFieldName() + "'");
-        }
+        new UserImpl().fromJson(json);
+        // assert no exception here
     }
 
     @Test
