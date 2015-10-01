@@ -70,6 +70,7 @@ public class ApiRequestBuilderImpl<T> implements ApiRequestBuilder<T> {
         HttpRequest<JsonOutputStream> httpRequest = this.httpRequestBuilder.buildAs(method);
         ApiRequestImpl<T> apiRequest = new ApiRequestImpl<>(httpRequest, this.apiClient);
         // TODO set entity for post, put, delete
+        this.underConstruction = false;
         return apiRequest;
     }
 

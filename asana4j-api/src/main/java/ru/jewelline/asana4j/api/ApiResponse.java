@@ -1,7 +1,5 @@
 package ru.jewelline.asana4j.api;
 
-import java.util.List;
-
 public interface ApiResponse<T>{
     /**
      * @return HTTP server response code
@@ -18,5 +16,5 @@ public interface ApiResponse<T>{
      * Tries to decode the server response and extract list of API objects
      * @return a list of API objects
      */
-    List<T> asApiCollection();
+    PagedList<T> asApiCollection();
 }

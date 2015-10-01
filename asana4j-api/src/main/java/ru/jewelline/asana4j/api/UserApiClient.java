@@ -1,12 +1,11 @@
 package ru.jewelline.asana4j.api;
 
 import ru.jewelline.asana4j.api.entity.User;
-
-import java.util.List;
+import ru.jewelline.asana4j.api.params.QueryParameter;
 
 public interface UserApiClient {
-    User getCurrentUser();
-    User getUserById(long userId);
-    List<User> getUsers();
-    List<User> getWorkspaceUsers(long workspaceId);
+    User getCurrentUser(QueryParameter... params);
+    User getUserById(long userId, QueryParameter... params);
+    PagedList<User> getUsers(QueryParameter... params);
+    PagedList<User> getWorkspaceUsers(long workspaceId, QueryParameter... params);
 }

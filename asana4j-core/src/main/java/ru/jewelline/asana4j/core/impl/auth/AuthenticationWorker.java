@@ -4,6 +4,7 @@ import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.utils.ServiceLocator;
+import ru.jewelline.asana4j.utils.StringUtils;
 
 public abstract class AuthenticationWorker {
     public static final String USER_OAUTH_ENDPOINT = "https://app.asana.com/-/oauth_authorize";
@@ -42,20 +43,7 @@ public abstract class AuthenticationWorker {
     abstract void parseOAuthResponse(String data);
 
     protected String getProperty(String data, String propertyMarker){
-        int propertyMarkerPosition = data.indexOf(propertyMarker);
-        if (propertyMarkerPosition >= 0){
-            int propertyStartPosition = propertyMarkerPosition + propertyMarker.length();
-            return data.substring(propertyStartPosition, getPropertyEndPosition(data, propertyStartPosition));
-        }
-        return null;
-    }
-
-    private int getPropertyEndPosition(String data, int startPosition) {
-        int accessTokenEndPosition = data.indexOf("&", startPosition);
-        if (accessTokenEndPosition < 0) {
-            accessTokenEndPosition = data.length();
-        }
-        return accessTokenEndPosition;
+        return StringUtils.getSubstring(data, propertyMarker, "&");
     }
 
     protected String getClientIdOrThrowException() {

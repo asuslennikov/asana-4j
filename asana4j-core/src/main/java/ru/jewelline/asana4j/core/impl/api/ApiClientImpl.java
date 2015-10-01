@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api;
 
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.ApiResponse;
+import ru.jewelline.asana4j.api.params.QueryParameter;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntity;
 import ru.jewelline.asana4j.http.HttpClient;
@@ -33,9 +34,21 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
         return new ApiRequestBuilderImpl<>(getAuthenticationService(), getHttpClient(), this);
     }
 
+    public ApiRequestBuilder<AT> newRequest(QueryParameter... queryParameters){
+        ApiRequestBuilder<AT> builder = newRequest();
+        if (queryParameters != null) {
+            for (QueryParameter parameter : queryParameters) {
+                if (parameter != null) {
+                    parameter.applyTo(builder);
+                }
+            }
+        }
+        return builder;
+    }
+
     public abstract T newInstance();
 
-    public ApiResponse<AT> wrapHttpResponse(HttpRequest<JsonOutputStream> httpRequest) {
+    protected ApiResponse<AT> wrapHttpResponse(HttpRequest<JsonOutputStream> httpRequest) {
         HttpResponse<JsonOutputStream> httpResponse = httpRequest.sendAndReadResponse(new JsonOutputStream());
         //TODO handle auth errors
         if (httpResponse.code() == HttpURLConnection.HTTP_FORBIDDEN ||
@@ -47,4 +60,5 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
         }
         return new ApiResponseImpl<>(httpResponse, this);
     }
+
 }

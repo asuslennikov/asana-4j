@@ -1,13 +1,13 @@
 package ru.jewelline.asana4j.core.impl.api;
 
+import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.asana4j.api.params.QueryParameter;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
-
-import java.util.List;
 
 public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace, WorkspaceImpl> implements WorkspaceApiClient {
 
@@ -21,8 +21,8 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace, WorkspaceIm
     }
 
     @Override
-    public Workspace getWorkspaceById(long id) {
-        return newRequest()
+    public Workspace getWorkspaceById(long id, QueryParameter... queryParameters) {
+        return newRequest(queryParameters)
                 .path("workspaces/" + id)
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -30,8 +30,8 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace, WorkspaceIm
     }
 
     @Override
-    public List<Workspace> getWorkspaces() {
-        return newRequest()
+    public PagedList<Workspace> getWorkspaces(QueryParameter... queryParameters) {
+        return newRequest(queryParameters)
                 .path("workspaces/")
                 .buildAs(HttpMethod.GET)
                 .execute()

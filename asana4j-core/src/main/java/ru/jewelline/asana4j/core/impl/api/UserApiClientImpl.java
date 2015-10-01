@@ -1,14 +1,13 @@
 package ru.jewelline.asana4j.core.impl.api;
 
+import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.UserApiClient;
 import ru.jewelline.asana4j.api.entity.User;
+import ru.jewelline.asana4j.api.params.QueryParameter;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.utils.ServiceLocator;
-
-import java.util.List;
 
 public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements UserApiClient {
 
@@ -22,8 +21,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public User getCurrentUser() {
-        return newRequest()
+    public User getCurrentUser(QueryParameter... queryParameters) {
+        return newRequest(queryParameters)
                 .path("users/me")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -31,8 +30,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public User getUserById(long userId) {
-        return newRequest()
+    public User getUserById(long userId, QueryParameter... queryParameters) {
+        return newRequest(queryParameters)
                 .path("users/" + userId)
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -40,8 +39,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public List<User> getUsers() {
-        return newRequest()
+    public PagedList<User> getUsers(QueryParameter... queryParameters) {
+        return newRequest(queryParameters)
                 .path("users")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -49,8 +48,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public List<User> getWorkspaceUsers(long workspaceId) {
-        return newRequest()
+    public PagedList<User> getWorkspaceUsers(long workspaceId, QueryParameter... queryParameters) {
+        return newRequest(queryParameters)
                 .path("workspaces/" + workspaceId + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
