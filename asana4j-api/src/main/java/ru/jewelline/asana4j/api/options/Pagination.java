@@ -1,12 +1,13 @@
-package ru.jewelline.asana4j.api.params;
+package ru.jewelline.asana4j.api.options;
 
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
+import ru.jewelline.asana4j.http.HttpMethod;
 
-public class Pagination implements QueryParameter {
+public class Pagination implements RequestOption {
+    public static final int DEFAULT_LIMIT = 25;
     private static final int MIN_LIMIT = 1;
     private static final int MAX_LIMIT = 100;
-    public static final int DEFAULT_LIMIT = 25;
-    
+
     public static final Pagination FIRST_PAGE = new Pagination(DEFAULT_LIMIT, null);
 
     private final int limit;
@@ -40,11 +41,11 @@ public class Pagination implements QueryParameter {
     }
 
     @Override
-    public boolean applyTo(ApiRequestBuilder<?> requestBuilder) {
+    public <T> ApiRequestBuilder<T> applyTo(ApiRequestBuilder<T> requestBuilder, HttpMethod httpMethod) {
         requestBuilder.setQueryParameter("limit", String.valueOf(getLimit()));
         if (getOffsetToken() != null) {
             requestBuilder.setQueryParameter("offset", getOffsetToken());
         }
-        return true;
+        return requestBuilder;
     }
 }

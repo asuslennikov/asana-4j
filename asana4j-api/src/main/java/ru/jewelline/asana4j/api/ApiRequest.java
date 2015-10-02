@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.api;
 
 import org.json.JSONObject;
 
+import java.io.OutputStream;
 import java.util.Map;
 
 public interface ApiRequest<T> {

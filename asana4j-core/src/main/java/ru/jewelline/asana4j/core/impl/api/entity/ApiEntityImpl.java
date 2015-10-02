@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
+import ru.jewelline.asana4j.core.impl.api.ApiEntity;
 
 import java.util.List;
 

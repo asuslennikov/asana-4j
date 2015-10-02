@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.asana4j.core.impl.api.ApiEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.writers.WorkspaceImplWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;

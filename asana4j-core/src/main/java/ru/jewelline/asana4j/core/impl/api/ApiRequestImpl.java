@@ -4,17 +4,18 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiResponse;
 import ru.jewelline.asana4j.http.HttpRequest;
+import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 
 import java.util.Map;
 
-public class ApiRequestImpl<T> implements ApiRequest<T> {
+public class ApiRequestImpl<AT, T extends ApiEntity<AT>> implements ApiRequest<AT> {
     private final HttpRequest<JsonOutputStream> httpRequest;
-    private final ApiClientImpl<T, ?> apiClient;
+    private final ApiEntityInstanceProvider<T> instanceProvider;
 
-    public ApiRequestImpl(HttpRequest<JsonOutputStream> httpRequest, ApiClientImpl<T, ?> apiClient) {
+    public ApiRequestImpl(HttpRequest<JsonOutputStream> httpRequest, ApiEntityInstanceProvider<T> apiInstanceProvider) {
         this.httpRequest = httpRequest;
-        this.apiClient = apiClient;
+        this.instanceProvider = apiInstanceProvider;
     }
 
     @Override
@@ -33,7 +34,8 @@ public class ApiRequestImpl<T> implements ApiRequest<T> {
     }
 
     @Override
-    public ApiResponse<T> execute() {
-        return this.apiClient.wrapHttpResponse(this.httpRequest);
+    public ApiResponse<AT> execute() {
+        HttpResponse<JsonOutputStream> httpResponse = this.httpRequest.sendAndReadResponse(new JsonOutputStream());
+        return new ApiResponseImpl<>(httpResponse, this.instanceProvider);
     }
 }

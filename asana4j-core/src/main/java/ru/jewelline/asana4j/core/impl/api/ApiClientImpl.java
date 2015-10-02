@@ -1,16 +1,11 @@
 package ru.jewelline.asana4j.core.impl.api;
 
+import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.ApiResponse;
-import ru.jewelline.asana4j.api.params.QueryParameter;
+import ru.jewelline.asana4j.api.options.RequestOption;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntity;
 import ru.jewelline.asana4j.http.HttpClient;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.HttpResponse;
-import ru.jewelline.asana4j.utils.JsonOutputStream;
-
-import java.net.HttpURLConnection;
+import ru.jewelline.asana4j.http.HttpMethod;
 
 public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiEntityInstanceProvider<T> {
 
@@ -31,34 +26,37 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
     }
 
     public ApiRequestBuilder<AT> newRequest() {
-        return new ApiRequestBuilderImpl<>(getAuthenticationService(), getHttpClient(), this);
+        return newRequest((RequestOption[]) null);
     }
 
-    public ApiRequestBuilder<AT> newRequest(QueryParameter... queryParameters){
-        ApiRequestBuilder<AT> builder = newRequest();
-        if (queryParameters != null) {
-            for (QueryParameter parameter : queryParameters) {
-                if (parameter != null) {
-                    parameter.applyTo(builder);
-                }
-            }
-        }
-        return builder;
+    protected ApiRequestBuilder<AT> newRequest(RequestOption... requestOptions) {
+        return new ApiRequestWithOptionsBuilder<>(getAuthenticationService(), getHttpClient(), this).withRequestOptions(requestOptions);
     }
 
     public abstract T newInstance();
 
-    protected ApiResponse<AT> wrapHttpResponse(HttpRequest<JsonOutputStream> httpRequest) {
-        HttpResponse<JsonOutputStream> httpResponse = httpRequest.sendAndReadResponse(new JsonOutputStream());
-        //TODO handle auth errors
-        if (httpResponse.code() == HttpURLConnection.HTTP_FORBIDDEN ||
-                httpResponse.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-            //try to reconnect
-            getAuthenticationService().authenticate();
-            httpResponse = httpRequest.sendAndReadResponse(new JsonOutputStream());
+    private static final class ApiRequestWithOptionsBuilder<AT, T extends ApiEntity<AT>> extends ApiRequestBuilderImpl<AT, T> {
 
+        private RequestOption[] requestOptions;
+
+        public ApiRequestWithOptionsBuilder(AuthenticationService authenticationService, HttpClient httpClient, ApiEntityInstanceProvider<T> apiInstanceProvider) {
+            super(authenticationService, httpClient, apiInstanceProvider);
         }
-        return new ApiResponseImpl<>(httpResponse, this);
-    }
 
+        protected ApiRequestBuilder<AT> withRequestOptions(RequestOption[] requestOptions) {
+            this.requestOptions = requestOptions;
+            return this;
+        }
+
+        @Override
+        public ApiRequest<AT> buildAs(HttpMethod method) {
+            ApiRequestBuilder<AT> requestBuilder = this;
+            if (this.requestOptions != null) {
+                for (RequestOption requestOption : requestOptions) {
+                    requestBuilder = requestOption.applyTo(requestBuilder, method);
+                }
+            }
+            return requestBuilder == this ? super.buildAs(method) : requestBuilder.buildAs(method);
+        }
+    }
 }

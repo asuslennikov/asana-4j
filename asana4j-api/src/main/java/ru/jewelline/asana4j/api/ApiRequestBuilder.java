@@ -11,8 +11,6 @@ public interface ApiRequestBuilder<T> {
 
     ApiRequestBuilder<T> path(String apiSuffix);
 
-    ApiRequestBuilder<T> setApiOption(String option, Object value);
-
     ApiRequestBuilder<T> setQueryParameter(String parameterKey, String parameterValue);
 
     ApiRequestBuilder<T> setHeader(String headerKey, String headerValue);
