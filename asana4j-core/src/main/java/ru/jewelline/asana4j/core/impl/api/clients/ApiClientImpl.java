@@ -34,7 +34,7 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
     }
 
     protected ApiRequestBuilder<AT> newRequest(RequestModifier... requestModifiers) {
-        return new ApiRequestWithModifiersBuilder<>(getAuthenticationService(), getHttpClient(), this).withRequestModifiers(requestModifiers);
+        return new ApiRequestWithModifiersBuilder<AT, T>(getAuthenticationService(), getHttpClient(), this).withRequestModifiers(requestModifiers);
     }
 
     public abstract T newInstance();
@@ -47,14 +47,15 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
             super(authenticationService, httpClient, apiInstanceProvider);
         }
 
-        protected ApiRequestBuilder withRequestModifiers(RequestModifier[] requestModifiers) {
+        protected ApiRequestBuilder<AT> withRequestModifiers(RequestModifier[] requestModifiers) {
             this.requestModifiers = requestModifiers;
             return this;
         }
 
         @Override
         public ApiRequest<AT> buildAs(HttpMethod method) {
-            ApiRequestBuilder requestBuilder = new ModifiersChain(this.requestModifiers, method).next(this);
+            ModifiersChain modifiersChain = new ModifiersChain(this.requestModifiers, method);
+            ApiRequestBuilder<AT> requestBuilder = modifiersChain.next(this);
             return requestBuilder == this ? super.buildAs(method) : requestBuilder.buildAs(method);
         }
     }
