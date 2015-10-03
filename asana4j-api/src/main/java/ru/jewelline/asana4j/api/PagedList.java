@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.api;
 
-import ru.jewelline.asana4j.api.options.Pagination;
-import ru.jewelline.asana4j.api.options.RequestOption;
+import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public class PagedList<T> extends ArrayList<T> {
         return this.pagination != null && this.pagination.getOffsetToken() != null;
     }
 
-    public RequestOption getNextPageQueryParameter(){
+    public RequestModifier getNextPageModifier(){
         if (!hasNextPage()) {
             return null;
         }

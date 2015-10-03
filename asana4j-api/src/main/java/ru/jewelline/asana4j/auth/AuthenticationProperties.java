@@ -1,6 +1,5 @@
 package ru.jewelline.asana4j.auth;
 
-// TODO javadoc
 public final class AuthenticationProperties {
     /**
      * Each user has their own unique API key, which they can provide to applications to talk to Asana on their behalf.

@@ -1,13 +1,13 @@
-package ru.jewelline.asana4j.api.options;
+package ru.jewelline.asana4j.api.clients.modifiers;
 
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-public class Pagination implements RequestOption {
-    public static final int DEFAULT_LIMIT = 25;
+public class Pagination implements RequestModifier {
     private static final int MIN_LIMIT = 1;
     private static final int MAX_LIMIT = 100;
 
+    public static final int DEFAULT_LIMIT = 25;
     public static final Pagination FIRST_PAGE = new Pagination(DEFAULT_LIMIT, null);
 
     private final int limit;
@@ -24,14 +24,6 @@ public class Pagination implements RequestOption {
         this.offsetToken = offsetToken;
     }
 
-    public Pagination withOffsetToken(String offsetToken) {
-        return new Pagination(this.limit, offsetToken);
-    }
-
-    public Pagination withLimit(int limit) {
-        return new Pagination(limit, this.offsetToken);
-    }
-
     public int getLimit() {
         return limit;
     }
@@ -41,11 +33,16 @@ public class Pagination implements RequestOption {
     }
 
     @Override
-    public <T> ApiRequestBuilder<T> applyTo(ApiRequestBuilder<T> requestBuilder, HttpMethod httpMethod) {
+    public int priority() {
+        return RequestModifier.PRIORITY_BASE_MODIFIER;
+    }
+
+    @Override
+    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain chain) {
         requestBuilder.setQueryParameter("limit", String.valueOf(getLimit()));
         if (getOffsetToken() != null) {
             requestBuilder.setQueryParameter("offset", getOffsetToken());
         }
-        return requestBuilder;
+        chain.next(requestBuilder);
     }
 }

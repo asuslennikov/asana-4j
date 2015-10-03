@@ -1,9 +1,9 @@
-package ru.jewelline.asana4j.core.impl.api;
+package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.UserApiClient;
+import ru.jewelline.asana4j.api.clients.UserApiClient;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.User;
-import ru.jewelline.asana4j.api.options.RequestOption;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.http.HttpClient;
@@ -21,8 +21,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public User getCurrentUser(RequestOption... requestOptions) {
-        return newRequest(requestOptions)
+    public User getCurrentUser(RequestModifier... requestModifiers) {
+        return newRequest(requestModifiers)
                 .path("users/me")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -30,8 +30,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public User getUserById(long userId, RequestOption... requestOptions) {
-        return newRequest(requestOptions)
+    public User getUserById(long userId, RequestModifier... requestModifiers) {
+        return newRequest(requestModifiers)
                 .path("users/" + userId)
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -39,8 +39,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public PagedList<User> getUsers(RequestOption... requestOptions) {
-        return newRequest(requestOptions)
+    public PagedList<User> getUsers(RequestModifier... requestModifiers) {
+        return newRequest(requestModifiers)
                 .path("users")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -48,8 +48,8 @@ public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements 
     }
 
     @Override
-    public PagedList<User> getWorkspaceUsers(long workspaceId, RequestOption... requestOptions) {
-        return newRequest(requestOptions)
+    public PagedList<User> getWorkspaceUsers(long workspaceId, RequestModifier... requestModifiers) {
+        return newRequest(requestModifiers)
                 .path("workspaces/" + workspaceId + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
