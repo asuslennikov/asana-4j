@@ -38,11 +38,11 @@ public class Pagination implements RequestModifier {
     }
 
     @Override
-    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain chain) {
+    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         requestBuilder.setQueryParameter("limit", String.valueOf(getLimit()));
         if (getOffsetToken() != null) {
             requestBuilder.setQueryParameter("offset", getOffsetToken());
         }
-        chain.next(requestBuilder);
+        modifiersChain.next(requestBuilder, httpMethod);
     }
 }

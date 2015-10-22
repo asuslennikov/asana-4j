@@ -12,13 +12,13 @@ import java.util.Comparator;
  */
 public final class ModifiersChain<T> {
     private final RequestModifier[] requestModifiers;
-    private final HttpMethod httpMethod;
+
+    private HttpMethod httpMethod;
     private ApiRequestBuilder requestBuilder;
     private int counter;
 
-    public ModifiersChain(RequestModifier[] requestModifiers, HttpMethod httpMethod) {
+    public ModifiersChain(RequestModifier[] requestModifiers) {
         this.requestModifiers = requestModifiers;
-        this.httpMethod = httpMethod;
         if (this.requestModifiers != null && this.requestModifiers.length > 0) {
             Arrays.sort(requestModifiers, new RequestModifierComparator());
         }
@@ -30,31 +30,60 @@ public final class ModifiersChain<T> {
      * <br /><b>There is no guarantee</b> that next modifier will be called immediately after the method call.
      * For now it is true, but in future this call can just mark the next modifier for execution, i.e. implementation of
      * this method is not a part of public API and can be changed even with minor update.
+     *
      * @param requestBuilder never can be <code>null</code>. If RequestModifier implementation passes a <code>null</code>
      *                       object as an argument the {@link IllegalArgumentException} will be raised.
+     * @param httpMethod     never can be <code>null</code>. If RequestModifier implementation passes a <code>null</code>
+     *                       object as an argument the {@link IllegalArgumentException} will be raised.
      */
-    public ApiRequestBuilder<?> next(ApiRequestBuilder<?> requestBuilder){
-        if (requestBuilder == null){
+    public void next(ApiRequestBuilder<?> requestBuilder, HttpMethod httpMethod) {
+        if (requestBuilder == null) {
             throw new IllegalArgumentException("The requestBuilder can not be null.");
         }
+        if (httpMethod == null) {
+            throw new IllegalArgumentException("The httpMethod can not be null.");
+        }
+        if (this.requestModifiers == null){
+            return;
+        }
+        doNext(requestBuilder, httpMethod);
+    }
+
+    private void doNext(ApiRequestBuilder<?> requestBuilder, HttpMethod httpMethod) {
         this.requestBuilder = requestBuilder;
-        while (this.counter < (this.requestModifiers.length - 1)){
+        this.httpMethod = httpMethod;
+        while (this.counter < (this.requestModifiers.length - 1)) {
             this.counter++;
             RequestModifier modifier = this.requestModifiers[this.counter];
             if (modifier != null) {
-                modifier.modify(requestBuilder, this.httpMethod, this);
+                modifier.modify(this.requestBuilder, this.httpMethod, this);
                 break;
             }
             // if the modifier is null, just pick the next one
         }
+    }
+
+    /**
+     * @return a {@link HttpMethod} for request
+     */
+    public HttpMethod getHttpMethod() {
+        return this.httpMethod;
+    }
+
+    /**
+     * @return a builder for API request
+     */
+    public ApiRequestBuilder getRequestBuilder() {
         return this.requestBuilder;
     }
 
-    private static class RequestModifierComparator implements Comparator<RequestModifier>{
+    private static class RequestModifierComparator implements Comparator<RequestModifier> {
         @Override
         public int compare(RequestModifier rm1, RequestModifier rm2) {
             if (rm1 != null && rm2 != null) {
-                return rm1.priority() - rm2.priority(); // TODO fix potential overflow
+                int p1 = rm1.priority();
+                int p2 = rm2.priority();
+                return p1 < p2 ? -1 : (p1 == p2 ? 0 : 1);
             }
             return 0;
         }

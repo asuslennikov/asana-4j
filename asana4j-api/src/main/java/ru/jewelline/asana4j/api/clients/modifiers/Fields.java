@@ -17,7 +17,7 @@ public class Fields implements RequestModifier {
     }
 
     @Override
-    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain chain) {
+    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         if (this.fields != null && this.fields.length > 0) {
             if (HttpMethod.GET == httpMethod) {
                 StringBuilder sb = new StringBuilder();
@@ -30,6 +30,6 @@ public class Fields implements RequestModifier {
 
             }
         }
-        chain.next(requestBuilder);
+        modifiersChain.next(requestBuilder, httpMethod);
     }
 }

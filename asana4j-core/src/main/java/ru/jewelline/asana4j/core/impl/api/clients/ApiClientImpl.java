@@ -54,9 +54,11 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
 
         @Override
         public ApiRequest<AT> buildAs(HttpMethod method) {
-            ModifiersChain modifiersChain = new ModifiersChain(this.requestModifiers, method);
-            ApiRequestBuilder<AT> requestBuilder = modifiersChain.next(this);
-            return requestBuilder == this ? super.buildAs(method) : requestBuilder.buildAs(method);
+            ModifiersChain modifiersChain = new ModifiersChain(this.requestModifiers);
+            modifiersChain.next(this, method);
+            ApiRequestBuilder<AT> requestBuilder = modifiersChain.getRequestBuilder();
+            HttpMethod httpMethod = modifiersChain.getHttpMethod();
+            return requestBuilder == this ? super.buildAs(httpMethod) : requestBuilder.buildAs(httpMethod);
         }
     }
 }
