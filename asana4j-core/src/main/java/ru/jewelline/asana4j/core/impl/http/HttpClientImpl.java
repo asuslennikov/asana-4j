@@ -105,7 +105,7 @@ public class HttpClientImpl implements HttpClient {
     protected HttpURLConnection configureConnection(HttpRequestImpl request, HttpURLConnection connection) {
         int connectionTimeout = this.preferencesService.getInteger(PreferencesService.NETWORK_CONNECTION_TIMEOUT, 30000);
         Map<String, String> headers = request.getHeaders();
-        if (!headers.isEmpty()) {
+        if (headers != null && !headers.isEmpty()) {
             for (Map.Entry<String, String> header : headers.entrySet()) {
                 connection.setRequestProperty(header.getKey(), header.getValue());
             }

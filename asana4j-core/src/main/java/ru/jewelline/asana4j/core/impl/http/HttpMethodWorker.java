@@ -43,9 +43,9 @@ public enum HttpMethodWorker {
                 return worker;
             }
         }
-        /*
+        /**
          This should never happen because we have a null check here:
-         {@see HttpRequestBuilderImpl#buildAs(HttpMethod)}
+         {@link HttpRequestBuilderImpl#buildAs(HttpMethod)}
          but let's process such case
         */
         throw new NetworkException(NetworkException.MALFORMED_URL,

@@ -25,11 +25,11 @@ public class Pagination implements RequestModifier {
     }
 
     public int getLimit() {
-        return limit;
+        return this.limit;
     }
 
     public String getOffsetToken() {
-        return offsetToken;
+        return this.offsetToken;
     }
 
     @Override

@@ -24,7 +24,7 @@ public interface HttpRequest<O extends OutputStream> {
     InputStream getRequestBody();
 
     /**
-     * TSend this HTTP request
+     * Send this HTTP request
      * @return HTTP server response code
      */
     HttpResponse<O> send();

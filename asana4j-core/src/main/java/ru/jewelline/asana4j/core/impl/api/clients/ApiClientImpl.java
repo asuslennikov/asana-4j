@@ -7,9 +7,12 @@ import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.ApiEntity;
 import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.AuthenticationRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
+
+import java.util.Arrays;
 
 public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiEntityInstanceProvider<T> {
 
@@ -41,10 +44,13 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
 
     private static final class ApiRequestWithModifiersBuilder<AT, T extends ApiEntity<AT>> extends ApiRequestBuilderImpl<AT, T> {
 
+        private final AuthenticationService authenticationService;
+
         private RequestModifier[] requestModifiers;
 
         public ApiRequestWithModifiersBuilder(AuthenticationService authenticationService, HttpClient httpClient, ApiEntityInstanceProvider<T> apiInstanceProvider) {
-            super(authenticationService, httpClient, apiInstanceProvider);
+            super(httpClient, apiInstanceProvider);
+            this.authenticationService = authenticationService;
         }
 
         protected ApiRequestBuilder<AT> withRequestModifiers(RequestModifier[] requestModifiers) {
@@ -54,11 +60,21 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
 
         @Override
         public ApiRequest<AT> buildAs(HttpMethod method) {
-            ModifiersChain modifiersChain = new ModifiersChain(this.requestModifiers);
+            ModifiersChain modifiersChain = new ModifiersChain(getRequestModifiers());
             modifiersChain.next(this, method);
             ApiRequestBuilder<AT> requestBuilder = modifiersChain.getRequestBuilder();
             HttpMethod httpMethod = modifiersChain.getHttpMethod();
             return requestBuilder == this ? super.buildAs(httpMethod) : requestBuilder.buildAs(httpMethod);
+        }
+
+        private RequestModifier[] getRequestModifiers() {
+            AuthenticationRequestModifier authenticationRequestModifier = new AuthenticationRequestModifier(this.authenticationService);
+            if (this.requestModifiers == null || this.requestModifiers.length == 0){
+                return new RequestModifier[]{authenticationRequestModifier};
+            }
+            RequestModifier[] modifiers = Arrays.copyOf(this.requestModifiers, this.requestModifiers.length + 1);
+            modifiers[this.requestModifiers.length] = authenticationRequestModifier;
+            return modifiers;
         }
     }
 }

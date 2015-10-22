@@ -10,7 +10,7 @@ import java.util.Comparator;
  * This class represents an ordered list of all registered request modifiers. It is immutable class and after its creation
  * it is not possible to add or remove any modifier.
  */
-public final class ModifiersChain<T> {
+public final class ModifiersChain {
     private final RequestModifier[] requestModifiers;
 
     private HttpMethod httpMethod;

@@ -3,7 +3,6 @@ package ru.jewelline.asana4j.core.impl.api;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
@@ -13,16 +12,11 @@ import ru.jewelline.asana4j.utils.JsonOutputStream;
 
 public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRequestBuilder<AT> {
     protected static final String BASE_API_URL = "https://app.asana.com/api/1.0/";
-
-    //TODO to be extracted as request modifier
-    private final AuthenticationService authenticationService;
-
     private final ApiEntityInstanceProvider<T> apiInstanceProvider;
     private final HttpRequestBuilder httpRequestBuilder;
     private boolean underConstruction = true;
 
-    public ApiRequestBuilderImpl(AuthenticationService authenticationService, HttpClient httpClient, ApiEntityInstanceProvider<T> apiInstanceProvider) {
-        this.authenticationService = authenticationService;
+    public ApiRequestBuilderImpl(HttpClient httpClient, ApiEntityInstanceProvider<T> apiInstanceProvider) {
         this.httpRequestBuilder = httpClient.newRequest();
         this.apiInstanceProvider = apiInstanceProvider;
     }
@@ -52,9 +46,6 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
                     "You are trying to build request which was already built.");
         }
         this.underConstruction = false;
-        if (this.authenticationService.isAuthenticated()) {
-            this.setHeader("Authorization", this.authenticationService.getHeader());
-        }
         HttpRequest<JsonOutputStream> httpRequest = this.httpRequestBuilder.buildAs(method);
         ApiRequestImpl<AT, ?> apiRequest = new ApiRequestImpl<>(httpRequest, this.apiInstanceProvider);
         // TODO set entity for post, put, delete
