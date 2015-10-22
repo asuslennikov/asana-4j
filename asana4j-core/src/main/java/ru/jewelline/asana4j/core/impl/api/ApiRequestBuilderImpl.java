@@ -28,19 +28,19 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
     }
 
     @Override
-    public ApiRequestBuilder path(String apiSuffix) {
+    public ApiRequestBuilder<AT> path(String apiSuffix) {
         this.httpRequestBuilder.path(BASE_API_URL + apiSuffix);
         return this;
     }
 
     @Override
-    public ApiRequestBuilder setQueryParameter(String parameterKey, String parameterValue) {
+    public ApiRequestBuilder<AT> setQueryParameter(String parameterKey, String parameterValue) {
         this.httpRequestBuilder.setQueryParameter(parameterKey, parameterValue);
         return this;
     }
 
     @Override
-    public ApiRequestBuilder setHeader(String headerKey, String headerValue) {
+    public ApiRequestBuilder<AT> setHeader(String headerKey, String headerValue) {
         this.httpRequestBuilder.setHeader(headerKey, headerValue);
         return this;
     }

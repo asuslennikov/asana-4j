@@ -26,7 +26,7 @@ public interface HttpRequestBuilder {
      * will override value for the parameterKey.
      * @param parameterKey name for your query parameter, will be encoded
      * @param parameterValue value for you query parameter, will be encoded
-     * @returnn The request builder
+     * @return The request builder
      */
     HttpRequestBuilder setQueryParameter(String parameterKey, String parameterValue);
 

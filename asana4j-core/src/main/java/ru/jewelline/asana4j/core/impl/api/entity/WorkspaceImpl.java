@@ -4,6 +4,7 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.writers.WorkspaceImplWriter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace {
@@ -72,9 +73,7 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
     @Override
     protected List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> getFieldWriters() {
         List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> writers = new ArrayList<>(WorkspaceImplWriter.values().length);
-        for (WorkspaceImplWriter field : WorkspaceImplWriter.values()) {
-            writers.add(field);
-        }
+        Collections.addAll(writers, WorkspaceImplWriter.values());
         return writers;
     }
 }

@@ -32,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public boolean isAuthenticated() {
-        return getAuthenticationType() != null ? getWorker().isAuthenticated() : false;
+        return getAuthenticationType() != null && getWorker().isAuthenticated();
     }
 
     @Override

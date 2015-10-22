@@ -31,7 +31,7 @@ public class ApiRequestImpl<AT, T extends ApiEntity<AT>> implements ApiRequest<A
 
     @Override
     public JSONObject getRequestEntity() {
-        return null; //TODO inplement POST,PUT,DELETE
+        return null; //TODO implement POST,PUT,DELETE
     }
 
     @Override

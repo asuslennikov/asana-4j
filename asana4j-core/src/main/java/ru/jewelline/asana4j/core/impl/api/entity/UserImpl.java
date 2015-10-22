@@ -5,6 +5,7 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.writers.UserImplWriter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class UserImpl extends ApiEntityImpl<User> implements User {
@@ -93,9 +94,7 @@ public class UserImpl extends ApiEntityImpl<User> implements User {
     @Override
     protected List<ApiEntityFieldWriter<User, UserImpl>> getFieldWriters() {
         List<ApiEntityFieldWriter<User, UserImpl>> writers = new ArrayList<>(UserImplWriter.values().length);
-        for (UserImplWriter field : UserImplWriter.values()) {
-            writers.add(field);
-        }
+        Collections.addAll(writers, UserImplWriter.values());
         return writers;
     }
 }
