@@ -1,7 +1,6 @@
 package ru.jewelline.asana4j.api;
 
-import org.json.JSONObject;
-
+import java.io.InputStream;
 import java.util.Map;
 
 public interface ApiRequest<T> {
@@ -16,9 +15,9 @@ public interface ApiRequest<T> {
     Map<String, String> getHeaders();
 
     /**
-     * @return a JSON object with request payload (entity which will be send to a server)
+     * @return a stream which contains a request payload, can be <code>null</code>
      */
-    JSONObject getRequestEntity();
+    InputStream getEntity();
 
     /**
      * Send this API request and read a server response
