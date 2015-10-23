@@ -2,8 +2,10 @@ package ru.jewelline.asana4j.core.impl.api;
 
 import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
+import ru.jewelline.asana4j.api.entity.JsonEntity;
 import ru.jewelline.asana4j.api.entity.SerializableEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
+import ru.jewelline.asana4j.core.impl.api.entity.StatefulJsonEntity;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
@@ -70,7 +72,11 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
 
     @Override
     public ApiRequestBuilder<AT> setEntity(SerializableEntity entity) {
-        this.entity = entity;
+        if (entity!= null && entity instanceof JsonEntity) {
+            this.entity = new StatefulJsonEntity((JsonEntity) entity);
+        } else {
+            this.entity = entity;
+        }
         return this;
     }
 

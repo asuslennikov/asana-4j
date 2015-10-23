@@ -1,6 +1,5 @@
 package ru.jewelline.asana4j.example;
 
-import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
 import ru.jewelline.asana4j.api.entity.Workspace;
@@ -23,9 +22,10 @@ public class AsanaExample {
             }
         }*/
         WorkspaceApiClient workspaceApiClient = new WorkspaceApiClientImpl(serviceLocator.getAuthenticationService(), serviceLocator.getHttpClient());
-        Workspace workspace = workspaceApiClient.getWorkspaceById(37681323914427L);
-        workspace.setName("Playground");
-        System.out.println(workspaceApiClient.update(workspace));
+/*        Workspace workspace = workspaceApiClient.getWorkspaceById(37681323914427L);
+        workspace.setName("Coooolspace");
+        System.out.println(workspaceApiClient.update(workspace, Pagination.FIRST_PAGE));*/
 
+        System.out.println(workspaceApiClient.getWorkspaces(Pagination.FIRST_PAGE));
     }
 }
