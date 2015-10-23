@@ -1,10 +1,12 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import org.json.JSONObject;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.writers.WorkspaceImplWriter;
+import ru.jewelline.asana4j.core.impl.api.entity.processors.WorkspaceImplProcessor;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace {
@@ -31,6 +33,7 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -72,8 +75,21 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
 
     @Override
     protected List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> getFieldWriters() {
-        List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> writers = new ArrayList<>(WorkspaceImplWriter.values().length);
-        Collections.addAll(writers, WorkspaceImplWriter.values());
-        return writers;
+        return Arrays.<ApiEntityFieldWriter<Workspace, WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
+    }
+
+    @Override
+    public JSONObject asJson() {
+        JSONObject object = new JSONObject();
+        object.put("id", getId());
+        object.put("name", getName());
+        JSONObject data = new JSONObject();
+        data.put("data", object);
+        return data;
+    }
+
+    @Override
+    public InputStream getSerialized() {
+        return new ByteArrayInputStream(asJson().toString().getBytes());
     }
 }

@@ -11,6 +11,7 @@ public abstract class ApiEntityImpl<A> implements ApiEntity<A> {
     protected abstract <T extends ApiEntityImpl<A>> List<ApiEntityFieldWriter<A, T>> getFieldWriters();
 
     private Class<A> clazz;
+    private JSONObject jsonRepresentation;
 
     public ApiEntityImpl(Class<A> clazz) {
         this.clazz = clazz;
@@ -36,4 +37,6 @@ public abstract class ApiEntityImpl<A> implements ApiEntity<A> {
         }
         return null;
     }
+
+
 }

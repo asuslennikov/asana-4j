@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.core.impl.api.entity.writers;
+package ru.jewelline.asana4j.core.impl.api.entity.processors;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +13,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum UserImplWriter implements ApiEntityFieldWriter<User, UserImpl> {
+public enum UserImplProcessor implements ApiEntityFieldWriter<User, UserImpl> {
     ID("id") {
         @Override
         protected void convertInternal(JSONObject source, UserImpl target) throws JSONException {
@@ -60,7 +60,7 @@ public enum UserImplWriter implements ApiEntityFieldWriter<User, UserImpl> {
 
     private String fieldName;
 
-    UserImplWriter(String fieldName) {
+    UserImplProcessor(String fieldName) {
         this.fieldName = fieldName;
     }
 

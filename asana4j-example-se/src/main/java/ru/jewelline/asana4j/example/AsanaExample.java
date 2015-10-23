@@ -23,11 +23,9 @@ public class AsanaExample {
             }
         }*/
         WorkspaceApiClient workspaceApiClient = new WorkspaceApiClientImpl(serviceLocator.getAuthenticationService(), serviceLocator.getHttpClient());
-        PagedList<Workspace> page1 = workspaceApiClient.getWorkspaces(new Pagination(1, null));
-        System.out.println(page1);
-        if (page1.hasNextPage()) {
-            PagedList<Workspace> page2 = workspaceApiClient.getWorkspaces(page1.getNextPageModifier());
-            System.out.println(page2);
-        }
+        Workspace workspace = workspaceApiClient.getWorkspaceById(37681323914427L);
+        workspace.setName("Playground");
+        System.out.println(workspaceApiClient.update(workspace));
+
     }
 }

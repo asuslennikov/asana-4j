@@ -4,6 +4,7 @@ public class ApiException extends RuntimeException {
     public static final int INCORRECT_RESPONSE_FORMAT = 1;
     public static final int INCORRECT_RESPONSE_FIELD_FORMAT = 1 << 1;
     public static final int BAD_REQUEST = 1 << 2;
+    public static final int API_ENTITY_SERIALIZATION_FAIL = 1 << 3;
 
     private final int errorCode;
     private String requestUrl;

@@ -2,7 +2,7 @@ package ru.jewelline.asana4j.core.impl.api;
 
 import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.post.SerializableEntity;
+import ru.jewelline.asana4j.api.entity.SerializableEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
@@ -98,7 +98,7 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
             }
         }
         if (this.entity != null) {
-            builder.entity(this.entity.serialize());
+            builder.entity(this.entity.getSerialized());
         }
         HttpRequest<JsonOutputStream> httpRequest = builder.buildAs(method);
         return new ApiRequestImpl<>(httpRequest, this.apiInstanceProvider);

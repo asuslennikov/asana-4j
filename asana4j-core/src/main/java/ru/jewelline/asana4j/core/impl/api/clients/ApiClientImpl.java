@@ -37,7 +37,7 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
     }
 
     protected ApiRequestBuilder<AT> newRequest(RequestModifier... requestModifiers) {
-        return new ApiRequestWithModifiersBuilder<AT, T>(getAuthenticationService(), getHttpClient(), this).withRequestModifiers(requestModifiers);
+        return new ApiRequestWithModifiersBuilder<>(getAuthenticationService(), getHttpClient(), this).withRequestModifiers(requestModifiers);
     }
 
     public abstract T newInstance();

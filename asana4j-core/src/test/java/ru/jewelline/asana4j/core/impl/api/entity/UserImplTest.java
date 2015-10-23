@@ -7,8 +7,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.ApiEntity;
-import ru.jewelline.asana4j.core.impl.api.entity.writers.UserImplWriter;
-import ru.jewelline.asana4j.core.impl.api.entity.writers.WorkspaceImplWriter;
+import ru.jewelline.asana4j.core.impl.api.entity.processors.UserImplProcessor;
+import ru.jewelline.asana4j.core.impl.api.entity.processors.WorkspaceImplProcessor;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,11 +23,11 @@ public class UserImplTest {
 
     private static JSONObject getJsonResponse() {
         JSONObject json = new JSONObject();
-        json.put(UserImplWriter.ID.getFieldName(), 354185431);
-        json.put(UserImplWriter.NAME.getFieldName(), "User for test");
-        json.put(UserImplWriter.EMAIL.getFieldName(), "test@example.com");
-        json.put(UserImplWriter.PHOTO.getFieldName(), "http://example.com");
-        json.put(UserImplWriter.WORKSPACES.getFieldName(), Collections.emptyList());
+        json.put(UserImplProcessor.ID.getFieldName(), 354185431);
+        json.put(UserImplProcessor.NAME.getFieldName(), "User for test");
+        json.put(UserImplProcessor.EMAIL.getFieldName(), "test@example.com");
+        json.put(UserImplProcessor.PHOTO.getFieldName(), "http://example.com");
+        json.put(UserImplProcessor.WORKSPACES.getFieldName(), Collections.emptyList());
         return json;
     }
 
@@ -58,12 +58,12 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithNullId(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.ID.getFieldName(), JSONObject.NULL);
+        json.put(UserImplProcessor.ID.getFieldName(), JSONObject.NULL);
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
+            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.ID.getFieldName() + "'");
             return;
         }
         fail("Exception expected!");
@@ -72,12 +72,12 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithBadId(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.ID.getFieldName(), "string_id");
+        json.put(UserImplProcessor.ID.getFieldName(), "string_id");
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.ID.getFieldName() + "'");
+            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.ID.getFieldName() + "'");
             return;
         }
         fail("Exception expected!");
@@ -86,12 +86,12 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithNullName(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.NAME.getFieldName(), JSONObject.NULL);
+        json.put(UserImplProcessor.NAME.getFieldName(), JSONObject.NULL);
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
+            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.NAME.getFieldName() + "'");
             return;
         }
         fail("Exception expected!");
@@ -100,12 +100,12 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithBadName(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.NAME.getFieldName(), 123);
+        json.put(UserImplProcessor.NAME.getFieldName(), 123);
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.NAME.getFieldName() + "'");
+            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.NAME.getFieldName() + "'");
             return;
         }
         fail("Exception expected!");
@@ -114,12 +114,12 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithNullMail(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.EMAIL.getFieldName(), JSONObject.NULL);
+        json.put(UserImplProcessor.EMAIL.getFieldName(), JSONObject.NULL);
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
+            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.EMAIL.getFieldName() + "'");
             return;
         }
         fail("Exception expected!");
@@ -128,12 +128,12 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithBadMail(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.EMAIL.getFieldName(), 123);
+        json.put(UserImplProcessor.EMAIL.getFieldName(), 123);
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.EMAIL.getFieldName() + "'");
+            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.EMAIL.getFieldName() + "'");
             return;
         }
         fail("Exception expected!");
@@ -142,7 +142,7 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithNullPhoto(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.PHOTO.getFieldName(),JSONObject.NULL);
+        json.put(UserImplProcessor.PHOTO.getFieldName(),JSONObject.NULL);
 
         User user = new UserImpl().fromJson(json);
         assertThat(user.getPhotoUrl()).isNull();
@@ -151,12 +151,12 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithBadPhoto(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.PHOTO.getFieldName(), 123);
+        json.put(UserImplProcessor.PHOTO.getFieldName(), 123);
         try {
             new UserImpl().fromJson(json);
         } catch (ApiException ex){
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplWriter.PHOTO.getFieldName() + "'");
+            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.PHOTO.getFieldName() + "'");
             return;
         }
         fail("Exception expected!");
@@ -165,7 +165,7 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithBadWorkspaces(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.WORKSPACES.getFieldName(), new HashMap<String, Object>());
+        json.put(UserImplProcessor.WORKSPACES.getFieldName(), new HashMap<String, Object>());
         new UserImpl().fromJson(json);
         // assert no exception here
     }
@@ -173,7 +173,7 @@ public class UserImplTest {
     @Test
     public void test_fillFromJsonWithNullWorkspaces(){
         JSONObject json = getJsonResponse();
-        json.put(UserImplWriter.WORKSPACES.getFieldName(),JSONObject.NULL);
+        json.put(UserImplProcessor.WORKSPACES.getFieldName(),JSONObject.NULL);
 
         User user = new UserImpl().fromJson(json);
         assertThat(user.getWorkspaces()).isNull();
@@ -194,12 +194,12 @@ public class UserImplTest {
     public void test_fillWithWorkspaces(){
         JSONObject json = getJsonResponse();
         Map<Object, Object> workspace1 = new HashMap<>();
-        workspace1.put(WorkspaceImplWriter.ID.getFieldName(), 4654361);
-        workspace1.put(WorkspaceImplWriter.NAME.getFieldName(), "workspace1");
+        workspace1.put(WorkspaceImplProcessor.ID.getFieldName(), 4654361);
+        workspace1.put(WorkspaceImplProcessor.NAME.getFieldName(), "workspace1");
         Map<Object, Object> workspace2 = new HashMap<>();
-        workspace2.put(WorkspaceImplWriter.ID.getFieldName(), 7694335);
-        workspace2.put(WorkspaceImplWriter.NAME.getFieldName(), "workspace2");
-        json.put(UserImplWriter.WORKSPACES.getFieldName(), Arrays.asList(workspace1, workspace2));
+        workspace2.put(WorkspaceImplProcessor.ID.getFieldName(), 7694335);
+        workspace2.put(WorkspaceImplProcessor.NAME.getFieldName(), "workspace2");
+        json.put(UserImplProcessor.WORKSPACES.getFieldName(), Arrays.asList(workspace1, workspace2));
         User user = new UserImpl().fromJson(json);
         assertThat(user).isNotNull();
         assertThat(user.getWorkspaces()).hasSize(2);
