@@ -1,16 +1,17 @@
 package ru.jewelline.asana4j.core.impl.http;
 
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.NetworkException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
-public enum HttpMethodWorker {
+public enum HttpMethodSettings {
     GET(HttpMethod.GET) {
         @Override
-        public void process(HttpRequestImpl httpRequest, HttpURLConnection connection) {
+        public void apply(HttpURLConnection connection, HttpRequest httpRequest) {
             // do nothing
         }
     },
@@ -21,11 +22,11 @@ public enum HttpMethodWorker {
 
     private HttpMethod httpMethod;
 
-    HttpMethodWorker(HttpMethod httpMethod) {
+    HttpMethodSettings(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
     }
 
-    public void process(HttpRequestImpl httpRequest, HttpURLConnection connection) throws IOException {
+    public void apply(HttpURLConnection connection, HttpRequest httpRequest) throws IOException {
         // we assume that httpRequest and connection are never null
         InputStream requestBody = httpRequest.getRequestBody();
         if (requestBody != null) {
@@ -37,8 +38,8 @@ public enum HttpMethodWorker {
         }
     }
 
-    public static HttpMethodWorker getWorker(HttpMethod httpMethod){
-        for (HttpMethodWorker worker : HttpMethodWorker.values()) {
+    public static HttpMethodSettings getForHttpMethod(HttpMethod httpMethod){
+        for (HttpMethodSettings worker : HttpMethodSettings.values()) {
             if (worker.httpMethod.equals(httpMethod)){
                 return worker;
             }

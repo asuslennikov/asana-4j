@@ -1,5 +1,8 @@
 package ru.jewelline.asana4j.http;
 
+/**
+ * This enumeration defines supported HTTP request methods
+ */
 public enum HttpMethod {
     GET("GET"),
     POST("POST"),

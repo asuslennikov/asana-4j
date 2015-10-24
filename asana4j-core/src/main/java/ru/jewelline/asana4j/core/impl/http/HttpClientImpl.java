@@ -1,10 +1,10 @@
 package ru.jewelline.asana4j.core.impl.http;
 
 import ru.jewelline.asana4j.http.HttpClient;
+import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.http.NetworkException;
-import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.URLBuilder;
 
 import java.io.Closeable;
@@ -21,17 +21,17 @@ public class HttpClientImpl implements HttpClient {
     private static final int NO_SERVER_RESPONSE_CODE = -1;
 
     private final URLBuilder urlBuilder;
-    private final PreferencesService preferencesService;
+    private final HttpConfiguration httpConfig;
 
-    public HttpClientImpl(URLBuilder urlBuilder, PreferencesService preferencesService) {
+    public HttpClientImpl(URLBuilder urlBuilder, HttpConfiguration httpConfig) {
         this.urlBuilder = urlBuilder;
-        this.preferencesService = preferencesService;
+        this.httpConfig = httpConfig;
     }
 
     public static void copyStreams(InputStream source, OutputStream destination) throws IOException {
         if (source != null && destination != null) {
             try {
-                int length = 0;
+                int length;
                 byte[] buffer = new byte[8 * 1024];
                 while ((length = source.read(buffer)) > 0) {
                     destination.write(buffer, 0, length);
@@ -48,7 +48,8 @@ public class HttpClientImpl implements HttpClient {
         if (stream != null) {
             try {
                 stream.close();
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
+                // ignore this exception because we don't want to work with the stream any more
             }
         }
     }
@@ -58,18 +59,17 @@ public class HttpClientImpl implements HttpClient {
         return new HttpRequestBuilderImpl(this.urlBuilder, this);
     }
 
-    public <O extends OutputStream> HttpResponse<O> execute(HttpRequestImpl<O> request, HttpMethodWorker requestWorker) {
-        if (request == null || requestWorker == null) {
-            new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
+    public <T extends OutputStream> HttpResponse<T> execute(HttpRequestImpl request, HttpResponseImpl<T> response) {
+        if (request == null || response == null) {
+            throw new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
                     "You are trying to send an empty request. It is not allowed.");
         }
-        int retryCount = this.preferencesService.getInteger(PreferencesService.NETWORK_MAX_RETRY_COUNT, 3);
-        HttpResponseImpl<O> response = new HttpResponseImpl<>(request.getDestinationStream());
+        int retryCount = this.httpConfig.getRetryCount();
         for (int current = 0; current < retryCount; current++) {
             try {
-                HttpURLConnection connection = configureConnection(request, openConnection(request));
-                requestWorker.process(request, connection);
-                response.setCode(readServerResponse(request, connection));
+                HttpURLConnection connection = configureConnection(createConnection(request), request, response);
+                HttpMethodSettings.getForHttpMethod(request.getMethod()).apply(connection, request);
+                readServerResponse(response, connection);
                 if (response.code() == NO_SERVER_RESPONSE_CODE) {
                     continue; // retry the request
                 }
@@ -80,13 +80,13 @@ public class HttpClientImpl implements HttpClient {
                 netException.setRequestUrl(request.getUrl());
                 throw netException;
             } catch (SocketTimeoutException timeoutEx) {
-                if (retryCount >= current) {
+                if (current >= retryCount) {
                     NetworkException netException = new NetworkException(NetworkException.CONNECTION_TIMED_OUT);
                     netException.setRequestUrl(request.getUrl());
                     throw netException;
                 }
             } catch (IOException ioEx) {
-                if (retryCount >= current) {
+                if (current >= retryCount) {
                     NetworkException netException = new NetworkException(NetworkException.COMMUNICATION_FAILED,
                             ioEx.getLocalizedMessage());
                     netException.setRequestUrl(request.getUrl());
@@ -97,35 +97,34 @@ public class HttpClientImpl implements HttpClient {
         return response;
     }
 
-    protected HttpURLConnection openConnection(HttpRequestImpl request) throws IOException {
+    protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
         URL url = new URL(request.getUrl());
         return (HttpURLConnection) url.openConnection();
     }
 
-    protected HttpURLConnection configureConnection(HttpRequestImpl request, HttpURLConnection connection) {
-        int connectionTimeout = this.preferencesService.getInteger(PreferencesService.NETWORK_CONNECTION_TIMEOUT, 30000);
+    protected HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequestImpl request, HttpResponse<?> httpResponse) {
         Map<String, String> headers = request.getHeaders();
         if (headers != null && !headers.isEmpty()) {
             for (Map.Entry<String, String> header : headers.entrySet()) {
                 connection.setRequestProperty(header.getKey(), header.getValue());
             }
         }
-        connection.setConnectTimeout(connectionTimeout);
-        connection.setDoInput(request.getDestinationStream() != null);
+        connection.setConnectTimeout(this.httpConfig.getConnectionTimeout());
+        connection.setDoInput(httpResponse.output() != null);
         return connection;
     }
 
-    protected int readServerResponse(HttpRequestImpl request, HttpURLConnection connection) throws IOException {
-        int responseCode = connection.getResponseCode();
-        InputStream serverAnswerStream = null;
-        if (responseCode == NO_SERVER_RESPONSE_CODE || request.getDestinationStream() == null) {
-            return responseCode;
-        } else if (responseCode >= 400 && responseCode < 600) {
-            serverAnswerStream = connection.getErrorStream();
-        } else {
-            serverAnswerStream = connection.getInputStream();
+    protected void readServerResponse(HttpResponseImpl<?> httpResponse, HttpURLConnection connection) throws IOException {
+        httpResponse.setCode(connection.getResponseCode());
+        if (httpResponse.code() == NO_SERVER_RESPONSE_CODE || httpResponse.output() == null) {
+            return;
         }
-        copyStreams(serverAnswerStream, request.getDestinationStream());
-        return responseCode;
+        InputStream serverResponseStream;
+        if (httpResponse.code() >= 400 && httpResponse.code() < 600) {
+            serverResponseStream = connection.getErrorStream();
+        } else {
+            serverResponseStream = connection.getInputStream();
+        }
+        copyStreams(serverResponseStream, httpResponse.output());
     }
 }

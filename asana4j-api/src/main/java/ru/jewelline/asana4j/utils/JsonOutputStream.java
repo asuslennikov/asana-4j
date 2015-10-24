@@ -56,7 +56,7 @@ public class JsonOutputStream extends OutputStream{
             try {
                 result = new JSONObject(responseAsString);
             } catch (JSONException e) {
-                throw new NetworkException(NetworkException.UNREDABLE_RESPONSE);
+                throw new NetworkException(NetworkException.UNREADABLE_RESPONSE);
             }
         }
         return result;

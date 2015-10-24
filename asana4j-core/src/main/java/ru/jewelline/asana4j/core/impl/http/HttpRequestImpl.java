@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpRequestImpl<O extends OutputStream> implements HttpRequest<O> {
+public class HttpRequestImpl implements HttpRequest {
 
     private final HttpMethod httpMethod;
     private final HttpClientImpl httpClient;
@@ -17,7 +17,6 @@ public class HttpRequestImpl<O extends OutputStream> implements HttpRequest<O> {
     private String url;
     private Map<String, String> headers;
     private InputStream entityStream;
-    private O destinationStream;
 
     public HttpRequestImpl(HttpMethod httpMethod, HttpClientImpl httpClient) {
         this.httpMethod = httpMethod;
@@ -42,6 +41,11 @@ public class HttpRequestImpl<O extends OutputStream> implements HttpRequest<O> {
         return this.headers;
     }
 
+    @Override
+    public HttpMethod getMethod() {
+        return this.httpMethod;
+    }
+
     public void setHeaders(Map<String, String> headers) {
         this.headers = new HashMap<>(headers);
     }
@@ -51,18 +55,13 @@ public class HttpRequestImpl<O extends OutputStream> implements HttpRequest<O> {
         return this.entityStream;
     }
 
-    public O getDestinationStream() {
-        return this.destinationStream;
-    }
-
     @Override
-    public HttpResponse<O> send() {
+    public HttpResponse<OutputStream> send() {
         return this.sendAndReadResponse(null);
     }
 
     @Override
-    public HttpResponse<O> sendAndReadResponse(O destinationStream) {
-        this.destinationStream = destinationStream;
-        return this.httpClient.execute(this, HttpMethodWorker.getWorker(this.httpMethod));
+    public <T extends OutputStream> HttpResponse<T> sendAndReadResponse(T destinationStream) {
+        return this.httpClient.execute(this, new HttpResponseImpl<>(destinationStream));
     }
 }

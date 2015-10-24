@@ -10,7 +10,6 @@ import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
-import ru.jewelline.asana4j.utils.JsonOutputStream;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -106,7 +105,7 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
         if (this.entity != null) {
             builder.entity(this.entity.getSerialized());
         }
-        HttpRequest<JsonOutputStream> httpRequest = builder.buildAs(method);
+        HttpRequest httpRequest = builder.buildAs(method);
         return new ApiRequestImpl<>(httpRequest, this.apiInstanceProvider);
     }
 }

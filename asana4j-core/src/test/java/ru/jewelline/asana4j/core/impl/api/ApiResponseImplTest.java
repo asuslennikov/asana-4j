@@ -71,7 +71,7 @@ public class ApiResponseImplTest {
     @Test
     public void test_asJsonObjectWithInnerJsonError(){
         HttpResponse response = mock(HttpResponse.class);
-        doThrow(new NetworkException(NetworkException.UNREDABLE_RESPONSE)).when(response).asJsonObject();
+        doThrow(new NetworkException(NetworkException.UNREADABLE_RESPONSE)).when(response).asJsonObject();
 
         TestApiResponseImpl apiResponse = new TestApiResponseImpl(response, ERROR_PROVIDER);
         try {
