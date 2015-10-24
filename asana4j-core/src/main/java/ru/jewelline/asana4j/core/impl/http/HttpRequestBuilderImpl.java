@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HttpRequestBuilderImpl implements HttpRequestBuilder {
@@ -31,12 +32,10 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
 
     @Override
     public HttpRequestBuilder path(String baseUrl) {
-        if (baseUrl != null) {
-            if (baseUrl.startsWith(HTTP_PREFIX) || baseUrl.startsWith(HTTPS_PREFIX)) {
-                this.urlBuilder.path(baseUrl);
-            } else {
-                this.urlBuilder.path(HTTP_PREFIX + baseUrl);
-            }
+        if (baseUrl == null || baseUrl.startsWith(HTTP_PREFIX) || baseUrl.startsWith(HTTPS_PREFIX)) {
+            this.urlBuilder.path(baseUrl);
+        } else {
+            this.urlBuilder.path(HTTP_PREFIX + baseUrl);
         }
         return this;
     }
@@ -55,7 +54,7 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
 
     @Override
     public HttpRequestBuilder entity(byte[] requestBody) {
-        return this.entity(new ByteArrayInputStream(requestBody));
+        return this.entity(requestBody != null ? new ByteArrayInputStream(requestBody) : (InputStream) null);
     }
 
     @Override
@@ -70,10 +69,10 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
             throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify a request method");
         }
         String url = this.urlBuilder.build();
-        if (url == null || !url.startsWith(HTTPS_PREFIX) && !url.startsWith(HTTPS_PREFIX)) {
-            throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify the base url for your request");
+        if (url == null || !url.startsWith(HTTP_PREFIX) && !url.startsWith(HTTPS_PREFIX)) {
+            throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify a url for your request");
         }
-        HttpRequestImpl request = new HttpRequestImpl(method, httpClient);
+        HttpRequestImpl request = new HttpRequestImpl(method, this.httpClient);
         request.setUrl(url);
         request.setHeaders(this.headers);
         request.setEntityStream(this.entityStream);

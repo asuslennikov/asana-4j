@@ -13,17 +13,15 @@ public class BaseHttpConfiguration implements HttpConfiguration {
     public BaseHttpConfiguration() {
     }
 
-    public BaseHttpConfiguration(int retryCount, int connectionTimeout) {
-        this.retryCount = retryCount;
-        this.connectionTimeout = connectionTimeout;
-    }
-
     @Override
     public int getRetryCount() {
         return this.retryCount;
     }
 
     public void setRetryCount(int retryCount) {
+        if (retryCount <= 0){
+            throw new IllegalArgumentException("Retry count can not be less then 1");
+        }
         this.retryCount = retryCount;
     }
 
@@ -33,6 +31,9 @@ public class BaseHttpConfiguration implements HttpConfiguration {
     }
 
     public void setConnectionTimeout(int connectionTimeout) {
+        if (connectionTimeout < 0) {
+            throw new IllegalArgumentException("Connection timeout can not be less then 0");
+        }
         this.connectionTimeout = connectionTimeout;
     }
 }
