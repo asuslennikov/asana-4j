@@ -34,7 +34,7 @@ public class Pagination implements RequestModifier {
 
     @Override
     public int priority() {
-        return RequestModifier.PRIORITY_BASE_MODIFIER;
+        return RequestModifier.PRIORITY_API_OPTIONS;
     }
 
     @Override

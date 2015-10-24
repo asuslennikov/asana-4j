@@ -2,10 +2,9 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.writers.UserImplWriter;
+import ru.jewelline.asana4j.core.impl.api.entity.processors.UserImplProcessor;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserImpl extends ApiEntityImpl<User> implements User {
@@ -93,8 +92,6 @@ public class UserImpl extends ApiEntityImpl<User> implements User {
 
     @Override
     protected List<ApiEntityFieldWriter<User, UserImpl>> getFieldWriters() {
-        List<ApiEntityFieldWriter<User, UserImpl>> writers = new ArrayList<>(UserImplWriter.values().length);
-        Collections.addAll(writers, UserImplWriter.values());
-        return writers;
+        return Arrays.<ApiEntityFieldWriter<User, UserImpl>>asList(UserImplProcessor.values());
     }
 }

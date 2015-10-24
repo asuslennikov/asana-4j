@@ -8,6 +8,8 @@ import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.ApiEntity;
 import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.AuthenticationRequestModifier;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.DataRootRequestModifier;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.LoggingRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
@@ -37,7 +39,7 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
     }
 
     protected ApiRequestBuilder<AT> newRequest(RequestModifier... requestModifiers) {
-        return new ApiRequestWithModifiersBuilder<AT, T>(getAuthenticationService(), getHttpClient(), this).withRequestModifiers(requestModifiers);
+        return new ApiRequestWithModifiersBuilder<>(getAuthenticationService(), getHttpClient(), this).withRequestModifiers(requestModifiers);
     }
 
     public abstract T newInstance();
@@ -68,12 +70,16 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
         }
 
         private RequestModifier[] getRequestModifiers() {
-            AuthenticationRequestModifier authenticationRequestModifier = new AuthenticationRequestModifier(this.authenticationService);
+            RequestModifier[] mandatoryRequestModifiers = new RequestModifier[]{
+                    new AuthenticationRequestModifier(this.authenticationService),
+                    new DataRootRequestModifier(),
+                    new LoggingRequestModifier()
+            };
             if (this.requestModifiers == null || this.requestModifiers.length == 0){
-                return new RequestModifier[]{authenticationRequestModifier};
+                return mandatoryRequestModifiers;
             }
-            RequestModifier[] modifiers = Arrays.copyOf(this.requestModifiers, this.requestModifiers.length + 1);
-            modifiers[this.requestModifiers.length] = authenticationRequestModifier;
+            RequestModifier[] modifiers = Arrays.copyOf(this.requestModifiers, this.requestModifiers.length + mandatoryRequestModifiers.length);
+            System.arraycopy(mandatoryRequestModifiers, 0, modifiers, this.requestModifiers.length, mandatoryRequestModifiers.length);
             return modifiers;
         }
     }
