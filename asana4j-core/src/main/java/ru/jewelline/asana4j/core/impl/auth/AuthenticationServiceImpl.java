@@ -9,7 +9,7 @@ import ru.jewelline.asana4j.utils.ServiceLocator;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -24,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationServiceImpl(PreferencesService preferencesService, ServiceLocator serviceLocator) {
         this.preferencesService = preferencesService;
-        this.authenticationWorkers = new HashMap<>();
+        this.authenticationWorkers = new EnumMap(AuthenticationType.class);
         this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(serviceLocator));
         this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(serviceLocator));
         this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(serviceLocator));

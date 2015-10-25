@@ -70,10 +70,10 @@ public class GrantCodeWorker extends AuthenticationWorker {
         String clientSecret = getClientSecretOrThrowException();
         String refreshToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.REFRESH_TOKEN);
         if (refreshToken != null) {
-            tokenRequestBody.append("grant_type=refresh_token").append("&refresh_token=").append(refreshToken);
+            tokenRequestBody.append("grant_type=refresh_token&refresh_token=").append(refreshToken);
         } else {
             String accessCode = getAccessCodeOrThrowException();
-            tokenRequestBody.append("grant_type=authorization_code").append("&code=").append(accessCode);
+            tokenRequestBody.append("grant_type=authorization_code&code=").append(accessCode);
         }
         tokenRequestBody.append("&client_id=").append(clientId)
                 .append("&client_secret=").append(clientSecret)

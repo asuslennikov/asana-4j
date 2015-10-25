@@ -19,7 +19,7 @@ public class BasicAuthenticationWorker extends AuthenticationWorker {
     public String getHeader() {
         String apiKey = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.API_KEY);
         if (apiKey != null){
-            return  "Basic " + getServiceLocator().getBase64Tool().encode(apiKey + ":");
+            return  "Basic " + getServiceLocator().getBase64Tool().encode(apiKey + ':');
         }
         return null;
     }

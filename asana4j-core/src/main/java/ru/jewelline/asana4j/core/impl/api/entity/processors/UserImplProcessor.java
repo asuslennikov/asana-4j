@@ -74,7 +74,7 @@ public enum UserImplProcessor implements ApiEntityFieldWriter<User, UserImpl> {
             convertInternal(source, target);
         } catch (JSONException ex) {
             throw new ApiException(ApiException.INCORRECT_RESPONSE_FIELD_FORMAT,
-                    "Unable parse field '" + this.getFieldName() + "' from json response " + source.toString());
+                    "Unable parse field '" + this.getFieldName() + "' from json response " + source);
         }
     }
 

@@ -35,7 +35,7 @@ public class Fields implements RequestModifier {
     private void doModifyForGet(ApiRequestBuilder requestBuilder) {
         StringBuilder sb = new StringBuilder();
         for (String field : this.fields) {
-            sb.append(field).append(",");
+            sb.append(field).append(',');
         }
         sb.setLength(sb.length() - 1); // remove the last comma
         requestBuilder.setQueryParameter(GET_API_OPTION_PREFIX + OPTION_FIELDS, sb.toString());

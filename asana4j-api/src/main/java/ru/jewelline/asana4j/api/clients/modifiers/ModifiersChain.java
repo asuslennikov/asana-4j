@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.api.clients.modifiers;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.http.HttpMethod;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -11,6 +12,7 @@ import java.util.Comparator;
  * it is not possible to add or remove any modifier.
  */
 public final class ModifiersChain {
+    private static final RequestModifierComparator REQUEST_MODIFIER_COMPARATOR = new RequestModifierComparator();
     private final RequestModifier[] requestModifiers;
 
     private HttpMethod httpMethod;
@@ -18,9 +20,9 @@ public final class ModifiersChain {
     private int counter;
 
     public ModifiersChain(RequestModifier[] requestModifiers) {
-        this.requestModifiers = requestModifiers;
+        this.requestModifiers = requestModifiers; // in fact here will be better to create a copy of incoming array
         if (this.requestModifiers != null && this.requestModifiers.length > 0) {
-            Arrays.sort(requestModifiers, new RequestModifierComparator());
+            Arrays.sort(this.requestModifiers, REQUEST_MODIFIER_COMPARATOR);
         }
         this.counter = -1;
     }
@@ -77,7 +79,7 @@ public final class ModifiersChain {
         return this.requestBuilder;
     }
 
-    private static class RequestModifierComparator implements Comparator<RequestModifier> {
+    private static class RequestModifierComparator implements Comparator<RequestModifier>, Serializable {
         @Override
         public int compare(RequestModifier rm1, RequestModifier rm2) {
             if (rm1 != null && rm2 != null) {

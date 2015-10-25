@@ -102,7 +102,7 @@ public class HttpClientImpl implements HttpClient {
         return (HttpURLConnection) url.openConnection();
     }
 
-    protected HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequestImpl request, HttpResponse<?> httpResponse) {
+    protected HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequest request, HttpResponse<?> httpResponse) {
         Map<String, String> headers = request.getHeaders();
         if (headers != null && !headers.isEmpty()) {
             for (Map.Entry<String, String> header : headers.entrySet()) {

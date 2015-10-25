@@ -33,12 +33,12 @@ public class UrlBuilderJavaSeUtil implements URLBuilder {
             Iterator<Map.Entry<String, String>> paramsItr = this.queryParameters.entrySet().iterator();
             while (paramsItr.hasNext()){
                 Map.Entry<String, String> param = paramsItr.next();
-                queryStringBuilder.append(encode(param.getKey())).append("=").append(encode(param.getValue()));
+                queryStringBuilder.append(encode(param.getKey())).append('=').append(encode(param.getValue()));
                 if (paramsItr.hasNext()){
-                    queryStringBuilder.append("&");
+                    queryStringBuilder.append('&');
                 }
             }
-            pathBuilder.append("?").append(queryStringBuilder.toString());
+            pathBuilder.append('?').append(queryStringBuilder.toString());
         }
         return pathBuilder.toString();
     }

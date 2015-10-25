@@ -28,20 +28,20 @@ public enum HttpMethodSettings {
 
     public void apply(HttpURLConnection connection, HttpRequest httpRequest) throws IOException {
         // we assume that httpRequest and connection are never null
-        InputStream requestBody = httpRequest.getEntity();
-        if (requestBody != null) {
+        InputStream entity = httpRequest.getEntity();
+        if (entity != null) {
             connection.setDoOutput(true);
             connection.setRequestMethod(this.httpMethod.method());
-            HttpClientImpl.copyStreams(requestBody, connection.getOutputStream());
+            HttpClientImpl.copyStreams(entity, connection.getOutputStream());
         } else {
             connection.setRequestMethod(this.httpMethod.method());
         }
     }
 
     public static HttpMethodSettings getForHttpMethod(HttpMethod httpMethod){
-        for (HttpMethodSettings worker : HttpMethodSettings.values()) {
-            if (worker.httpMethod.equals(httpMethod)){
-                return worker;
+        for (HttpMethodSettings settings : HttpMethodSettings.values()) {
+            if (settings.httpMethod.equals(httpMethod)){
+                return settings;
             }
         }
         /**

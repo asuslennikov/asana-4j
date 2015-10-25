@@ -67,7 +67,7 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
         out.append("id = ").append(getId());
         out.append(", name = ").append(getName());
         out.append(", organisation = ").append(isOrganisation());
-        out.append("]");
+        out.append(']');
         return out.toString();
     }
 

@@ -29,7 +29,7 @@ public class LoggingRequestModifier implements RequestModifier {
         }
         SerializableEntity entity = requestBuilder.getEntity();
         if (entity != null && entity instanceof JsonEntity) {
-            sb.append("\n\tPayload:\n\t\t").append(((JsonEntity) entity).asJson().toString());
+            sb.append("\n\tPayload:\n\t\t").append(((JsonEntity) entity).asJson());
         }
         sb.append("\n=======================");
         System.out.println(sb.toString());
