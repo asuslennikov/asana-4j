@@ -15,7 +15,8 @@ public interface HttpResponse<T extends OutputStream> {
     int code();
 
     /**
-     * @return a map with pairs header-value, it is HTTP response headers
+     * @return a map with pairs header-value, it is HTTP response headers.
+     * It is unmodifiable map.
      */
     Map<String, String> headers();
 
