@@ -22,9 +22,11 @@ public class HttpRequestBuilderImplTest {
 
     @Mock
     private URLBuilder urlBuilder;
+    @Mock
+    private HttpClientImpl httpClient;
 
     private HttpRequestBuilderImpl getRequestBuilder() {
-        return new HttpRequestBuilderImpl(urlBuilder, null);
+        return new HttpRequestBuilderImpl(this.urlBuilder, this.httpClient);
     }
 
     @Test
@@ -257,7 +259,7 @@ public class HttpRequestBuilderImplTest {
 
         assertThat(httpRequest.getUrl()).isEqualTo(path);
         assertThat(httpRequest.getMethod()).isEqualTo(httpMethod);
-        assertThat(httpRequest.getRequestBody()).isNotNull();
+        assertThat(httpRequest.getEntity()).isNotNull();
         verify(urlBuilder).build();
     }
 
@@ -275,7 +277,7 @@ public class HttpRequestBuilderImplTest {
 
         assertThat(httpRequest.getUrl()).isEqualTo(path);
         assertThat(httpRequest.getMethod()).isEqualTo(httpMethod);
-        assertThat(httpRequest.getRequestBody()).isEqualTo(payload);
+        assertThat(httpRequest.getEntity()).isEqualTo(payload);
         verify(urlBuilder).build();
     }
 }

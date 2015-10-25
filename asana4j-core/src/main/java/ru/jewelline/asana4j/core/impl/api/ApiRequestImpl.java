@@ -31,7 +31,7 @@ public class ApiRequestImpl<AT, T extends ApiEntity<AT>> implements ApiRequest<A
 
     @Override
     public InputStream getEntity() {
-        return this.httpRequest.getRequestBody();
+        return this.httpRequest.getEntity();
     }
 
     @Override

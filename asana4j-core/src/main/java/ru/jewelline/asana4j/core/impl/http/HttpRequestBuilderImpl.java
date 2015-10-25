@@ -8,9 +8,7 @@ import ru.jewelline.asana4j.utils.URLBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class HttpRequestBuilderImpl implements HttpRequestBuilder {
@@ -75,7 +73,7 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
         HttpRequestImpl request = new HttpRequestImpl(method, this.httpClient);
         request.setUrl(url);
         request.setHeaders(this.headers);
-        request.setEntityStream(this.entityStream);
+        request.setEntity(this.entityStream);
         return request;
     }
 }

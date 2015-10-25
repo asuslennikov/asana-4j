@@ -14,7 +14,8 @@ public interface HttpRequest {
     String getUrl();
 
     /**
-     * @return a map with pairs header-value, these values will be set as http request headers
+     * @return a map with pairs header-value, these values will be set as http request headers.
+     * It is unmodifiable map.
      */
     Map<String, String> getHeaders();
 
@@ -25,7 +26,7 @@ public interface HttpRequest {
     /**
      * @return a payload which will be send to server, can be <code>null</code>
      */
-    InputStream getRequestBody();
+    InputStream getEntity();
 
     /**
      * Send this HTTP request

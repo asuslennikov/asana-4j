@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.http.HttpResponse;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,15 +17,22 @@ public class HttpRequestImpl implements HttpRequest {
 
     private String url;
     private Map<String, String> headers;
-    private InputStream entityStream;
+    private InputStream entity;
 
     public HttpRequestImpl(HttpMethod httpMethod, HttpClientImpl httpClient) {
+        if (httpMethod == null) {
+            throw new IllegalArgumentException("Http method can not be null");
+        }
+        if (httpClient == null) {
+            throw new IllegalArgumentException("Http client can not be null");
+        }
         this.httpMethod = httpMethod;
         this.httpClient = httpClient;
     }
 
-    public void setEntityStream(InputStream entityStream) {
-        this.entityStream = entityStream;
+    @Override
+    public HttpMethod getMethod() {
+        return this.httpMethod;
     }
 
     @Override
@@ -38,21 +46,21 @@ public class HttpRequestImpl implements HttpRequest {
 
     @Override
     public Map<String, String> getHeaders() {
-        return this.headers;
-    }
-
-    @Override
-    public HttpMethod getMethod() {
-        return this.httpMethod;
+        return this.headers != null ? Collections.unmodifiableMap(this.headers) : Collections.<String, String>emptyMap();
     }
 
     public void setHeaders(Map<String, String> headers) {
-        this.headers = new HashMap<>(headers);
+        this.headers = headers != null ? new HashMap<>(headers) : null;
     }
 
     @Override
-    public InputStream getRequestBody() {
-        return this.entityStream;
+    public InputStream getEntity() {
+        return this.entity;
+    }
+
+
+    public void setEntity(InputStream entityStream) {
+        this.entity = entityStream;
     }
 
     @Override

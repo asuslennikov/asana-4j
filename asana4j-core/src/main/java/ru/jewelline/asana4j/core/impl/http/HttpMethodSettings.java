@@ -28,7 +28,7 @@ public enum HttpMethodSettings {
 
     public void apply(HttpURLConnection connection, HttpRequest httpRequest) throws IOException {
         // we assume that httpRequest and connection are never null
-        InputStream requestBody = httpRequest.getRequestBody();
+        InputStream requestBody = httpRequest.getEntity();
         if (requestBody != null) {
             connection.setDoOutput(true);
             connection.setRequestMethod(this.httpMethod.method());
