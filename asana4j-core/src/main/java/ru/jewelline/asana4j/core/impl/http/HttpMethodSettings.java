@@ -12,6 +12,9 @@ public enum HttpMethodSettings {
     GET(HttpMethod.GET) {
         @Override
         public void apply(HttpURLConnection connection, HttpRequest httpRequest) {
+            if (connection == null || httpRequest == null){
+                throw new IllegalArgumentException("Connection and request can not be null.");
+            }
             // do nothing
         }
     },
@@ -27,7 +30,9 @@ public enum HttpMethodSettings {
     }
 
     public void apply(HttpURLConnection connection, HttpRequest httpRequest) throws IOException {
-        // we assume that httpRequest and connection are never null
+        if (connection == null || httpRequest == null){
+            throw new IllegalArgumentException("Connection and request can not be null.");
+        }
         InputStream entity = httpRequest.getEntity();
         if (entity != null) {
             connection.setDoOutput(true);
