@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class ApiRequestImpl<AT, T extends ApiEntity<AT>> implements ApiRequest<AT> {
-    private final HttpRequest<JsonOutputStream> httpRequest;
+    private final HttpRequest httpRequest;
     private final ApiEntityInstanceProvider<T> instanceProvider;
 
-    public ApiRequestImpl(HttpRequest<JsonOutputStream> httpRequest, ApiEntityInstanceProvider<T> apiInstanceProvider) {
+    public ApiRequestImpl(HttpRequest httpRequest, ApiEntityInstanceProvider<T> apiInstanceProvider) {
         this.httpRequest = httpRequest;
         this.instanceProvider = apiInstanceProvider;
     }
@@ -31,7 +31,7 @@ public class ApiRequestImpl<AT, T extends ApiEntity<AT>> implements ApiRequest<A
 
     @Override
     public InputStream getEntity() {
-        return this.httpRequest.getRequestBody();
+        return this.httpRequest.getEntity();
     }
 
     @Override

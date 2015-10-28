@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.example;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.auth.AuthenticationServiceImpl;
 import ru.jewelline.asana4j.core.impl.http.HttpClientImpl;
+import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.se.Base64JavaSeUtil;
 import ru.jewelline.asana4j.se.UrlBuilderJavaSeUtil;
@@ -24,7 +25,7 @@ public class AsanaServiceLocator implements ServiceLocator {
         this.base64 = new Base64JavaSeUtil();
         this.preferencesService = new InMemoryPreferenceService();
         this.authenticationService = new AuthenticationServiceImpl(preferencesService, this);
-        this.httpClient = new HttpClientImpl(this.urlBuilder, this.preferencesService);
+        this.httpClient = new HttpClientImpl(this.urlBuilder, new BaseHttpConfiguration());
     }
 
     @Override

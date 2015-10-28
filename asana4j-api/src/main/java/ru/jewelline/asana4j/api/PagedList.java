@@ -34,7 +34,7 @@ public class PagedList<T> extends ArrayList<T> {
         if (hasNextPage()) {
             sb.append(", has next");
         }
-        sb.append(" ").append(super.toString());
+        sb.append(' ').append(super.toString());
         return sb.toString();
     }
 }

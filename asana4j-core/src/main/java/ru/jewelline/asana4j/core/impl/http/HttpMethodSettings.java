@@ -1,16 +1,20 @@
 package ru.jewelline.asana4j.core.impl.http;
 
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.NetworkException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
-public enum HttpMethodWorker {
+public enum HttpMethodSettings {
     GET(HttpMethod.GET) {
         @Override
-        public void process(HttpRequestImpl httpRequest, HttpURLConnection connection) {
+        public void apply(HttpURLConnection connection, HttpRequest httpRequest) {
+            if (connection == null || httpRequest == null){
+                throw new IllegalArgumentException("Connection and request can not be null.");
+            }
             // do nothing
         }
     },
@@ -21,26 +25,28 @@ public enum HttpMethodWorker {
 
     private HttpMethod httpMethod;
 
-    HttpMethodWorker(HttpMethod httpMethod) {
+    HttpMethodSettings(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
     }
 
-    public void process(HttpRequestImpl httpRequest, HttpURLConnection connection) throws IOException {
-        // we assume that httpRequest and connection are never null
-        InputStream requestBody = httpRequest.getRequestBody();
-        if (requestBody != null) {
+    public void apply(HttpURLConnection connection, HttpRequest httpRequest) throws IOException {
+        if (connection == null || httpRequest == null){
+            throw new IllegalArgumentException("Connection and request can not be null.");
+        }
+        InputStream entity = httpRequest.getEntity();
+        if (entity != null) {
             connection.setDoOutput(true);
             connection.setRequestMethod(this.httpMethod.method());
-            HttpClientImpl.copyStreams(requestBody, connection.getOutputStream());
+            HttpClientImpl.copyStreams(entity, connection.getOutputStream());
         } else {
             connection.setRequestMethod(this.httpMethod.method());
         }
     }
 
-    public static HttpMethodWorker getWorker(HttpMethod httpMethod){
-        for (HttpMethodWorker worker : HttpMethodWorker.values()) {
-            if (worker.httpMethod.equals(httpMethod)){
-                return worker;
+    public static HttpMethodSettings getForHttpMethod(HttpMethod httpMethod){
+        for (HttpMethodSettings settings : HttpMethodSettings.values()) {
+            if (settings.httpMethod.equals(httpMethod)){
+                return settings;
             }
         }
         /**

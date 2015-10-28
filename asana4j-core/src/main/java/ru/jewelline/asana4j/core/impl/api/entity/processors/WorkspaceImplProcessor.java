@@ -60,7 +60,7 @@ public enum WorkspaceImplProcessor implements ApiEntityFieldWriter<Workspace, Wo
             convertInternal(source, target);
         } catch (JSONException ex){
             throw new ApiException(ApiException.INCORRECT_RESPONSE_FIELD_FORMAT,
-                    "Unable parse field '" + this.getFieldName() + "' from json response " + source.toString());
+                    "Unable parse field '" + this.getFieldName() + "' from json response " + source);
         }
     }
 
@@ -72,7 +72,7 @@ public enum WorkspaceImplProcessor implements ApiEntityFieldWriter<Workspace, Wo
             convertInternal(source, target);
         } catch (JSONException ex){
             throw new ApiException(ApiException.API_ENTITY_SERIALIZATION_FAIL,
-                    "Unable to serialize field '" + this.getFieldName() + "', source " + source.toString());
+                    "Unable to serialize field '" + this.getFieldName() + "', source " + source);
         }
     }
 

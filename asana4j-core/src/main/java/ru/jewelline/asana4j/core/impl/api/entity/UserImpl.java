@@ -86,7 +86,7 @@ public class UserImpl extends ApiEntityImpl<User> implements User {
         out.append("id = ").append(getId());
         out.append(", name = ").append(getName());
         out.append(", email = ").append(getEmail());
-        out.append("]");
+        out.append(']');
         return out.toString();
     }
 

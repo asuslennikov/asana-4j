@@ -2,7 +2,6 @@ package ru.jewelline.asana4j.example;
 
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
-import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.auth.AuthenticationType;
 import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;

@@ -3,7 +3,9 @@ package ru.jewelline.asana4j.api.clients.modifiers;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-public class Pagination implements RequestModifier {
+import java.io.Serializable;
+
+public class Pagination implements RequestModifier, Serializable {
     private static final int MIN_LIMIT = 1;
     private static final int MAX_LIMIT = 100;
 
