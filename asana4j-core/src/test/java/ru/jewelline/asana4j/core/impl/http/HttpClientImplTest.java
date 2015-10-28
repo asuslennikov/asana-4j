@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +33,7 @@ public class HttpClientImplTest {
     private URLBuilder urlBuilder;
     @Mock
     private HttpURLConnection connection;
+    private BaseHttpConfiguration httpConfig = new BaseHttpConfiguration();
 
     @Test
     public void test_copyNullSourceToDestination() throws IOException {
@@ -68,7 +71,7 @@ public class HttpClientImplTest {
     }
 
     private HttpClientImpl testInstance() {
-        return new HttpClientImpl(this.urlBuilder, new BaseHttpConfiguration()) {
+        return new HttpClientImpl(this.urlBuilder, this.httpConfig) {
             @Override
             protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
                 return HttpClientImplTest.this.connection;
@@ -145,7 +148,7 @@ public class HttpClientImplTest {
         testInstance().execute(request, response);
 
         // assertions
-        verify(connection).setDoInput(false);
+        verify(connection).setDoInput(true);
         verify(connection).setConnectTimeout(Matchers.anyInt());
     }
 
@@ -163,5 +166,131 @@ public class HttpClientImplTest {
         // assertions
         verify(connection).setDoInput(true);
         verify(connection).setConnectTimeout(Matchers.anyInt());
+    }
+
+    @Test
+    public void test_verifySetResponseCode() throws IOException {
+        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        OutputStream outputStream = mock(OutputStream.class);
+        when(response.output()).thenReturn(outputStream);
+        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(request.getMethod()).thenReturn(HttpMethod.GET);
+        int responseCode = 200;
+        when(connection.getResponseCode()).thenReturn(responseCode);
+
+        // business method
+        testInstance().execute(request, response);
+
+        // assertions
+        verify(connection).getResponseCode();
+        verify(response).setCode(responseCode);
+    }
+
+    @Test
+    public void test_pickDataStreamForGoodCode() throws IOException {
+        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        OutputStream outputStream = mock(OutputStream.class);
+        when(response.output()).thenReturn(outputStream);
+        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(request.getMethod()).thenReturn(HttpMethod.PUT);
+        int responseCode = 201;
+        InputStream inputStream = mock(InputStream.class);
+        when(connection.getInputStream()).thenReturn(inputStream);
+        when(connection.getResponseCode()).thenReturn(responseCode);
+        when(response.code()).thenReturn(responseCode);
+
+        // business method
+        testInstance().execute(request, response);
+
+        // assertions
+        verify(connection).getInputStream();
+        verify(outputStream).flush(); // verify that stream was copied
+    }
+
+    @Test
+    public void test_pickErrorStreamForBadCode() throws IOException {
+        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        OutputStream outputStream = mock(OutputStream.class);
+        when(response.output()).thenReturn(outputStream);
+        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(request.getMethod()).thenReturn(HttpMethod.PUT);
+        int responseCode = 400;
+        when(response.code()).thenReturn(responseCode);
+        when(connection.getResponseCode()).thenReturn(responseCode);
+        InputStream inputStream = mock(InputStream.class);
+        when(connection.getErrorStream()).thenReturn(inputStream);
+
+        // business method
+        testInstance().execute(request, response);
+
+        // assertions
+        verify(connection).getErrorStream();
+        verify(outputStream).flush(); // verify that stream was copied
+    }
+
+
+    @Test
+    public void test_getNoStreamForGoodCodeAndNoOutput() throws IOException {
+        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(request.getMethod()).thenReturn(HttpMethod.PUT);
+        int responseCode = 201;
+        when(response.code()).thenReturn(responseCode);
+
+        // business method
+        testInstance().execute(request, response);
+
+        // assertions
+        verify(connection, never()).getInputStream();
+    }
+
+    @Test
+    public void test_getNoStreamForBadCodeAndNoOutput() throws IOException {
+        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(request.getMethod()).thenReturn(HttpMethod.PUT);
+        int responseCode = 400;
+        when(response.code()).thenReturn(responseCode);
+
+        // business method
+        testInstance().execute(request, response);
+
+        // assertions
+        verify(connection, never()).getInputStream();
+    }
+
+    @Test
+    public void test_doAdditionalAttemptsInCaseOfNoResponseCode(){
+        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(request.getMethod()).thenReturn(HttpMethod.PUT);
+        int responseCode = -1;
+        when(response.code()).thenReturn(responseCode);
+
+        // business method
+        testInstance().execute(request, response);
+
+        // assertions
+        verify(request, times(this.httpConfig.getRetryCount())).getMethod();
+    }
+
+    @Test
+    public void test_setResponseHeaders() {
+        String hKey = "key";
+        List<String> hValue = Arrays.asList("value");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put(hKey, hValue);
+        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(request.getMethod()).thenReturn(HttpMethod.PUT);
+        int responseCode = 201;
+        when(response.code()).thenReturn(responseCode);
+        when(connection.getHeaderFields()).thenReturn(headers);
+
+        // business method
+        testInstance().execute(request, response);
+
+        // assertions
+        verify(response).setHeader(hKey, hValue);
     }
 }

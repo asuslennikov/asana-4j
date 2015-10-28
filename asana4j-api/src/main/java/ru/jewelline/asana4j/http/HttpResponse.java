@@ -1,6 +1,7 @@
 package ru.jewelline.asana4j.http;
 
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,7 +19,7 @@ public interface HttpResponse<T extends OutputStream> {
      * @return a map with pairs header-value, it is HTTP response headers.
      * It is unmodifiable map.
      */
-    Map<String, String> headers();
+    Map<String, List<String>> headers();
 
     /**
      * @return destination stream in which the server response was copied

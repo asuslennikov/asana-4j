@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 public class HttpClientImpl implements HttpClient {
@@ -67,7 +68,7 @@ public class HttpClientImpl implements HttpClient {
         int retryCount = this.httpConfig.getRetryCount();
         for (int current = 0; current < retryCount; current++) {
             try {
-                HttpURLConnection connection = configureConnection(createConnection(request), request, response);
+                HttpURLConnection connection = configureConnection(createConnection(request), request);
                 HttpMethodSettings.getForHttpMethod(request.getMethod()).apply(connection, request);
                 readServerResponse(response, connection);
                 if (response.code() == NO_SERVER_RESPONSE_CODE) {
@@ -102,7 +103,7 @@ public class HttpClientImpl implements HttpClient {
         return (HttpURLConnection) url.openConnection();
     }
 
-    protected HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequest request, HttpResponse<?> httpResponse) {
+    protected HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequest request) {
         Map<String, String> headers = request.getHeaders();
         if (headers != null && !headers.isEmpty()) {
             for (Map.Entry<String, String> header : headers.entrySet()) {
@@ -110,13 +111,22 @@ public class HttpClientImpl implements HttpClient {
             }
         }
         connection.setConnectTimeout(this.httpConfig.getConnectionTimeout());
-        connection.setDoInput(httpResponse.output() != null);
+        connection.setDoInput(true);
         return connection;
     }
 
     protected void readServerResponse(HttpResponseImpl<?> httpResponse, HttpURLConnection connection) throws IOException {
         httpResponse.setCode(connection.getResponseCode());
-        if (httpResponse.code() == NO_SERVER_RESPONSE_CODE || httpResponse.output() == null) {
+        if (httpResponse.code() == NO_SERVER_RESPONSE_CODE) {
+            return;
+        }
+        Map<String, List<String>> headers = connection.getHeaderFields();
+        if (headers != null && !headers.isEmpty()) {
+            for (Map.Entry<String, List<String>> header : headers.entrySet()) {
+                httpResponse.setHeader(header.getKey(), header.getValue());
+            }
+        }
+        if (httpResponse.output() == null){
             return;
         }
         InputStream serverResponseStream;
