@@ -291,6 +291,6 @@ public class HttpClientImplTest {
         testInstance().execute(request, response);
 
         // assertions
-        verify(response).setHeader(hKey, hValue);
+        verify(response).setHeaders(headers);
     }
 }

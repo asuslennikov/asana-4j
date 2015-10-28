@@ -15,7 +15,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 public class HttpClientImpl implements HttpClient {
@@ -120,12 +119,7 @@ public class HttpClientImpl implements HttpClient {
         if (httpResponse.code() == NO_SERVER_RESPONSE_CODE) {
             return;
         }
-        Map<String, List<String>> headers = connection.getHeaderFields();
-        if (headers != null && !headers.isEmpty()) {
-            for (Map.Entry<String, List<String>> header : headers.entrySet()) {
-                httpResponse.setHeader(header.getKey(), header.getValue());
-            }
-        }
+        httpResponse.setHeaders(connection.getHeaderFields());
         if (httpResponse.output() == null){
             return;
         }

@@ -4,8 +4,8 @@ import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,32 +50,11 @@ public class HttpResponseImplTest {
         HttpResponseImpl httpResponse = testInstance();
         String hKey = "key";
         List<String> hValue = Arrays.asList("value");
-        httpResponse.setHeader(hKey, hValue);
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put(hKey, hValue);
+        httpResponse.setHeaders(headers);
         assertThat(httpResponse.headers()).hasSize(1);
         assertThat(httpResponse.headers()).containsOnly(MapEntry.entry(hKey, hValue));
-    }
-
-    @Test
-    public void test_setAndGetHeadersWitnNullValue() {
-        HttpResponseImpl httpResponse = testInstance();
-        httpResponse.setHeader("key", null);
-        assertThat(httpResponse.headers()).isEmpty();
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void test_addingToMapIsNotSupported() {
-        HttpResponseImpl httpResponse = testInstance();
-        httpResponse.headers().put("key", Arrays.asList("value"));
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void test_addingToListValueIsNotSupported() {
-        HttpResponseImpl httpResponse = testInstance();
-        String hKey = "key";
-        List<String> hValue = new ArrayList<>();
-        httpResponse.setHeader(hKey, hValue);
-        Map<String, List<String>> headers = httpResponse.headers();
-        headers.get(hKey).add("some");
     }
 
     @Test
