@@ -8,14 +8,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace {
+public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Workspace {
 
     private long id;
     private String name;
     private boolean organisation;
 
-    public WorkspaceImpl(ApiRequestBuilderProvider<Workspace, WorkspaceImpl> requestBuilderProvider) {
-        super(Workspace.class, requestBuilderProvider);
+    public WorkspaceImpl(ApiRequestBuilderProvider<Workspace> requestBuilderProvider) {
+        super(WorkspaceImpl.class, requestBuilderProvider);
     }
 
     @Override
@@ -83,12 +83,12 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
     }
 
     @Override
-    protected List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> getFieldWriters() {
-        return Arrays.<ApiEntityFieldWriter<Workspace, WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
+    protected List<JsonFieldReader<WorkspaceImpl>> getFieldWriters() {
+        return Arrays.<JsonFieldReader<WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
     }
 
     @Override
-    protected List<ApiEntityFieldReader<Workspace, WorkspaceImpl>> getFieldReaders() {
-        return Collections.<ApiEntityFieldReader<Workspace, WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
+    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldReaders() {
+        return Collections.<JsonFieldWriter<WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
     }
 }

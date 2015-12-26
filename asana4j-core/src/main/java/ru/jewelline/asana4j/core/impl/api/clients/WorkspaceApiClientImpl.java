@@ -9,16 +9,14 @@ import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-import java.util.Objects;
-
-public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace, WorkspaceImpl> implements WorkspaceApiClient {
+public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace> implements WorkspaceApiClient {
 
     public WorkspaceApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);
     }
 
     @Override
-    public WorkspaceImpl newInstance() {
+    public Workspace newInstance() {
         return new WorkspaceImpl(this);
     }
 
@@ -38,16 +36,5 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace, WorkspaceIm
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection();
-    }
-
-    @Override
-    public Workspace update(Workspace workspace, RequestModifier... requestModifiers) {
-        Objects.requireNonNull(workspace);
-        return newRequest(requestModifiers)
-                .path("workspaces/" + workspace.getId())
-                .setEntity(workspace)
-                .buildAs(HttpMethod.PUT)
-                .execute()
-                .asApiObject();
     }
 }

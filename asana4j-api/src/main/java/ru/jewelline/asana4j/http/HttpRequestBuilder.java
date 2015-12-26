@@ -1,7 +1,6 @@
 package ru.jewelline.asana4j.http;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * This class allows to build HTTP requests with headers, query parameters and request message

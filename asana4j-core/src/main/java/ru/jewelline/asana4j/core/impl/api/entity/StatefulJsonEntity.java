@@ -6,16 +6,21 @@ import ru.jewelline.asana4j.api.entity.JsonEntity;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-public class StatefulJsonEntity implements JsonEntity {
+public class StatefulJsonEntity<T> implements JsonEntity<T> {
     private final JSONObject json;
 
-    public StatefulJsonEntity(JsonEntity entity) {
+    public StatefulJsonEntity(JsonEntity<T> entity) {
         this.json = entity.asJson();
     }
 
     @Override
     public JSONObject asJson() {
         return this.json;
+    }
+
+    @Override
+    public T fromJson(JSONObject object) {
+        throw new UnsupportedOperationException("Stateful json entity can not be converted back to API instance.");
     }
 
     @Override

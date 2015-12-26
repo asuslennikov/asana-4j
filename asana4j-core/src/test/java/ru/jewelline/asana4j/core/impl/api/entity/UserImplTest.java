@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.api.ApiException;
+import ru.jewelline.asana4j.api.entity.JsonEntity;
 import ru.jewelline.asana4j.api.entity.User;
-import ru.jewelline.asana4j.core.impl.api.ApiEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.processors.UserImplProcessor;
 import ru.jewelline.asana4j.core.impl.api.entity.processors.WorkspaceImplProcessor;
 
@@ -39,7 +39,7 @@ public class UserImplTest {
 
     @Test
     public void test_implementsApiEntity(){
-        assertThat(new UserImpl()).isInstanceOf(ApiEntity.class);
+        assertThat(new UserImpl()).isInstanceOf(JsonEntity.class);
     }
 
     @Test

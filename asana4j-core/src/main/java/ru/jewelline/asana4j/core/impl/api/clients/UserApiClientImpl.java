@@ -9,14 +9,14 @@ import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-public class UserApiClientImpl extends ApiClientImpl<User, UserImpl> implements UserApiClient {
+public class UserApiClientImpl extends ApiClientImpl<User> implements UserApiClient {
 
     public UserApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);
     }
 
     @Override
-    public UserImpl newInstance() {
+    public User newInstance() {
         return new UserImpl();
     }
 

@@ -7,12 +7,13 @@ import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiResponse;
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
+import ru.jewelline.asana4j.api.entity.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
 
-public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse<AT> {
+public class ApiResponseImpl<T extends JsonEntity<T>> implements ApiResponse<T> {
 
     public static final String DATA_ROOT = "data";
     public static final String NEXT_PAGE_ROOT = "next_page";
@@ -31,7 +32,7 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
     }
 
     @Override
-    public AT asApiObject() {
+    public T asApiObject() {
         JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)) {
             try {
@@ -50,7 +51,7 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
     }
 
     @Override
-    public PagedList<AT> asApiCollection() {
+    public PagedList<T> asApiCollection() {
         JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)) {
             try {
@@ -61,7 +62,7 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
                 } else if (dataRoot instanceof JSONArray) {
                     Pagination pagination = getPagination(jsonObj);
                     JSONArray objects = (JSONArray) dataRoot;
-                    PagedList<AT> apiCollection = new PagedList<>(pagination);
+                    PagedList<T> apiCollection = new PagedList<>(pagination);
                     for (int i = 0; i < objects.length(); i++) {
                         apiCollection.add(this.instanceProvider.newInstance().fromJson(objects.getJSONObject(i)));
                     }

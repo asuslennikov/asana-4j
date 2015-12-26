@@ -22,8 +22,9 @@ public class AsanaExample {
         }*/
         WorkspaceApiClient workspaceApiClient = new WorkspaceApiClientImpl(serviceLocator.getAuthenticationService(), serviceLocator.getHttpClient());
 /*        Workspace workspace = workspaceApiClient.getWorkspaceById(37681323914427L);
-        workspace.setName("Coooolspace");
-        System.out.println(workspaceApiClient.update(workspace, Pagination.FIRST_PAGE));*/
+        workspace.setName("Jewelline");
+        workspace.save();
+        System.out.println(workspace);*/
 
         System.out.println(workspaceApiClient.getWorkspaces(Pagination.FIRST_PAGE));
     }

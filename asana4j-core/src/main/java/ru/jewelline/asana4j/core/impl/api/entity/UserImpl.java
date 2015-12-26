@@ -7,7 +7,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.processors.UserImplProcessor;
 import java.util.Arrays;
 import java.util.List;
 
-public class UserImpl extends ApiEntityImpl<User> implements User {
+public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
 
     private long id;
     private String name;
@@ -16,7 +16,7 @@ public class UserImpl extends ApiEntityImpl<User> implements User {
     private List<Workspace> workspaces;
 
     public UserImpl() {
-        super(User.class);
+        super(UserImpl.class);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class UserImpl extends ApiEntityImpl<User> implements User {
     }
 
     @Override
-    protected List<ApiEntityFieldWriter<User, UserImpl>> getFieldWriters() {
-        return Arrays.<ApiEntityFieldWriter<User, UserImpl>>asList(UserImplProcessor.values());
+    protected List<JsonFieldReader<UserImpl>> getFieldWriters() {
+        return Arrays.<JsonFieldReader<UserImpl>>asList(UserImplProcessor.values());
     }
 }

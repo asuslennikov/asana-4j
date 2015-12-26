@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRequestBuilder<AT> {
+public class ApiRequestBuilderImpl<T extends JsonEntity<T>> implements ApiRequestBuilder<T> {
     protected static final String BASE_API_URL = "https://app.asana.com/api/1.0/";
     private final ApiEntityInstanceProvider<T> apiInstanceProvider;
     private final HttpClient httpClient;
@@ -31,7 +31,7 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
     }
 
     @Override
-    public ApiRequestBuilder<AT> path(String apiSuffix) {
+    public ApiRequestBuilder<T> path(String apiSuffix) {
         this.apiSuffix = apiSuffix;
         return this;
     }
@@ -42,7 +42,7 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
     }
 
     @Override
-    public ApiRequestBuilder<AT> setQueryParameter(String parameterKey, String parameterValue) {
+    public ApiRequestBuilder<T> setQueryParameter(String parameterKey, String parameterValue) {
         if (this.queryParameters == null) {
             this.queryParameters = new HashMap<>();
         }
@@ -56,7 +56,7 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
     }
 
     @Override
-    public ApiRequestBuilder<AT> setHeader(String headerKey, String headerValue) {
+    public ApiRequestBuilder<T> setHeader(String headerKey, String headerValue) {
         if (this.headers == null) {
             this.headers = new HashMap<>();
         }
@@ -70,7 +70,7 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
     }
 
     @Override
-    public ApiRequestBuilder<AT> setEntity(SerializableEntity entity) {
+    public ApiRequestBuilder<T> setEntity(SerializableEntity entity) {
         if (entity!= null && entity instanceof JsonEntity) {
             this.entity = new StatefulJsonEntity((JsonEntity) entity);
         } else {
@@ -85,7 +85,7 @@ public class ApiRequestBuilderImpl<AT, T extends ApiEntity<AT>> implements ApiRe
     }
 
     @Override
-    public ApiRequest<AT> buildAs(HttpMethod method) {
+    public ApiRequest<T> buildAs(HttpMethod method) {
         HttpRequestBuilder builder = this.httpClient.newRequest();
         if (this.apiSuffix != null) {
             builder.path(BASE_API_URL + this.apiSuffix);
