@@ -1,8 +1,9 @@
-package ru.jewelline.asana4j.core.impl.api.entity;
+package ru.jewelline.asana4j.core.impl.api.entity.user;
 
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.processors.UserImplProcessor;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.JsonFieldReader;
 
 import java.util.Arrays;
 import java.util.List;
@@ -91,7 +92,7 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
     }
 
     @Override
-    protected List<JsonFieldReader<UserImpl>> getFieldWriters() {
+    protected List<JsonFieldReader<UserImpl>> getFieldReaders() {
         return Arrays.<JsonFieldReader<UserImpl>>asList(UserImplProcessor.values());
     }
 }

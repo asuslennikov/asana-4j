@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.core.impl.api.entity.processors;
+package ru.jewelline.asana4j.core.impl.api.entity.user;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,8 +6,7 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.JsonFieldReader;
-import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
-import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.workspace.WorkspaceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

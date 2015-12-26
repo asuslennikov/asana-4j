@@ -33,19 +33,19 @@ public abstract class ApiEntityImpl<T extends JsonEntity<? super T>> implements 
         return this.clazz.cast(this);
     }
 
-    protected abstract List<JsonFieldReader<T>> getFieldWriters();
+    protected abstract List<JsonFieldReader<T>> getFieldReaders();
 
-    protected List<JsonFieldWriter<T>> getFieldReaders() {
+    protected List<JsonFieldWriter<T>> getFieldWriters() {
         return Collections.emptyList();
     }
 
     @SuppressWarnings("unused")
     public T fromJson(JSONObject object) {
         if (object != null) {
-            List<JsonFieldReader<T>> fieldWriters = getFieldWriters();
-            if (fieldWriters != null && fieldWriters.size() > 1) {
+            List<JsonFieldReader<T>> fieldReaders = getFieldReaders();
+            if (fieldReaders != null && fieldReaders.size() > 1) {
                 boolean hasAtLeastOneField = false;
-                for (JsonFieldReader<T> writer : fieldWriters) {
+                for (JsonFieldReader<T> writer : fieldReaders) {
                     if (object.has(writer.getFieldName())) {
                         writer.read(object, this.clazz.cast(this));
                         hasAtLeastOneField = true;
@@ -63,10 +63,10 @@ public abstract class ApiEntityImpl<T extends JsonEntity<? super T>> implements 
 
     @SuppressWarnings("unused")
     public JSONObject asJson() {
-        List<JsonFieldWriter<T>> fieldReaders = getFieldReaders();
-        if (fieldReaders != null && fieldReaders.size() > 0) {
+        List<JsonFieldWriter<T>> fieldWriters = getFieldWriters();
+        if (fieldWriters != null && fieldWriters.size() > 0) {
             JSONObject json = new JSONObject();
-            for (JsonFieldWriter<T> reader : fieldReaders) {
+            for (JsonFieldWriter<T> reader : fieldWriters) {
                 reader.write(this.clazz.cast(this), json);
             }
             return json;

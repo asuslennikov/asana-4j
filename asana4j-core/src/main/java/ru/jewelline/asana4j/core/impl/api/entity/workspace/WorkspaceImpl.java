@@ -1,7 +1,11 @@
-package ru.jewelline.asana4j.core.impl.api.entity;
+package ru.jewelline.asana4j.core.impl.api.entity.workspace;
 
+import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.processors.WorkspaceImplProcessor;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiRequestBuilderProvider;
+import ru.jewelline.asana4j.core.impl.api.entity.JsonFieldReader;
+import ru.jewelline.asana4j.core.impl.api.entity.JsonFieldWriter;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
@@ -35,6 +39,44 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public User addUser(long userId) {
+        return null;
+    }
+
+    @Override
+    public User addUser(String email) {
+        return null;
+    }
+
+    @Override
+    public User addCurrentUser() {
+        return null;
+    }
+
+    @Override
+    public void removeUser(long userId) {
+        removeUserInternal(userId);
+    }
+
+    @Override
+    public void removeUser(String email) {
+        removeUserInternal(email);
+    }
+
+    @Override
+    public void removeCurrentUser() {
+        removeUserInternal("me");
+    }
+
+    private void removeUserInternal(Object userReference){
+        this.newRequest()
+                .path("workspaces/" + this.getId() + "/removeUser")
+                .setEntity(new UserManagementEntity(this.getId(), userReference))
+                .buildAs(HttpMethod.POST)
+                .execute();
     }
 
     @Override
@@ -83,12 +125,12 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     @Override
-    protected List<JsonFieldReader<WorkspaceImpl>> getFieldWriters() {
+    protected List<JsonFieldReader<WorkspaceImpl>> getFieldReaders() {
         return Arrays.<JsonFieldReader<WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
     }
 
     @Override
-    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldReaders() {
+    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldWriters() {
         return Collections.<JsonFieldWriter<WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
     }
 }
