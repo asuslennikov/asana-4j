@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+/** TODO maybe it will be better to make it a part of {@link ru.jewelline.asana4j.api.entity.JsonEntity} */
 public interface ApiEntity<A> extends Serializable {
     /**
      * Converts json response from server to java object

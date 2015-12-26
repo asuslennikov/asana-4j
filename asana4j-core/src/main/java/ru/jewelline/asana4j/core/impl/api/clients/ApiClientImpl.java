@@ -11,12 +11,13 @@ import ru.jewelline.asana4j.core.impl.api.clients.modifiers.AuthenticationReques
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.DataRootRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.LoggingRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiRequestBuilderProvider;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 
-public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiEntityInstanceProvider<T> {
+public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiEntityInstanceProvider<T>, ApiRequestBuilderProvider<AT, T> {
 
     private final AuthenticationService authenticationService;
     private final HttpClient httpClient;
@@ -34,12 +35,14 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
         return httpClient;
     }
 
-    public ApiRequestBuilder<AT> newRequest() {
-        return newRequest((RequestModifier[]) null);
+    @Override
+    public ApiRequestBuilder<AT> newRequest(ApiEntityInstanceProvider instanceProvider, RequestModifier... requestModifiers) {
+        return new ApiRequestWithModifiersBuilder<>(getAuthenticationService(), getHttpClient(), instanceProvider)
+                .withRequestModifiers(requestModifiers);
     }
 
     protected ApiRequestBuilder<AT> newRequest(RequestModifier... requestModifiers) {
-        return new ApiRequestWithModifiersBuilder<>(getAuthenticationService(), getHttpClient(), this).withRequestModifiers(requestModifiers);
+        return this.newRequest(this, requestModifiers);
     }
 
     public abstract T newInstance();
@@ -75,7 +78,7 @@ public abstract class ApiClientImpl<AT, T extends ApiEntity<AT>> implements ApiE
                     new DataRootRequestModifier(),
                     new LoggingRequestModifier()
             };
-            if (this.requestModifiers == null || this.requestModifiers.length == 0){
+            if (this.requestModifiers == null || this.requestModifiers.length == 0) {
                 return mandatoryRequestModifiers;
             }
             RequestModifier[] modifiers = Arrays.copyOf(this.requestModifiers, this.requestModifiers.length + mandatoryRequestModifiers.length);

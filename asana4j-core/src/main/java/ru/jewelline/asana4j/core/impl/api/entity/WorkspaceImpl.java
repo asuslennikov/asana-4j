@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.processors.WorkspaceImplProcessor;
+import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,8 +14,8 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
     private String name;
     private boolean organisation;
 
-    public WorkspaceImpl() {
-        super(Workspace.class);
+    public WorkspaceImpl(ApiRequestBuilderProvider<Workspace, WorkspaceImpl> requestBuilderProvider) {
+        super(Workspace.class, requestBuilderProvider);
     }
 
     @Override
@@ -54,6 +55,16 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
             return false;
         }
         return id == ((WorkspaceImpl) candidate).id;
+    }
+
+    @Override
+    public void save() {
+        this.newRequest()
+            .path("workspaces/" + this.getId())
+            .setEntity(this)
+            .buildAs(HttpMethod.PUT)
+            .execute()
+            .asApiObject();
     }
 
     @Override

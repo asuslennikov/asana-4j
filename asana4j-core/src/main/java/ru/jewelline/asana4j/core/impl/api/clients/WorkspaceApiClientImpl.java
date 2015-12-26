@@ -19,7 +19,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace, WorkspaceIm
 
     @Override
     public WorkspaceImpl newInstance() {
-        return new WorkspaceImpl();
+        return new WorkspaceImpl(this);
     }
 
     @Override

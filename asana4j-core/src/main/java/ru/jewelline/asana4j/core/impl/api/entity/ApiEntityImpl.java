@@ -2,6 +2,8 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
+import ru.jewelline.asana4j.api.ApiRequestBuilder;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.ApiEntity;
 
@@ -12,9 +14,19 @@ import java.util.List;
 
 public abstract class ApiEntityImpl<A> implements ApiEntity<A>, JsonEntity {
     private Class<A> clazz;
+    private ApiRequestBuilderProvider<A, ?> requestBuilderProvider;
 
     public ApiEntityImpl(Class<A> clazz) {
         this.clazz = clazz;
+    }
+
+    public ApiEntityImpl(Class<A> clazz, ApiRequestBuilderProvider<A, ?> requestBuilderProvider){
+        this.clazz = clazz;
+        this.requestBuilderProvider = requestBuilderProvider;
+    }
+
+    protected ApiRequestBuilder<A> newRequest(RequestModifier... requestModifiers){
+        return this.requestBuilderProvider.newRequest(null, requestModifiers);
     }
 
     protected abstract <T extends ApiEntityImpl<A>> List<ApiEntityFieldWriter<A, T>> getFieldWriters();
