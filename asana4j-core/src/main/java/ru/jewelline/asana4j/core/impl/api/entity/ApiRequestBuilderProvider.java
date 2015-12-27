@@ -5,5 +5,5 @@ import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.JsonEntity;
 
 public interface ApiRequestBuilderProvider<T extends JsonEntity<? super T>> {
-    ApiRequestBuilder<T> newRequest(ApiEntityInstanceProvider<? extends T> instanceProvider, RequestModifier... requestModifiers);
+    ApiRequestBuilder<T> newRequest(ApiEntityInstanceProvider<T> instanceProvider, RequestModifier... requestModifiers);
 }

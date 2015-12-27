@@ -36,7 +36,7 @@ public abstract class ApiClientImpl<T extends JsonEntity<T>> implements ApiEntit
     }
 
     @Override
-    public ApiRequestBuilder<T> newRequest(ApiEntityInstanceProvider instanceProvider, RequestModifier... requestModifiers) {
+    public ApiRequestBuilder<T> newRequest(ApiEntityInstanceProvider<T> instanceProvider, RequestModifier... requestModifiers) {
         return new ApiRequestWithModifiersBuilder<>(getAuthenticationService(), getHttpClient(), instanceProvider)
                 .withRequestModifiers(requestModifiers);
     }
