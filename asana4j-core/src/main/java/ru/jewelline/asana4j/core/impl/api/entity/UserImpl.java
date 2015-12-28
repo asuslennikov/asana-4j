@@ -1,9 +1,7 @@
-package ru.jewelline.asana4j.core.impl.api.entity.user;
+package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityImpl;
-import ru.jewelline.asana4j.core.impl.api.entity.JsonFieldReader;
 
 import java.util.Arrays;
 import java.util.List;

@@ -5,18 +5,23 @@ import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.core.impl.api.entity.user.UserImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityDeserializer;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
+import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-public class UserApiClientImpl extends ApiClientImpl<User> implements UserApiClient {
+public class UserApiClientImpl extends ApiClientImpl<UserImpl> implements UserApiClient {
+
+    private final ApiEntityDeserializer<UserImpl> userDeserializer;
 
     public UserApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);
+        this.userDeserializer = new ApiEntityDeserializer<>(this);
     }
 
     @Override
-    public User newInstance() {
+    public UserImpl newInstance() {
         return new UserImpl();
     }
 
@@ -26,7 +31,7 @@ public class UserApiClientImpl extends ApiClientImpl<User> implements UserApiCli
                 .path("users/me")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiObject();
+                .asApiObject(this.userDeserializer);
     }
 
     @Override
@@ -35,7 +40,7 @@ public class UserApiClientImpl extends ApiClientImpl<User> implements UserApiCli
                 .path("users/" + userId)
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiObject();
+                .asApiObject(this.userDeserializer);
     }
 
     @Override
@@ -44,7 +49,7 @@ public class UserApiClientImpl extends ApiClientImpl<User> implements UserApiCli
                 .path("users")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiCollection();
+                .asApiCollection(this.userDeserializer);
     }
 
     @Override
@@ -53,6 +58,6 @@ public class UserApiClientImpl extends ApiClientImpl<User> implements UserApiCli
                 .path("workspaces/" + workspaceId + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiCollection();
+                .asApiCollection(this.userDeserializer);
     }
 }

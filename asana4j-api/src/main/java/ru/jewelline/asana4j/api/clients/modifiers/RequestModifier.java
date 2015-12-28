@@ -35,5 +35,5 @@ public interface RequestModifier {
      * @param httpMethod     a HTTP method (one of values from {@link HttpMethod} enum) which will be used for sending this request
      * @param modifiersChain ordered list which holds all registered request modifiers
      */
-    <T> void modify(ApiRequestBuilder<T> requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain);
+    void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain);
 }

@@ -1,16 +1,15 @@
-package ru.jewelline.asana4j.core.impl.api.entity.workspace;
+package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityImpl;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiRequestBuilderProvider;
-import ru.jewelline.asana4j.core.impl.api.entity.JsonFieldReader;
-import ru.jewelline.asana4j.core.impl.api.entity.JsonFieldWriter;
+import ru.jewelline.asana4j.api.entity.io.MapAsJsonSerializer;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Workspace {
 
@@ -18,7 +17,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     private String name;
     private boolean organisation;
 
-    public WorkspaceImpl(ApiRequestBuilderProvider<Workspace> requestBuilderProvider) {
+    public WorkspaceImpl(ApiRequestBuilderProvider requestBuilderProvider) {
         super(WorkspaceImpl.class, requestBuilderProvider);
     }
 
@@ -72,9 +71,12 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     private void removeUserInternal(Object userReference){
+        Map<String, Object> entity = new HashMap<>();
+        entity.put("user", userReference);
+        entity.put("workspace", this.getId());
         this.newRequest()
                 .path("workspaces/" + this.getId() + "/removeUser")
-                .setEntity(new UserManagementEntity(this.getId(), userReference))
+                .setEntity(entity, new MapAsJsonSerializer())
                 .buildAs(HttpMethod.POST)
                 .execute();
     }

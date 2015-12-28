@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.api.entity;
 
-public interface Workspace extends HasId, HasName, JsonEntity<Workspace> {
+public interface Workspace extends HasId, HasName {
     boolean isOrganisation();
 
     void setName(String name);

@@ -4,28 +4,28 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
-import ru.jewelline.asana4j.api.entity.JsonEntity;
+import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ApiEntityImpl<T extends JsonEntity<? super T>> implements ApiEntityInstanceProvider<T> {
+public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity, ApiEntityInstanceProvider<T> {
     private Class<T> clazz;
-    private ApiRequestBuilderProvider<? super T> requestBuilderProvider;
+    private ApiRequestBuilderProvider requestBuilderProvider;
 
     public ApiEntityImpl(Class<T> clazz) {
         this.clazz = clazz;
     }
 
-    public ApiEntityImpl(Class<T> clazz, ApiRequestBuilderProvider<? super T> requestBuilderProvider) {
+    public ApiEntityImpl(Class<T> clazz, ApiRequestBuilderProvider requestBuilderProvider) {
         this.clazz = clazz;
         this.requestBuilderProvider = requestBuilderProvider;
     }
 
-    protected ApiRequestBuilder<? super T> newRequest(RequestModifier... requestModifiers) {
-        return this.requestBuilderProvider.newRequest(this, requestModifiers);
+    protected ApiRequestBuilder newRequest(RequestModifier... requestModifiers) {
+        return this.requestBuilderProvider.newRequest(requestModifiers);
     }
 
     @Override
@@ -72,14 +72,5 @@ public abstract class ApiEntityImpl<T extends JsonEntity<? super T>> implements 
             return json;
         }
         return new JSONObject();
-    }
-
-    @SuppressWarnings("unused")
-    public InputStream getSerialized() {
-        JSONObject json = asJson();
-        if (json != null) {
-            return new ByteArrayInputStream(json.toString().getBytes());
-        }
-        return null;
     }
 }

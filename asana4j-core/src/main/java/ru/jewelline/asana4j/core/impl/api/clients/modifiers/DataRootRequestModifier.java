@@ -4,8 +4,8 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.clients.modifiers.ModifiersChain;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
-import ru.jewelline.asana4j.api.entity.JsonEntity;
-import ru.jewelline.asana4j.api.entity.SerializableEntity;
+import ru.jewelline.asana4j.api.entity.io.JsonEntity;
+import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class DataRootRequestModifier implements RequestModifier {
@@ -15,7 +15,7 @@ public class DataRootRequestModifier implements RequestModifier {
     }
 
     @Override
-    public <T> void modify(ApiRequestBuilder<T> requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
+    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         SerializableEntity entity = requestBuilder.getEntity();
         if (entity != null && entity instanceof JsonEntity){
             JSONObject json = ((JsonEntity) entity).asJson();

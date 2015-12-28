@@ -5,10 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.entity.JsonEntity;
+import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.workspace.WorkspaceImpl;
-import ru.jewelline.asana4j.core.impl.api.entity.workspace.WorkspaceImplProcessor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;

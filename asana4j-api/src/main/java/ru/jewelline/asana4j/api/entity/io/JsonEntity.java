@@ -1,11 +1,11 @@
-package ru.jewelline.asana4j.api.entity;
+package ru.jewelline.asana4j.api.entity.io;
 
 import org.json.JSONObject;
 
 /**
- * This interface provides an ability not only serialize entity into stream, but also convert it into JSON format.
+ * This interface provides an ability convert entity into JSON format.
  */
-public interface JsonEntity<T> extends SerializableEntity {
+public interface JsonEntity {
 
     /**
      * Converts entity into JSON format. Basically this method will be called more than once per request lifecycle, so
@@ -17,11 +17,4 @@ public interface JsonEntity<T> extends SerializableEntity {
      * @return a json representation of entity.
      */
     JSONObject asJson();
-
-    /**
-     * Converts json response from server to java object
-     * @param object json response from server
-     * @return the same instance with filled parameters or <code>null</code> if the passed object was null
-     */
-    T fromJson(JSONObject object);
 }

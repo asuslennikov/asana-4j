@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.core.impl.api.entity.workspace.WorkspaceImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
