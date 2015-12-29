@@ -12,7 +12,7 @@ import ru.jewelline.asana4j.http.HttpMethod;
 
 public class WorkspaceApiClientImpl extends ApiClientImpl<WorkspaceImpl> implements WorkspaceApiClient {
 
-    private final ApiEntityDeserializer<Workspace, WorkspaceImpl> workspaceDeserializer;
+    private final ApiEntityDeserializer<WorkspaceImpl> workspaceDeserializer;
 
     public WorkspaceApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);

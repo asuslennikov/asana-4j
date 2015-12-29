@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ApiEntityImpl<T extends JsonEntity<T>> implements SerializableEntity, JsonEntity<T>, ApiEntityInstanceProvider<T> {
+public abstract class ApiEntityImpl<T extends JsonEntity> implements SerializableEntity, JsonEntity, ApiEntityInstanceProvider<T> {
     private final Class<T> clazz;
     private ApiRequestBuilderProvider requestBuilderProvider;
 

@@ -29,7 +29,7 @@ public class ApiResponseImpl implements ApiResponse {
     }
 
     @Override
-    public <T> T asApiObject(EntityDeserializer<T> deserializer, ResponsePostProcessor... postProcessors) {
+    public <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)) {
             try {
@@ -48,7 +48,7 @@ public class ApiResponseImpl implements ApiResponse {
     }
 
     @Override
-    public <T> PagedList<T> asApiCollection(EntityDeserializer<T> deserializer, ResponsePostProcessor... postProcessors) {
+    public <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)) {
             try {

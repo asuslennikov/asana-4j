@@ -13,12 +13,12 @@ public interface ApiResponse {
      * @param deserializer a JSON convertor which will be used for a single object in the response
      * @return an instance of API object
      */
-    <T> T asApiObject(EntityDeserializer<T> deserializer, ResponsePostProcessor... postProcessors);
+    <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors);
 
     /**
      * Tries to decode the server response and extract list of API objects
      * @param deserializer a JSON convertor which will be used for a single object in the response
      * @return a list of API objects
      */
-    <T> PagedList<T> asApiCollection(EntityDeserializer<T> deserializer, ResponsePostProcessor... postProcessors);
+    <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors);
 }

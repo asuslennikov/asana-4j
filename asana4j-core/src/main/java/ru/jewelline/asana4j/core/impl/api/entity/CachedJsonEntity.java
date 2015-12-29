@@ -25,11 +25,6 @@ public class CachedJsonEntity<T extends SerializableEntity & JsonEntity> impleme
     }
 
     @Override
-    public Object fromJson(JSONObject object) {
-        throw new UnsupportedOperationException("Cached entity can not be restored back to object");
-    }
-
-    @Override
     public InputStream getSerialized() {
         return this.getSerializer().serialize(asJson());
     }

@@ -12,7 +12,7 @@ import ru.jewelline.asana4j.http.HttpMethod;
 
 public class UserApiClientImpl extends ApiClientImpl<UserImpl> implements UserApiClient {
 
-    private final ApiEntityDeserializer<User, UserImpl> userDeserializer;
+    private final ApiEntityDeserializer<UserImpl> userDeserializer;
 
     public UserApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);
