@@ -4,15 +4,17 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
+import ru.jewelline.asana4j.api.entity.io.JsonSerializer;
+import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity, ApiEntityInstanceProvider<T> {
-    private Class<T> clazz;
+public abstract class ApiEntityImpl<T extends JsonEntity<T>> implements SerializableEntity, JsonEntity<T>, ApiEntityInstanceProvider<T> {
+    private final Class<T> clazz;
     private ApiRequestBuilderProvider requestBuilderProvider;
 
     public ApiEntityImpl(Class<T> clazz) {
@@ -29,7 +31,7 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
     }
 
     @Override
-    public T newInstance() {
+    public T getInstance() {
         return this.clazz.cast(this);
     }
 
@@ -61,7 +63,7 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
         return null;
     }
 
-    @SuppressWarnings("unused")
+    @Override
     public JSONObject asJson() {
         List<JsonFieldWriter<T>> fieldWriters = getFieldWriters();
         if (fieldWriters != null && fieldWriters.size() > 0) {
@@ -72,5 +74,15 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
             return json;
         }
         return new JSONObject();
+    }
+
+    @Override
+    public EntitySerializer getSerializer() {
+        return JsonSerializer.INSTANCE;
+    }
+
+    @Override
+    public InputStream getSerialized() {
+        return getSerializer().serialize(asJson());
     }
 }

@@ -4,7 +4,6 @@ import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.clients.modifiers.ModifiersChain;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.AuthenticationRequestModifier;
@@ -41,7 +40,7 @@ public abstract class ApiClientImpl<T> implements ApiEntityInstanceProvider<T>, 
                 .withRequestModifiers(requestModifiers);
     }
 
-    public abstract T newInstance();
+    public abstract T getInstance();
 
     private static final class ApiRequestWithModifiersBuilder extends ApiRequestBuilderImpl {
         private final AuthenticationService authenticationService;

@@ -20,5 +20,5 @@ public interface ApiResponse {
      * @param deserializer a JSON convertor which will be used for a single object in the response
      * @return a list of API objects
      */
-    <T> PagedList<T> asApiCollection(EntityDeserializer<? super T> deserializer, ResponsePostProcessor... postProcessors);
+    <T> PagedList<T> asApiCollection(EntityDeserializer<T> deserializer, ResponsePostProcessor... postProcessors);
 }

@@ -108,7 +108,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
             .setEntity(this)
             .buildAs(HttpMethod.PUT)
             .execute()
-            .asApiObject();
+            .asApiObject(new ApiEntityDeserializer<>(this));
     }
 
     @Override

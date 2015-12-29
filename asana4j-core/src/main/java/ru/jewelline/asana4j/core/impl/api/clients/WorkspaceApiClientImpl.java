@@ -5,18 +5,22 @@ import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace> implements WorkspaceApiClient {
+public class WorkspaceApiClientImpl extends ApiClientImpl<WorkspaceImpl> implements WorkspaceApiClient {
+
+    private final ApiEntityDeserializer<Workspace, WorkspaceImpl> workspaceDeserializer;
 
     public WorkspaceApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);
+        this.workspaceDeserializer = new ApiEntityDeserializer<>(this);
     }
 
     @Override
-    public Workspace newInstance() {
+    public WorkspaceImpl getInstance() {
         return new WorkspaceImpl(this);
     }
 
@@ -26,7 +30,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace> implements 
                 .path("workspaces/" + id)
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiObject();
+                .asApiObject(this.workspaceDeserializer);
     }
 
     @Override
@@ -35,6 +39,6 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<Workspace> implements 
                 .path("workspaces/")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiCollection();
+                .asApiCollection(this.workspaceDeserializer);
     }
 }

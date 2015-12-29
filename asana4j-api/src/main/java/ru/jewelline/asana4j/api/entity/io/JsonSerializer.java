@@ -7,6 +7,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 public class JsonSerializer implements EntitySerializer {
+    public static final JsonSerializer INSTANCE = new JsonSerializer();
+
     @Override
     public InputStream serialize(Object entity) {
         if (entity == null) {

@@ -48,7 +48,7 @@ public class ApiResponseImpl implements ApiResponse {
     }
 
     @Override
-    public <T> PagedList<T> asApiCollection(EntityDeserializer<? super T> deserializer, ResponsePostProcessor... postProcessors) {
+    public <T> PagedList<T> asApiCollection(EntityDeserializer<T> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)) {
             try {

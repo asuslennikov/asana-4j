@@ -6,14 +6,13 @@ import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityDeserializer;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class UserApiClientImpl extends ApiClientImpl<UserImpl> implements UserApiClient {
 
-    private final ApiEntityDeserializer<UserImpl> userDeserializer;
+    private final ApiEntityDeserializer<User, UserImpl> userDeserializer;
 
     public UserApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);
@@ -21,7 +20,7 @@ public class UserApiClientImpl extends ApiClientImpl<UserImpl> implements UserAp
     }
 
     @Override
-    public UserImpl newInstance() {
+    public UserImpl getInstance() {
         return new UserImpl();
     }
 
