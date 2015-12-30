@@ -2,6 +2,13 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderProvider;
+import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
+import ru.jewelline.asana4j.core.impl.api.entity.io.CachedJsonEntity;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
@@ -18,6 +25,16 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     public WorkspaceImpl(ApiRequestBuilderProvider requestBuilderProvider) {
         super(WorkspaceImpl.class, requestBuilderProvider);
+    }
+
+    @Override
+    protected List<JsonFieldReader<WorkspaceImpl>> getFieldReaders() {
+        return Arrays.<JsonFieldReader<WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
+    }
+
+    @Override
+    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldWriters() {
+        return Collections.<JsonFieldWriter<WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
     }
 
     @Override
@@ -40,47 +57,6 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     @Override
-    public User addUser(long userId) {
-        return null;
-    }
-
-    @Override
-    public User addUser(String email) {
-        return null;
-    }
-
-    @Override
-    public User addCurrentUser() {
-        return null;
-    }
-
-    @Override
-    public void removeUser(long userId) {
-        removeUserInternal(userId);
-    }
-
-    @Override
-    public void removeUser(String email) {
-        removeUserInternal(email);
-    }
-
-    @Override
-    public void removeCurrentUser() {
-        removeUserInternal("me");
-    }
-
-    private void removeUserInternal(Object userReference){
-        Map<String, Object> entity = new HashMap<>();
-        entity.put("user", userReference);
-        entity.put("workspace", this.getId());
-        this.newRequest()
-                .path("workspaces/" + this.getId() + "/removeUser")
-                .setEntity(new CachedJsonEntity(entity))
-                .buildAs(HttpMethod.POST)
-                .execute();
-    }
-
-    @Override
     public boolean isOrganisation() {
         return organisation;
     }
@@ -91,23 +67,13 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     @Override
     public boolean equals(Object candidate) {
-        if (this == candidate){
+        if (this == candidate) {
             return true;
         }
-        if (candidate == null || getClass() != candidate.getClass()){
+        if (candidate == null || getClass() != candidate.getClass()) {
             return false;
         }
         return id == ((WorkspaceImpl) candidate).id;
-    }
-
-    @Override
-    public void save() {
-        this.newRequest()
-            .path("workspaces/" + this.getId())
-            .setEntity(this)
-            .buildAs(HttpMethod.PUT)
-            .execute()
-            .asApiObject(new ApiEntityDeserializer<>(this));
     }
 
     @Override
@@ -126,12 +92,71 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     @Override
-    protected List<JsonFieldReader<WorkspaceImpl>> getFieldReaders() {
-        return Arrays.<JsonFieldReader<WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
+    public void update() {
+        this.newRequest()
+                .path("workspaces/" + this.getId())
+                .setEntity(this)
+                .buildAs(HttpMethod.PUT)
+                .execute()
+                .asApiObject(new ApiEntityDeserializer<>(this));
     }
 
     @Override
-    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldWriters() {
-        return Collections.<JsonFieldWriter<WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
+    public User addUser(long userId) {
+        return addUserInternal(userId);
+    }
+
+    @Override
+    public User addUser(String email) {
+        return addUserInternal(email);
+    }
+
+    @Override
+    public User addCurrentUser() {
+        return addUserInternal("me");
+    }
+
+    private Map<String, Object> getUserManagementMap(Object userReference) {
+        Map<String, Object> entity = new HashMap<>();
+        entity.put("user", userReference);
+        entity.put("workspace", this.getId());
+        return entity;
+    }
+
+    private User addUserInternal(Object userReference) {
+        return this.newRequest()
+                .path("workspaces/" + this.getId() + "/addUser")
+                .setEntity(new CachedJsonEntity(getUserManagementMap(userReference)))
+                .buildAs(HttpMethod.POST)
+                .execute()
+                .asApiObject(new ApiEntityDeserializer<>(new ApiEntityInstanceProvider<UserImpl>() {
+                    @Override
+                    public UserImpl getInstance() {
+                        return new UserImpl();
+                    }
+                }));
+    }
+
+    @Override
+    public void removeUser(long userId) {
+        removeUserInternal(userId);
+    }
+
+    @Override
+    public void removeUser(String email) {
+        removeUserInternal(email);
+    }
+
+    @Override
+    public void removeCurrentUser() {
+        removeUserInternal("me");
+    }
+
+    private void removeUserInternal(Object userReference) {
+        this.newRequest()
+                .path("workspaces/" + this.getId() + "/removeUser")
+                .setEntity(new CachedJsonEntity(getUserManagementMap(userReference)))
+                .buildAs(HttpMethod.POST)
+                .execute();
     }
 }

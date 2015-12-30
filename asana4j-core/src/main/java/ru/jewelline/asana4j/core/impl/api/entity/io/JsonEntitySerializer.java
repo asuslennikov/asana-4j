@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.core.impl.api.entity;
+package ru.jewelline.asana4j.core.impl.api.entity.io;
 
 import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;

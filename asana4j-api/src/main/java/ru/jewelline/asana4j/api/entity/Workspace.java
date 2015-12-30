@@ -17,5 +17,5 @@ public interface Workspace extends HasId, HasName {
 
     void removeCurrentUser();
 
-    void save();
+    void update();
 }
