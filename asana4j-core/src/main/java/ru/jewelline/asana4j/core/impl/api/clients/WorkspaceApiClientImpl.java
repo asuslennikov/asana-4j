@@ -4,24 +4,20 @@ import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-public class WorkspaceApiClientImpl extends ApiClientImpl<WorkspaceImpl> implements WorkspaceApiClient {
-
-    private final ApiEntityDeserializer<WorkspaceImpl> workspaceDeserializer;
+public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceApiClient {
 
     public WorkspaceApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         super(authenticationService, httpClient);
-        this.workspaceDeserializer = new ApiEntityDeserializer<>(this);
     }
 
-    @Override
-    public WorkspaceImpl getInstance() {
-        return new WorkspaceImpl(this);
+    private EntityDeserializer<WorkspaceImpl> getWorkspaceDeserializer() {
+        return getEntityContext().getDeserializer(WorkspaceImpl.class);
     }
 
     @Override
@@ -30,7 +26,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<WorkspaceImpl> impleme
                 .path("workspaces/" + id)
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiObject(this.workspaceDeserializer);
+                .asApiObject(getWorkspaceDeserializer());
     }
 
     @Override
@@ -39,6 +35,6 @@ public class WorkspaceApiClientImpl extends ApiClientImpl<WorkspaceImpl> impleme
                 .path("workspaces/")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiCollection(this.workspaceDeserializer);
+                .asApiCollection(getWorkspaceDeserializer());
     }
 }

@@ -19,7 +19,7 @@ public class CachedJsonEntity implements JsonEntity {
         this.serializer = entity.getSerializer();
     }
 
-    public CachedJsonEntity(Map<String, ?> source){
+    public CachedJsonEntity(Map<String, Object> source){
         if (source == null){
             throw new IllegalArgumentException("Source map can not be null.");
         }

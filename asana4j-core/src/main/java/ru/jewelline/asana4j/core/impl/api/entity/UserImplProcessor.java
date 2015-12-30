@@ -4,11 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public enum UserImplProcessor implements JsonFieldReader<UserImpl> {
     ID("id") {
@@ -44,12 +40,9 @@ public enum UserImplProcessor implements JsonFieldReader<UserImpl> {
                 Object workspacesAsObj = source.get(getFieldName());
                 if (workspacesAsObj instanceof JSONArray) {
                     JSONArray workspaces = (JSONArray) workspacesAsObj;
-                    List<Workspace> converted = new ArrayList<>();
                     for (int i = 0; i < workspaces.length(); i++) {
-                        // TODO try to replace by correct initialization
-                        converted.add(new WorkspaceImpl(null).fromJson(workspaces.getJSONObject(i)));
+                        target.addWorkspace().fromJson(workspaces.getJSONObject(i));
                     }
-                    target.setWorkspaces(converted);
                 }
             }
         }

@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.example;
 
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
+import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.auth.AuthenticationType;
 import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
@@ -21,6 +22,8 @@ public class AsanaExample {
             }
         }*/
         WorkspaceApiClient workspaceApiClient = new WorkspaceApiClientImpl(serviceLocator.getAuthenticationService(), serviceLocator.getHttpClient());
+        Workspace workspace = workspaceApiClient.getWorkspaceById(37681323914427L);
+        workspace.addUser("anton.external@gmail.com");
 /*        Workspace workspace = workspaceApiClient.getWorkspaceById(37681323914427L);
         workspace.setName("Jewelline");
         workspace.save();

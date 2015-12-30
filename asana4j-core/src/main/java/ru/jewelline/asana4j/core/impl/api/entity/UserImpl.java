@@ -5,6 +5,7 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,8 +17,13 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
     private String photoUrl;
     private List<Workspace> workspaces;
 
-    public UserImpl() {
-        super(UserImpl.class);
+    public UserImpl(ApiEntityContext context) {
+        super(UserImpl.class, context);
+    }
+
+    @Override
+    protected List<JsonFieldReader<UserImpl>> getFieldReaders() {
+        return Arrays.<JsonFieldReader<UserImpl>>asList(UserImplProcessor.values());
     }
 
     @Override
@@ -61,8 +67,13 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
         this.photoUrl = photoUrl;
     }
 
-    public void setWorkspaces(List<Workspace> workspaces) {
-        this.workspaces = workspaces;
+    public WorkspaceImpl addWorkspace() {
+        WorkspaceImpl workspace = getContext().getEntity(WorkspaceImpl.class);
+        if (this.workspaces == null){
+            this.workspaces = new ArrayList<>();
+        }
+        this.workspaces.add(workspace);
+        return workspace;
     }
 
     @Override
@@ -89,10 +100,5 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
         out.append(", email = ").append(getEmail());
         out.append(']');
         return out.toString();
-    }
-
-    @Override
-    protected List<JsonFieldReader<UserImpl>> getFieldReaders() {
-        return Arrays.<JsonFieldReader<UserImpl>>asList(UserImplProcessor.values());
     }
 }

@@ -2,12 +2,10 @@ package ru.jewelline.asana4j.core.impl.api.entity.common;
 
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
-import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderProvider;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
+import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.JsonEntitySerializer;
 
 import java.io.InputStream;
@@ -16,19 +14,15 @@ import java.util.List;
 
 public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity, ApiEntityInstanceProvider<T> {
     private final Class<T> clazz;
-    private ApiRequestBuilderProvider requestBuilderProvider;
+    private final ApiEntityContext context;
 
-    public ApiEntityImpl(Class<T> clazz) {
+    public ApiEntityImpl(Class<T> clazz, ApiEntityContext context) {
         this.clazz = clazz;
+        this.context = context;
     }
 
-    public ApiEntityImpl(Class<T> clazz, ApiRequestBuilderProvider requestBuilderProvider) {
-        this.clazz = clazz;
-        this.requestBuilderProvider = requestBuilderProvider;
-    }
-
-    protected ApiRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return this.requestBuilderProvider.newRequest(requestModifiers);
+    protected ApiEntityContext getContext() {
+        return this.context;
     }
 
     @Override
