@@ -2,7 +2,6 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.api.entity.io.MapAsJsonSerializer;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
@@ -76,7 +75,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
         entity.put("workspace", this.getId());
         this.newRequest()
                 .path("workspaces/" + this.getId() + "/removeUser")
-                .setEntity(entity, new MapAsJsonSerializer())
+                .setEntity(new CachedJsonEntity(entity))
                 .buildAs(HttpMethod.POST)
                 .execute();
     }

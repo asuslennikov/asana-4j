@@ -17,4 +17,7 @@ public interface JsonEntity extends SerializableEntity {
      * @return a json representation of entity.
      */
     JSONObject asJson();
+
+    @Override
+    EntitySerializer<JsonEntity> getSerializer();
 }

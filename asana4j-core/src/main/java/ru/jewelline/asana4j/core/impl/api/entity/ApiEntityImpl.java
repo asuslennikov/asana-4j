@@ -6,14 +6,12 @@ import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
-import ru.jewelline.asana4j.api.entity.io.JsonSerializer;
-import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ApiEntityImpl<T extends JsonEntity> implements SerializableEntity, JsonEntity, ApiEntityInstanceProvider<T> {
+public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity, ApiEntityInstanceProvider<T> {
     private final Class<T> clazz;
     private ApiRequestBuilderProvider requestBuilderProvider;
 
@@ -77,12 +75,12 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements Serializabl
     }
 
     @Override
-    public EntitySerializer getSerializer() {
-        return JsonSerializer.INSTANCE;
+    public EntitySerializer<JsonEntity> getSerializer() {
+        return JsonEntitySerializer.INSTANCE;
     }
 
     @Override
     public InputStream getSerialized() {
-        return getSerializer().serialize(asJson());
+        return getSerializer().serialize(this);
     }
 }

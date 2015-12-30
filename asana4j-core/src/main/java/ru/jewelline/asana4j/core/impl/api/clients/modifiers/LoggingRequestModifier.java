@@ -17,7 +17,7 @@ public class LoggingRequestModifier implements RequestModifier {
 
     @Override
     public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
-        StringBuilder sb = new StringBuilder("\n=======================\nRequest url: ").append(requestBuilder.getPath());
+        StringBuilder sb = new StringBuilder("=======================\nRequest url: ").append(requestBuilder.getPath());
         sb.append("\n\tMethod: ").append(httpMethod.name());
         sb.append("\n\tHeaders:");
         for (Map.Entry header : requestBuilder.getHeaders().entrySet()) {

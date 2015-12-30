@@ -18,5 +18,5 @@ public interface SerializableEntity {
     /**
      * @return serializer assigned for that entity
      */
-    EntitySerializer getSerializer();
+    EntitySerializer<?> getSerializer();
 }

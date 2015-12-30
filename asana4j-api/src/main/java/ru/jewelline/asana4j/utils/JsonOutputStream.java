@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class JsonOutputStream extends OutputStream{
+public class JsonOutputStream extends OutputStream {
     private ByteArrayOutputStream out;
 
     public JsonOutputStream() {
@@ -41,15 +41,15 @@ public class JsonOutputStream extends OutputStream{
         this.out.close();
     }
 
-    public String asString(){
+    public String asString() {
         return new String(this.out.toByteArray());
     }
 
-    public byte[] asByteArray(){
+    public byte[] asByteArray() {
         return this.out.toByteArray();
     }
 
-    public JSONObject asJson(){
+    public JSONObject asJson() {
         JSONObject result = null;
         String responseAsString = asString();
         if (responseAsString != null) {

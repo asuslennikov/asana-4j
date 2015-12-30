@@ -74,8 +74,8 @@ public class ApiRequestBuilderImpl implements ApiRequestBuilder {
 
     @Override
     public ApiRequestBuilder setEntity(SerializableEntity entity) {
-        if (entity!= null && entity instanceof JsonEntity) {
-            this.entity = new CachedJsonEntity(entity);
+        if (entity!= null && entity instanceof JsonEntity && !(entity instanceof CachedJsonEntity)) {
+            this.entity = new CachedJsonEntity((JsonEntity) entity);
         } else {
             this.entity = entity;
         }
