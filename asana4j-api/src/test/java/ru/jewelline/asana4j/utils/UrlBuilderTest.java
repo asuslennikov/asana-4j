@@ -14,7 +14,7 @@ public abstract class UrlBuilderTest {
         assertThat(getUrlBuilder().path(null).build()).isEqualTo("");
     }
 
-    protected abstract URLBuilder getUrlBuilder();
+    protected abstract URLCreator.Builder getUrlBuilder();
 
     @Test
     public void test_withPathOnly(){

@@ -3,7 +3,7 @@ package ru.jewelline.asana4j.se;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.utils.URLBuilder;
+import ru.jewelline.asana4j.utils.URLCreator;
 import ru.jewelline.asana4j.utils.UrlBuilderTest;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -11,7 +11,7 @@ import ru.jewelline.asana4j.utils.UrlBuilderTest;
 public class UrlBuilderAndroidUtilTest extends UrlBuilderTest {
 
     @Override
-    protected URLBuilder getUrlBuilder() {
-        return new UrlBuilderAndroidUtil();
+    protected URLCreator.Builder getUrlBuilder() {
+        return new UrlCreatorAndroidUtil().builder();
     }
 }

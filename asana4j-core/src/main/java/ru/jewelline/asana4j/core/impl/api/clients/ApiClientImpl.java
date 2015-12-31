@@ -16,6 +16,7 @@ public abstract class ApiClientImpl implements ApiRequestBuilderProvider {
     public ApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
         this.authenticationService = authenticationService;
         this.httpClient = httpClient;
+        // TODO Don't pass 'this' out of a constructor
         this.entityContext = new ApiEntityContext(this);
     }
 

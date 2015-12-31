@@ -22,6 +22,7 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
     public ApiEntityContext(ApiRequestBuilderProvider requestBuilderProvider) {
         this.requestBuilderProvider = requestBuilderProvider;
         this.instanceProviders = new HashMap<>();
+        // TODO Don't pass 'this' out of a constructor (through anonymous inner class)
         registerApiEntities();
     }
 

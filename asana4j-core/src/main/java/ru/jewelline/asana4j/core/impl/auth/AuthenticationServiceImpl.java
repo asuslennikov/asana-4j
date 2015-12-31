@@ -3,8 +3,10 @@ package ru.jewelline.asana4j.core.impl.auth;
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.auth.AuthenticationType;
+import ru.jewelline.asana4j.http.HttpClient;
+import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.PreferencesService;
-import ru.jewelline.asana4j.utils.ServiceLocator;
+import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -22,12 +24,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private volatile AuthenticationType authenticationType;
 
-    public AuthenticationServiceImpl(PreferencesService preferencesService, ServiceLocator serviceLocator) {
+    public AuthenticationServiceImpl(PreferencesService preferencesService, HttpClient httpClient, URLCreator urlCreator, Base64 base64) {
         this.preferencesService = preferencesService;
         this.authenticationWorkers = new EnumMap(AuthenticationType.class);
-        this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(serviceLocator));
-        this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(serviceLocator));
-        this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(serviceLocator));
+        // TODO Don't pass 'this' out of a constructor
+        this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(this, base64));
+        this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(this, urlCreator));
+        this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(this, httpClient, urlCreator));
     }
 
     @Override
@@ -42,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void authenticate() throws AuthenticationException {
-        if (getAuthenticationType() == null){
+        if (getAuthenticationType() == null) {
             throw new AuthenticationException(AuthenticationException.WRONG_AUTHENTICATION_TYPE,
                     "You must specify an authentication type, see more info in java doc for " +
                             "AuthenticationService#setAuthenticationType(AuthenticationType)");
@@ -51,13 +54,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void setAuthenticationType(AuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
+    public AuthenticationType getAuthenticationType() {
+        return this.authenticationType;
     }
 
     @Override
-    public AuthenticationType getAuthenticationType() {
-        return this.authenticationType;
+    public void setAuthenticationType(AuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
     }
 
     @Override
@@ -90,12 +93,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void logout() {
-        if (getAuthenticationType() != null){
+        if (getAuthenticationType() != null) {
             getWorker().logout();
         }
     }
 
-    private AuthenticationWorker getWorker(){
+    private AuthenticationWorker getWorker() {
         return this.authenticationWorkers.get(getAuthenticationType());
     }
 }

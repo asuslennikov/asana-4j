@@ -9,7 +9,7 @@ import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
 import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.NetworkException;
-import ru.jewelline.asana4j.utils.URLBuilder;
+import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,13 +24,20 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpClientImplTest {
 
     @Mock
-    private URLBuilder urlBuilder;
+    private URLCreator urlCreator;
     @Mock
     private HttpURLConnection connection;
     private BaseHttpConfiguration httpConfig = new BaseHttpConfiguration();
@@ -71,7 +78,7 @@ public class HttpClientImplTest {
     }
 
     private HttpClientImpl testInstance() {
-        return new HttpClientImpl(this.urlBuilder, this.httpConfig) {
+        return new HttpClientImpl(this.urlCreator, this.httpConfig) {
             @Override
             protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
                 return HttpClientImplTest.this.connection;
