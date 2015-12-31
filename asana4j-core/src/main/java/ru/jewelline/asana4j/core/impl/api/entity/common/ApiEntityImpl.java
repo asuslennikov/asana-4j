@@ -21,7 +21,7 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
         this.context = context;
     }
 
-    protected ApiEntityContext getContext() {
+    public ApiEntityContext getContext() {
         return this.context;
     }
 

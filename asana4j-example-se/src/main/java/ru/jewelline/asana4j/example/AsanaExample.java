@@ -3,6 +3,8 @@ package ru.jewelline.asana4j.example;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
+import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.auth.AuthenticationType;
 
@@ -17,6 +19,8 @@ public class AsanaExample {
         System.out.println(userClient.getCurrentUser());
 
         WorkspaceApiClient workspaceClient = asanaContext.getWorkspaceClient();
-        System.out.println(workspaceClient.getWorkspaces(Pagination.FIRST_PAGE));
+        for (Workspace workspace : workspaceClient.getWorkspaces(Pagination.FIRST_PAGE)) {
+            System.out.println(workspace);
+        }
     }
 }

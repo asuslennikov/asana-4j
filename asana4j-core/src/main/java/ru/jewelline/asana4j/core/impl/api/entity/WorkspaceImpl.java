@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;

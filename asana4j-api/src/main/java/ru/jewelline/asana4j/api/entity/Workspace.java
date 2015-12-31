@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
+import java.util.List;
+
 public interface Workspace extends HasId, HasName {
     boolean isOrganisation();
 
