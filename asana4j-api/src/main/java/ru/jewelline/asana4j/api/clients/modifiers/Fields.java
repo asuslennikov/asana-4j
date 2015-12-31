@@ -47,7 +47,7 @@ public class Fields implements RequestModifier {
             // modify entity: add options parameter
             JSONObject json = ((JsonEntity) entity).asJson();
             if (json != null) {
-
+                // TODO handle requests with payload, see https://asana.com/developers/documentation/getting-started/input-output-options
             }
         }
     }

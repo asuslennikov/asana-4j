@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationServiceImpl(PreferencesService preferencesService, HttpClient httpClient, URLCreator urlCreator, Base64 base64) {
         this.preferencesService = preferencesService;
-        this.authenticationWorkers = new EnumMap(AuthenticationType.class);
+        this.authenticationWorkers = new EnumMap<>(AuthenticationType.class);
         // TODO Don't pass 'this' out of a constructor
         this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(this, base64));
         this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(this, urlCreator));
@@ -85,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 String charset = Charset.isSupported("UTF-8") ? "UTF-8" : Charset.defaultCharset().displayName();
                 data = URLDecoder.decode(data, charset);
             } catch (UnsupportedEncodingException ex) {
-
+                // The system should always have the platform default
             }
             getWorker().parseOAuthResponse(data);
         }

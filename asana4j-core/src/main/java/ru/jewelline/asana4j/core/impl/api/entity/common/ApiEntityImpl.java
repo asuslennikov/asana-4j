@@ -36,7 +36,6 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("unused")
     public T fromJson(JSONObject object) {
         if (object != null) {
             List<JsonFieldReader<T>> fieldReaders = getFieldReaders();

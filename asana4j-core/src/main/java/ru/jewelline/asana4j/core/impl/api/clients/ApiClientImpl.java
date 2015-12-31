@@ -20,10 +20,6 @@ public abstract class ApiClientImpl implements ApiRequestBuilderProvider {
         this.entityContext = new ApiEntityContext(this);
     }
 
-    protected AuthenticationService getAuthenticationService() {
-        return authenticationService;
-    }
-
     protected HttpClient getHttpClient() {
         return httpClient;
     }
@@ -34,7 +30,7 @@ public abstract class ApiClientImpl implements ApiRequestBuilderProvider {
 
     @Override
     public final ApiRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return new ApiRequestWithModifiersBuilder(getAuthenticationService(), getHttpClient())
+        return new ApiRequestWithModifiersBuilder(this.authenticationService, getHttpClient())
                 .withRequestModifiers(requestModifiers);
     }
 

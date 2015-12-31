@@ -26,12 +26,12 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
         registerApiEntities();
     }
 
-    private final void registerApiEntities(){
+    private void registerApiEntities(){
         registerEntityClass(UserImpl.class);
         registerEntityClass(WorkspaceImpl.class);
     }
 
-    private final <T extends ApiEntityImpl<T>> void registerEntityClass(final Class<T> entityClass) {
+    private <T extends ApiEntityImpl<T>> void registerEntityClass(final Class<T> entityClass) {
         if (entityClass == null) {
             throw new IllegalArgumentException("Entity class can not be null.");
         }
@@ -41,9 +41,8 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
                 try {
                     Constructor<T> constructor = entityClass.getDeclaredConstructor(ApiEntityContext.class);
                     return constructor.newInstance(ApiEntityContext.this);
-                } catch (NoSuchMethodException e) {
+                } catch (NoSuchMethodException | InstantiationException e) {
                 } catch (InvocationTargetException e) {
-                } catch (InstantiationException e) {
                 } catch (IllegalAccessException e) {
                 }
                 throw new ApiException(ApiException.API_ENTITY_INSTANTIATION_FAIL,

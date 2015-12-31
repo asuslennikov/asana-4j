@@ -25,7 +25,7 @@ public interface ApiRequestBuilder {
 
     Map<String, String> getHeaders();
 
-    ApiRequestBuilder setEntity(Object entity, EntitySerializer serializer);
+    <T> ApiRequestBuilder setEntity(T entity, EntitySerializer<T> serializer);
 
     ApiRequestBuilder setEntity(SerializableEntity entity);
 

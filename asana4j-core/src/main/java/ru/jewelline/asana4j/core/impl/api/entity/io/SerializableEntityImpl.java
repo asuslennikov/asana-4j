@@ -5,12 +5,12 @@ import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 
 import java.io.InputStream;
 
-public class SerializableEntityImpl implements SerializableEntity {
+public class SerializableEntityImpl<T> implements SerializableEntity {
 
-    private final Object entity;
-    private final EntitySerializer serializer;
+    private final T entity;
+    private final EntitySerializer<T> serializer;
 
-    public SerializableEntityImpl(EntitySerializer serializer, Object entity) {
+    public SerializableEntityImpl(EntitySerializer<T> serializer, T entity) {
         if (serializer == null){
             throw new IllegalArgumentException("Serializer can not be null");
         }
@@ -24,7 +24,7 @@ public class SerializableEntityImpl implements SerializableEntity {
     }
 
     @Override
-    public EntitySerializer getSerializer() {
+    public EntitySerializer<T> getSerializer() {
         return this.serializer;
     }
 }

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -284,7 +283,7 @@ public class HttpClientImplTest {
     @Test
     public void test_setResponseHeaders() {
         String hKey = "key";
-        List<String> hValue = Arrays.asList("value");
+        List<String> hValue = Collections.singletonList("value");
         Map<String, List<String>> headers = new HashMap<>();
         headers.put(hKey, hValue);
         HttpResponseImpl response = mock(HttpResponseImpl.class);

@@ -68,8 +68,8 @@ public class ApiRequestBuilderImpl implements ApiRequestBuilder {
     }
 
     @Override
-    public ApiRequestBuilder setEntity(Object entity, EntitySerializer serializer) {
-        return setEntity(new SerializableEntityImpl(serializer, entity));
+    public <T> ApiRequestBuilder setEntity(T entity, EntitySerializer<T> serializer) {
+        return setEntity(new SerializableEntityImpl<>(serializer, entity));
     }
 
     @Override

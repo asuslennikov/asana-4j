@@ -17,17 +17,14 @@ import ru.jewelline.asana4j.utils.URLCreator;
 
 public class AsanaContext {
     private final HttpClient httpClient;
-    private final URLCreator urlCreator;
-    private final Base64 base64;
     private final AuthenticationService authenticationService;
-    private final PreferencesService preferencesService;
 
     public AsanaContext() {
-        this.urlCreator = new UrlCreatorJavaSeUtil();
-        this.base64 = new Base64JavaSeUtil();
-        this.preferencesService = new InMemoryPreferenceService();
-        this.httpClient = new HttpClientImpl(this.urlCreator, new BaseHttpConfiguration());
-        this.authenticationService = new AuthenticationServiceImpl(preferencesService, httpClient, urlCreator, base64);
+        URLCreator urlCreator = new UrlCreatorJavaSeUtil();
+        Base64 base64 = new Base64JavaSeUtil();
+        PreferencesService preferencesService = new InMemoryPreferenceService();
+        this.httpClient = new HttpClientImpl(urlCreator, new BaseHttpConfiguration());
+        this.authenticationService = new AuthenticationServiceImpl(preferencesService, this.httpClient, urlCreator, base64);
     }
 
     public HttpClient getHttpClient() {
