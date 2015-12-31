@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import ru.jewelline.asana4j.api.clients.modifiers.Fields;
+import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
@@ -145,5 +147,14 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                 .setQueryParameter("user", userReference.toString())
                 .buildAs(HttpMethod.POST)
                 .execute();
+    }
+
+    @Override
+    public List<Project> getProjects() {
+        return getContext().newRequest()
+                .path("workspaces/" + this.getId() + "/projects")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(ProjectImpl.class));
     }
 }
