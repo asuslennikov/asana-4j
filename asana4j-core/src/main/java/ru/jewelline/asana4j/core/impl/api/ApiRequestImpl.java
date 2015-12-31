@@ -2,7 +2,6 @@ package ru.jewelline.asana4j.core.impl.api;
 
 import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiResponse;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
@@ -10,13 +9,11 @@ import ru.jewelline.asana4j.utils.JsonOutputStream;
 import java.io.InputStream;
 import java.util.Map;
 
-public class ApiRequestImpl<AT, T extends ApiEntity<AT>> implements ApiRequest<AT> {
+public class ApiRequestImpl implements ApiRequest {
     private final HttpRequest httpRequest;
-    private final ApiEntityInstanceProvider<T> instanceProvider;
 
-    public ApiRequestImpl(HttpRequest httpRequest, ApiEntityInstanceProvider<T> apiInstanceProvider) {
+    public ApiRequestImpl(HttpRequest httpRequest) {
         this.httpRequest = httpRequest;
-        this.instanceProvider = apiInstanceProvider;
     }
 
     @Override
@@ -35,8 +32,8 @@ public class ApiRequestImpl<AT, T extends ApiEntity<AT>> implements ApiRequest<A
     }
 
     @Override
-    public ApiResponse<AT> execute() {
+    public ApiResponse execute() {
         HttpResponse<JsonOutputStream> httpResponse = this.httpRequest.sendAndReadResponse(new JsonOutputStream());
-        return new ApiResponseImpl<>(httpResponse, this.instanceProvider);
+        return new ApiResponseImpl(httpResponse);
     }
 }

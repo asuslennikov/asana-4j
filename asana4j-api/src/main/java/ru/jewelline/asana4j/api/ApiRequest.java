@@ -3,7 +3,7 @@ package ru.jewelline.asana4j.api;
 import java.io.InputStream;
 import java.util.Map;
 
-public interface ApiRequest<T> {
+public interface ApiRequest {
     /**
      * @return a full API url
      */
@@ -23,5 +23,5 @@ public interface ApiRequest<T> {
      * Send this API request and read a server response
      * @return API response
      */
-    ApiResponse<T> execute();
+    ApiResponse execute();
 }

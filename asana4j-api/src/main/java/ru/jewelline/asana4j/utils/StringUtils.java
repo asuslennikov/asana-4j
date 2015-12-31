@@ -5,10 +5,12 @@ public final class StringUtils {
     }
 
     public static String getSubstring(String data, String startMarker, String endMarker) {
-        int startMarkerPosition = data.indexOf(startMarker);
-        if (startMarkerPosition >= 0) {
-            int startSubStringPosition = startMarkerPosition + startMarker.length();
-            return data.substring(startSubStringPosition, getEndSubStringPosition(data, startSubStringPosition, endMarker));
+        if (data != null && startMarker != null && endMarker != null) {
+            int startMarkerPosition = data.indexOf(startMarker);
+            if (startMarkerPosition >= 0) {
+                int startSubStringPosition = startMarkerPosition + startMarker.length();
+                return data.substring(startSubStringPosition, getEndSubStringPosition(data, startSubStringPosition, endMarker));
+            }
         }
         return null;
     }

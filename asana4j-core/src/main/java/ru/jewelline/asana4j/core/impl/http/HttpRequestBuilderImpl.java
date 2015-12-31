@@ -4,7 +4,7 @@ import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
 import ru.jewelline.asana4j.http.NetworkException;
-import ru.jewelline.asana4j.utils.URLBuilder;
+import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,13 +18,13 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
 
     private final HttpClientImpl httpClient;
 
-    private URLBuilder urlBuilder;
+    private URLCreator.Builder urlBuilder;
     private Map<String, String> headers;
     private InputStream entityStream;
 
-    HttpRequestBuilderImpl(URLBuilder urlBuilder, HttpClientImpl httpClient) {
+    HttpRequestBuilderImpl(URLCreator urlCreator, HttpClientImpl httpClient) {
         this.headers = new HashMap<>();
-        this.urlBuilder = urlBuilder;
+        this.urlBuilder = urlCreator.builder();
         this.httpClient = httpClient;
     }
 

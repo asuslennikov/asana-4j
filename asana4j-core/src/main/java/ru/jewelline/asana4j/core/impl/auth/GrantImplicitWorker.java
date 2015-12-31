@@ -2,13 +2,15 @@ package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
-import ru.jewelline.asana4j.utils.ServiceLocator;
-import ru.jewelline.asana4j.utils.URLBuilder;
+import ru.jewelline.asana4j.utils.URLCreator;
 
 public class GrantImplicitWorker extends AuthenticationWorker {
 
-    public GrantImplicitWorker(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    private final URLCreator urlCreator;
+
+    public GrantImplicitWorker(AuthenticationServiceImpl authenticationService, URLCreator urlCreator) {
+        super(authenticationService);
+        this.urlCreator = urlCreator;
     }
 
     void authenticate() throws AuthenticationException {
@@ -27,7 +29,7 @@ public class GrantImplicitWorker extends AuthenticationWorker {
     String getOAuthUrl() {
         String clientId = getClientIdOrThrowException();
         String redirectUrl = getRedirectUrlOrTrowException();
-        URLBuilder urlBuilder = getServiceLocator().getUrlBuilder()
+        URLCreator.Builder urlBuilder = this.urlCreator.builder()
                 .path(USER_OAUTH_ENDPOINT)
                 .addQueryParameter("client_id", clientId)
                 .addQueryParameter("redirect_uri", redirectUrl)

@@ -7,7 +7,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.NetworkException;
-import ru.jewelline.asana4j.utils.URLBuilder;
+import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -21,12 +21,15 @@ import static org.mockito.Mockito.when;
 public class HttpRequestBuilderImplTest {
 
     @Mock
-    private URLBuilder urlBuilder;
+    private URLCreator urlCreator;
+    @Mock
+    private URLCreator.Builder urlBuilder;
     @Mock
     private HttpClientImpl httpClient;
 
     private HttpRequestBuilderImpl getRequestBuilder() {
-        return new HttpRequestBuilderImpl(this.urlBuilder, this.httpClient);
+        when(urlCreator.builder()).thenReturn(urlBuilder);
+        return new HttpRequestBuilderImpl(this.urlCreator, this.httpClient);
     }
 
     @Test

@@ -2,12 +2,15 @@ package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
-import ru.jewelline.asana4j.utils.ServiceLocator;
+import ru.jewelline.asana4j.utils.Base64;
 
 public class BasicAuthenticationWorker extends AuthenticationWorker {
 
-    public BasicAuthenticationWorker(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    private final Base64 base64;
+
+    public BasicAuthenticationWorker(AuthenticationServiceImpl authenticationService, Base64 base64) {
+        super(authenticationService);
+        this.base64 = base64;
     }
 
     @Override
@@ -18,15 +21,15 @@ public class BasicAuthenticationWorker extends AuthenticationWorker {
     @Override
     public String getHeader() {
         String apiKey = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.API_KEY);
-        if (apiKey != null){
-            return  "Basic " + getServiceLocator().getBase64Tool().encode(apiKey + ':');
+        if (apiKey != null) {
+            return "Basic " + this.base64.encode(apiKey + ':');
         }
         return null;
     }
 
     void authenticate() throws AuthenticationException {
         // do nothing, just check that we have all required properties and throw exception if not
-        if (!isAuthenticated()){
+        if (!isAuthenticated()) {
             throw new AuthenticationException(AuthenticationException.NOT_ENOUGH_INFO_FOR_AUTHENTICATION,
                     "The property 'AuthenticationType.Properties.API_KEY' must be specified, see Java doc for " +
                             "AuthenticationService#setAuthenticationProperty(String, Object). " +

@@ -6,8 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.ApiEntity;
-import ru.jewelline.asana4j.core.impl.api.entity.processors.WorkspaceImplProcessor;
+import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -24,19 +23,13 @@ public class WorkspaceImplTest {
     }
 
     @Test
-    public void test_hasConstructorWithoutParameters() {
-        new WorkspaceImpl();
-        // asserts no exceptions
-    }
-
-    @Test
     public void test_implementsApiEntity() {
-        assertThat(new WorkspaceImpl()).isInstanceOf(ApiEntity.class);
+        assertThat(new WorkspaceImpl(null)).isInstanceOf(JsonEntity.class);
     }
 
     @Test
     public void test_tryFillFromNull() {
-        WorkspaceImpl workspace = new WorkspaceImpl();
+        WorkspaceImpl workspace = new WorkspaceImpl(null);
         assertThat(workspace.fromJson(null)).isNull();
     }
 
@@ -44,7 +37,7 @@ public class WorkspaceImplTest {
     public void test_fillFromIncorrectJson() {
         JSONObject json = new JSONObject();
         json.put("data", getJsonResponse());
-        new WorkspaceImpl().fromJson(json);
+        new WorkspaceImpl(null).fromJson(json);
     }
 
     @Test
@@ -52,7 +45,7 @@ public class WorkspaceImplTest {
         JSONObject json = getJsonResponse();
         json.put(WorkspaceImplProcessor.ID.getFieldName(), "string_id");
         try {
-            new WorkspaceImpl().fromJson(json);
+            new WorkspaceImpl(null).fromJson(json);
         } catch (ApiException ex) {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + WorkspaceImplProcessor.ID.getFieldName() + "'");
@@ -66,7 +59,7 @@ public class WorkspaceImplTest {
         JSONObject json = getJsonResponse();
         json.put(WorkspaceImplProcessor.ID.getFieldName(), JSONObject.NULL);
         try {
-            new WorkspaceImpl().fromJson(json);
+            new WorkspaceImpl(null).fromJson(json);
         } catch (ApiException ex) {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + WorkspaceImplProcessor.ID.getFieldName() + "'");
@@ -80,7 +73,7 @@ public class WorkspaceImplTest {
         JSONObject json = getJsonResponse();
         json.put(WorkspaceImplProcessor.NAME.getFieldName(), 123);
         try {
-            new WorkspaceImpl().fromJson(json);
+            new WorkspaceImpl(null).fromJson(json);
         } catch (ApiException ex) {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + WorkspaceImplProcessor.NAME.getFieldName() + "'");
@@ -94,7 +87,7 @@ public class WorkspaceImplTest {
         JSONObject json = getJsonResponse();
         json.put(WorkspaceImplProcessor.NAME.getFieldName(), JSONObject.NULL);
         try {
-            new WorkspaceImpl().fromJson(json);
+            new WorkspaceImpl(null).fromJson(json);
         } catch (ApiException ex) {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + WorkspaceImplProcessor.NAME.getFieldName() + "'");
@@ -106,7 +99,7 @@ public class WorkspaceImplTest {
     @Test
     public void test_fillWithCorrectJson() {
         JSONObject json = getJsonResponse();
-        Workspace workspace = new WorkspaceImpl().fromJson(json);
+        Workspace workspace = new WorkspaceImpl(null).fromJson(json);
         assertThat(workspace).isNotNull();
         assertThat(workspace.getId()).isEqualTo(36641231);
         assertThat(workspace.getName()).isEqualTo("workspace");
@@ -117,7 +110,7 @@ public class WorkspaceImplTest {
         JSONObject json = getJsonResponse();
         json.put(WorkspaceImplProcessor.ORGANISATION.getFieldName(), JSONObject.NULL);
         try {
-            new WorkspaceImpl().fromJson(json);
+            new WorkspaceImpl(null).fromJson(json);
         } catch (ApiException ex) {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + WorkspaceImplProcessor.ORGANISATION.getFieldName() + "'");
@@ -131,7 +124,7 @@ public class WorkspaceImplTest {
         JSONObject json = getJsonResponse();
         json.put(WorkspaceImplProcessor.ORGANISATION.getFieldName(), "bla-bla");
         try {
-            new WorkspaceImpl().fromJson(json);
+            new WorkspaceImpl(null).fromJson(json);
         } catch (ApiException ex) {
             assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FIELD_FORMAT);
             assertThat(ex.getMessage()).contains("'" + WorkspaceImplProcessor.ORGANISATION.getFieldName() + "'");

@@ -1,9 +1,9 @@
-package ru.jewelline.asana4j.api.entity;
+package ru.jewelline.asana4j.api.entity.io;
 
 import org.json.JSONObject;
 
 /**
- * This interface provides an ability not only serialize entity into stream, but also convert it into JSON format.
+ * This interface indicates that realization can be converted to JSON
  */
 public interface JsonEntity extends SerializableEntity {
 
@@ -17,4 +17,7 @@ public interface JsonEntity extends SerializableEntity {
      * @return a json representation of entity.
      */
     JSONObject asJson();
+
+    @Override
+    EntitySerializer<JsonEntity> getSerializer();
 }

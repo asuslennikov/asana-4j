@@ -1,20 +1,37 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.core.impl.api.entity.processors.WorkspaceImplProcessor;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
+import ru.jewelline.asana4j.core.impl.api.entity.io.CachedJsonEntity;
+import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace {
+public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Workspace {
 
     private long id;
     private String name;
     private boolean organisation;
 
-    public WorkspaceImpl() {
-        super(Workspace.class);
+    public WorkspaceImpl(ApiEntityContext context) {
+        super(WorkspaceImpl.class, context);
+    }
+
+    @Override
+    protected List<JsonFieldReader<WorkspaceImpl>> getFieldReaders() {
+        return Arrays.<JsonFieldReader<WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
+    }
+
+    @Override
+    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldWriters() {
+        return Collections.<JsonFieldWriter<WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
     }
 
     @Override
@@ -47,10 +64,10 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
 
     @Override
     public boolean equals(Object candidate) {
-        if (this == candidate){
+        if (this == candidate) {
             return true;
         }
-        if (candidate == null || getClass() != candidate.getClass()){
+        if (candidate == null || getClass() != candidate.getClass()) {
             return false;
         }
         return id == ((WorkspaceImpl) candidate).id;
@@ -72,12 +89,61 @@ public class WorkspaceImpl extends ApiEntityImpl<Workspace> implements Workspace
     }
 
     @Override
-    protected List<ApiEntityFieldWriter<Workspace, WorkspaceImpl>> getFieldWriters() {
-        return Arrays.<ApiEntityFieldWriter<Workspace, WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
+    public void update() {
+        getContext().newRequest()
+                .path("workspaces/" + this.getId())
+                .setEntity(this)
+                .buildAs(HttpMethod.PUT)
+                .execute()
+                .asApiObject(new ApiEntityDeserializer<>(this));
     }
 
     @Override
-    protected List<ApiEntityFieldReader<Workspace, WorkspaceImpl>> getFieldReaders() {
-        return Collections.<ApiEntityFieldReader<Workspace, WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
+    public User addUser(long userId) {
+        return addUserInternal(userId);
+    }
+
+    @Override
+    public User addUser(String email) {
+        return addUserInternal(email != null ? email : "");
+    }
+
+    @Override
+    public User addCurrentUser() {
+        return addUserInternal("me");
+    }
+
+    private User addUserInternal(Object userReference) {
+        return getContext().newRequest()
+                .path("workspaces/" + this.getId() + "/addUser")
+                .setQueryParameter("user", userReference.toString())
+                .setEntity(new CachedJsonEntity(new HashMap<String, Object>()))
+                .buildAs(HttpMethod.POST)
+                .execute()
+                .asApiObject(getContext().getDeserializer(UserImpl.class));
+    }
+
+    @Override
+    public void removeUser(long userId) {
+        removeUserInternal(userId);
+    }
+
+    @Override
+    public void removeUser(String email) {
+        removeUserInternal(email != null ? email : "");
+    }
+
+    @Override
+    public void removeCurrentUser() {
+        removeUserInternal("me");
+    }
+
+    private void removeUserInternal(Object userReference) {
+        getContext().newRequest()
+                .path("workspaces/" + this.getId() + "/removeUser")
+                .setEntity(new CachedJsonEntity(new HashMap<String, Object>()))
+                .setQueryParameter("user", userReference.toString())
+                .buildAs(HttpMethod.POST)
+                .execute();
     }
 }

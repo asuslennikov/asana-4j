@@ -9,23 +9,26 @@ import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
-import ru.jewelline.asana4j.utils.ServiceLocator;
-import ru.jewelline.asana4j.utils.URLBuilder;
+import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.net.HttpURLConnection;
 
 public class GrantCodeWorker extends AuthenticationWorker {
 
-    public GrantCodeWorker(ServiceLocator serviceLocator) {
-        super(serviceLocator);
+    private final HttpClient httpClient;
+    private final URLCreator urlCreator;
+
+    public GrantCodeWorker(AuthenticationServiceImpl authenticationService, HttpClient httpClient, URLCreator urlCreator) {
+        super(authenticationService);
+        this.httpClient = httpClient;
+        this.urlCreator = urlCreator;
     }
 
     @Override
     void authenticate() throws AuthenticationException {
-        HttpClient httpClient = getServiceLocator().getHttpClient();
         try {
             JsonOutputStream responseBody = new JsonOutputStream();
-            HttpResponse response = httpClient.newRequest()
+            HttpResponse response = this.httpClient.newRequest()
                     .path(ACCESS_TOKEN_ENDPOINT)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
                     .entity(getAccessTokenRequestBody())
@@ -47,7 +50,7 @@ public class GrantCodeWorker extends AuthenticationWorker {
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE,
                     getStringPropertyFromJson(authResponse, "state"));
 
-        } catch (NetworkException networkExcepton) {
+        } catch (NetworkException networkException) {
             throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE);
         }
     }
@@ -58,6 +61,7 @@ public class GrantCodeWorker extends AuthenticationWorker {
             try {
                 result = obj.getString(property);
             } catch (JSONException e) {
+                // TODO log exception
             }
         }
         return result;
@@ -85,7 +89,7 @@ public class GrantCodeWorker extends AuthenticationWorker {
     String getOAuthUrl() {
         String clientId = getClientIdOrThrowException();
         String redirectUrl = getRedirectUrlOrTrowException();
-        URLBuilder urlBuilder = getServiceLocator().getUrlBuilder()
+        URLCreator.Builder urlBuilder = this.urlCreator.builder()
                 .path(USER_OAUTH_ENDPOINT)
                 .addQueryParameter("client_id", clientId)
                 .addQueryParameter("redirect_uri", redirectUrl)

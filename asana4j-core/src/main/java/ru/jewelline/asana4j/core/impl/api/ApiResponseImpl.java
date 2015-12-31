@@ -6,23 +6,21 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiResponse;
 import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.ResponsePostProcessor;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityInstanceProvider;
+import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
 
-public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse<AT> {
-
+public class ApiResponseImpl implements ApiResponse {
     public static final String DATA_ROOT = "data";
     public static final String NEXT_PAGE_ROOT = "next_page";
 
     private final HttpResponse<JsonOutputStream> httpResponse;
-    private final ApiEntityInstanceProvider<T> instanceProvider;
 
-    public ApiResponseImpl(HttpResponse<JsonOutputStream> httpResponse, ApiEntityInstanceProvider<T> instanceProvider) {
+    public ApiResponseImpl(HttpResponse<JsonOutputStream> httpResponse) {
         this.httpResponse = httpResponse;
-        this.instanceProvider = instanceProvider;
     }
 
     @Override
@@ -31,13 +29,13 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
     }
 
     @Override
-    public AT asApiObject() {
+    public <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)) {
             try {
                 Object dataRoot = jsonObj.get(DATA_ROOT);
                 if (dataRoot instanceof JSONObject) {
-                    return this.instanceProvider.newInstance().fromJson((JSONObject) dataRoot);
+                    return deserializer.deserialize(dataRoot);
                 } else if (dataRoot instanceof JSONArray) {
                     throw new ApiException(ApiException.INCORRECT_RESPONSE_FORMAT, "You are trying to process a " +
                             "collection of objects as a single entity");
@@ -50,7 +48,7 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
     }
 
     @Override
-    public PagedList<AT> asApiCollection() {
+    public <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
         if (jsonObj.has(DATA_ROOT)) {
             try {
@@ -61,9 +59,9 @@ public class ApiResponseImpl<AT, T extends ApiEntity<AT>> implements ApiResponse
                 } else if (dataRoot instanceof JSONArray) {
                     Pagination pagination = getPagination(jsonObj);
                     JSONArray objects = (JSONArray) dataRoot;
-                    PagedList<AT> apiCollection = new PagedList<>(pagination);
+                    PagedList<T> apiCollection = new PagedList<>(pagination);
                     for (int i = 0; i < objects.length(); i++) {
-                        apiCollection.add(this.instanceProvider.newInstance().fromJson(objects.getJSONObject(i)));
+                        apiCollection.add(deserializer.deserialize(objects.getJSONObject(i)));
                     }
                     return apiCollection;
                 }

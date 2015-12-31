@@ -2,8 +2,8 @@ package ru.jewelline.asana4j.api.clients.modifiers;
 
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.entity.JsonEntity;
-import ru.jewelline.asana4j.api.entity.SerializableEntity;
+import ru.jewelline.asana4j.api.entity.io.JsonEntity;
+import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class Fields implements RequestModifier {
@@ -47,7 +47,7 @@ public class Fields implements RequestModifier {
             // modify entity: add options parameter
             JSONObject json = ((JsonEntity) entity).asJson();
             if (json != null) {
-
+                // TODO handle requests with payload, see https://asana.com/developers/documentation/getting-started/input-output-options
             }
         }
     }

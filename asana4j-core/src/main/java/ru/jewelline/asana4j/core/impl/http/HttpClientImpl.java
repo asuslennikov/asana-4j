@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
 import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.http.NetworkException;
-import ru.jewelline.asana4j.utils.URLBuilder;
+import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -20,11 +20,11 @@ import java.util.Map;
 public class HttpClientImpl implements HttpClient {
     private static final int NO_SERVER_RESPONSE_CODE = -1;
 
-    private final URLBuilder urlBuilder;
+    private final URLCreator urlCreator;
     private final HttpConfiguration httpConfig;
 
-    public HttpClientImpl(URLBuilder urlBuilder, HttpConfiguration httpConfig) {
-        this.urlBuilder = urlBuilder;
+    public HttpClientImpl(URLCreator urlCreator, HttpConfiguration httpConfig) {
+        this.urlCreator = urlCreator;
         this.httpConfig = httpConfig;
     }
 
@@ -56,7 +56,7 @@ public class HttpClientImpl implements HttpClient {
 
     @Override
     public HttpRequestBuilder newRequest() {
-        return new HttpRequestBuilderImpl(this.urlBuilder, this);
+        return new HttpRequestBuilderImpl(this.urlCreator, this);
     }
 
     public <T extends OutputStream> HttpResponse<T> execute(HttpRequestImpl request, HttpResponseImpl<T> response) {

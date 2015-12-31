@@ -38,7 +38,7 @@ public final class ModifiersChain {
      * @param httpMethod     never can be <code>null</code>. If RequestModifier implementation passes a <code>null</code>
      *                       object as an argument the {@link IllegalArgumentException} will be raised.
      */
-    public void next(ApiRequestBuilder<?> requestBuilder, HttpMethod httpMethod) {
+    public void next(ApiRequestBuilder requestBuilder, HttpMethod httpMethod) {
         if (requestBuilder == null) {
             throw new IllegalArgumentException("The requestBuilder can not be null.");
         }
@@ -51,7 +51,7 @@ public final class ModifiersChain {
         doNext(requestBuilder, httpMethod);
     }
 
-    private void doNext(ApiRequestBuilder<?> requestBuilder, HttpMethod httpMethod) {
+    private void doNext(ApiRequestBuilder requestBuilder, HttpMethod httpMethod) {
         this.requestBuilder = requestBuilder;
         this.httpMethod = httpMethod;
         while (this.counter < (this.requestModifiers.length - 1)) {
