@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.List;
@@ -155,5 +156,13 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         out.append(", name = ").append(getName());
         out.append(']');
         return out.toString();
+    }
+
+    @Override
+    public void delete() {
+        getContext().newRequest()
+            .path("projects/" + getId())
+            .buildAs(HttpMethod.DELETE)
+            .execute();
     }
 }

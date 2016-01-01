@@ -23,4 +23,6 @@ public interface Project extends HasId, HasName {
     String getNotes();
 
     Workspace getWorkspace();
+
+    void delete();
 }

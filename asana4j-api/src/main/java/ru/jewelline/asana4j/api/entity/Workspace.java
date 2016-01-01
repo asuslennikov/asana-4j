@@ -22,4 +22,6 @@ public interface Workspace extends HasId, HasName {
     void update();
 
     List<Project> getProjects();
+
+    Project createProject(String name);
 }

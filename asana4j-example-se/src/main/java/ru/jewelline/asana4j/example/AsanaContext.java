@@ -1,8 +1,10 @@
 package ru.jewelline.asana4j.example;
 
+import ru.jewelline.asana4j.api.clients.ProjectApiClient;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.core.impl.api.clients.ProjectApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.UserApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
 import ru.jewelline.asana4j.core.impl.auth.AuthenticationServiceImpl;
@@ -41,5 +43,9 @@ public class AsanaContext {
 
     public WorkspaceApiClient getWorkspaceClient() {
         return new WorkspaceApiClientImpl(this.authenticationService, this.httpClient);
+    }
+
+    public ProjectApiClient getProjectClient() {
+        return new ProjectApiClientImpl(this.authenticationService, this.httpClient);
     }
 }
