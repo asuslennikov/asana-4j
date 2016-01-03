@@ -26,6 +26,8 @@ public interface Project extends HasId, HasName {
 
     Workspace getWorkspace();
 
+    List<Task> getTasks();
+
     void delete();
 
     ProjectUpdater startUpdate();

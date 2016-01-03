@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
+import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
@@ -137,6 +138,15 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     @Override
     public Workspace getWorkspace() {
         return this.workspace;
+    }
+
+    @Override
+    public List<Task> getTasks() {
+        return getContext().newRequest()
+                .path("projects/" + getId() + "/tasks")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(TaskImpl.class));
     }
 
     public void setWorkspace(Workspace workspace) {
