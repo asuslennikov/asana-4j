@@ -17,16 +17,22 @@ import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.URLCreator;
 
-public class AsanaContext {
+public class Asana {
     private final HttpClient httpClient;
     private final AuthenticationService authenticationService;
+    private UserApiClientImpl userClient;
+    private WorkspaceApiClientImpl workspaceClient;
+    private ProjectApiClientImpl projectClient;
 
-    public AsanaContext() {
+    public Asana() {
         URLCreator urlCreator = new UrlCreatorJavaSeUtil();
         Base64 base64 = new Base64JavaSeUtil();
         PreferencesService preferencesService = new InMemoryPreferenceService();
         this.httpClient = new HttpClientImpl(urlCreator, new BaseHttpConfiguration());
         this.authenticationService = new AuthenticationServiceImpl(preferencesService, this.httpClient, urlCreator, base64);
+        this.userClient = new UserApiClientImpl(this.authenticationService, httpClient);
+        this.workspaceClient = new WorkspaceApiClientImpl(this.authenticationService, this.httpClient);
+        this.projectClient = new ProjectApiClientImpl(this.authenticationService, this.httpClient);
     }
 
     public HttpClient getHttpClient() {
@@ -38,14 +44,14 @@ public class AsanaContext {
     }
 
     public UserApiClient getUserClient() {
-        return new UserApiClientImpl(this.authenticationService, httpClient);
+        return userClient;
     }
 
     public WorkspaceApiClient getWorkspaceClient() {
-        return new WorkspaceApiClientImpl(this.authenticationService, this.httpClient);
+        return workspaceClient;
     }
 
     public ProjectApiClient getProjectClient() {
-        return new ProjectApiClientImpl(this.authenticationService, this.httpClient);
+        return projectClient;
     }
 }
