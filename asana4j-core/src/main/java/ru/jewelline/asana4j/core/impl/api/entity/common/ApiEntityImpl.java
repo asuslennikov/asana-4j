@@ -1,5 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity.common;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
@@ -21,7 +22,7 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
         this.context = context;
     }
 
-    protected ApiEntityContext getContext() {
+    public ApiEntityContext getContext() {
         return this.context;
     }
 
@@ -41,9 +42,14 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
             List<JsonFieldReader<T>> fieldReaders = getFieldReaders();
             if (fieldReaders != null && fieldReaders.size() > 1) {
                 boolean hasAtLeastOneField = false;
-                for (JsonFieldReader<T> writer : fieldReaders) {
-                    if (object.has(writer.getFieldName())) {
-                        writer.read(object, this.clazz.cast(this));
+                for (JsonFieldReader<T> reader : fieldReaders) {
+                    if (!object.isNull(reader.getFieldName())) {
+                        try {
+                            reader.read(object, this.clazz.cast(this));
+                        } catch (JSONException ex) {
+                            throw new ApiException(ApiException.INCORRECT_RESPONSE_FIELD_FORMAT,
+                                    "Unable parse field '" + reader.getFieldName() + "' from json response " + object);
+                        }
                         hasAtLeastOneField = true;
                     }
                 }
@@ -62,8 +68,13 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
         List<JsonFieldWriter<T>> fieldWriters = getFieldWriters();
         if (fieldWriters != null && fieldWriters.size() > 0) {
             JSONObject json = new JSONObject();
-            for (JsonFieldWriter<T> reader : fieldWriters) {
-                reader.write(this.clazz.cast(this), json);
+            for (JsonFieldWriter<T> writer : fieldWriters) {
+                try {
+                    writer.write(this.clazz.cast(this), json);
+                } catch (JSONException ex){
+                    throw new ApiException(ApiException.API_ENTITY_SERIALIZATION_FAIL,
+                            "Unable to serialize field '" + writer.getFieldName() + "', source " + this);
+                }
             }
             return json;
         }

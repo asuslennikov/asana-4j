@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
+import java.util.List;
+
 public interface Workspace extends HasId, HasName {
     boolean isOrganisation();
 
@@ -18,4 +20,8 @@ public interface Workspace extends HasId, HasName {
     void removeCurrentUser();
 
     void update();
+
+    List<Project> getProjects();
+
+    Project createProject(String name);
 }
