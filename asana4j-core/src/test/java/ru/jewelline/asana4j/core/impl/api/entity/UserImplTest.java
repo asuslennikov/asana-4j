@@ -34,7 +34,7 @@ public class UserImplTest {
     }
 
     @Test
-    public void test_implementsApiEntity(){
+    public void test_implementsJsonEntity(){
         assertThat(testInstance()).isInstanceOf(JsonEntity.class);
     }
 
@@ -55,14 +55,8 @@ public class UserImplTest {
     public void test_fillFromJsonWithNullId(){
         JSONObject json = getJsonResponse();
         json.put(UserImplProcessor.ID.getFieldName(), JSONObject.NULL);
-        try {
-            testInstance().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.ID.getFieldName() + "'");
-            return;
-        }
-        fail("Exception expected!");
+        UserImpl user = testInstance().fromJson(json);
+        assertThat(user.getId()).isEqualTo(0);
     }
 
     @Test
@@ -83,14 +77,8 @@ public class UserImplTest {
     public void test_fillFromJsonWithNullName(){
         JSONObject json = getJsonResponse();
         json.put(UserImplProcessor.NAME.getFieldName(), JSONObject.NULL);
-        try {
-            testInstance().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.NAME.getFieldName() + "'");
-            return;
-        }
-        fail("Exception expected!");
+        UserImpl user = testInstance().fromJson(json);
+        assertThat(user.getName()).isNull();
     }
 
     @Test
@@ -111,14 +99,8 @@ public class UserImplTest {
     public void test_fillFromJsonWithNullMail(){
         JSONObject json = getJsonResponse();
         json.put(UserImplProcessor.EMAIL.getFieldName(), JSONObject.NULL);
-        try {
-            testInstance().fromJson(json);
-        } catch (ApiException ex){
-            assertThat(ex.getErrorCode() == ApiException.INCORRECT_RESPONSE_FORMAT);
-            assertThat(ex.getMessage()).contains("'" + UserImplProcessor.EMAIL.getFieldName() + "'");
-            return;
-        }
-        fail("Exception expected!");
+        UserImpl user = testInstance().fromJson(json);
+        assertThat(user.getEmail()).isNull();
     }
 
     @Test

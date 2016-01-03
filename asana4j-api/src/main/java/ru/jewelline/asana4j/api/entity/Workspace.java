@@ -20,4 +20,8 @@ public interface Workspace extends HasId, HasName {
     void removeCurrentUser();
 
     void update();
+
+    List<Project> getProjects();
+
+    Project createProject(String name);
 }

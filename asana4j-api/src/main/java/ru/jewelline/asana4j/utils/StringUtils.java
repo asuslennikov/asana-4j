@@ -22,4 +22,17 @@ public final class StringUtils {
         }
         return endSubStringPosition;
     }
+
+    public static boolean emptyOrOnlyWhiteSpace(String candidate) {
+        return candidate == null || nonNullOnlyWhiteSpace(candidate);
+    }
+
+    private static boolean nonNullOnlyWhiteSpace(String candidate) {
+        for (int i = 0; i < candidate.length(); i++) {
+            if (!Character.isWhitespace(candidate.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
