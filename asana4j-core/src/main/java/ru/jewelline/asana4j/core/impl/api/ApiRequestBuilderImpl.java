@@ -10,6 +10,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.io.SerializableEntityImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
+import ru.jewelline.asana4j.utils.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +31,14 @@ public class ApiRequestBuilderImpl implements ApiRequestBuilder {
 
     @Override
     public ApiRequestBuilder path(String apiSuffix) {
-        this.apiSuffix = apiSuffix;
+        if (!StringUtils.emptyOrOnlyWhiteSpace(apiSuffix)){
+            if (apiSuffix.startsWith("/")){
+                /** skip the first "/" symbol, because we already have it in the {@link BASE_API_URL} */
+                this.apiSuffix = apiSuffix.substring(1);
+            } else {
+                this.apiSuffix = apiSuffix;
+            }
+        }
         return this;
     }
 
