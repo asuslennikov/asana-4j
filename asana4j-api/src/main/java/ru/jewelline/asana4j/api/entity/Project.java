@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
+import ru.jewelline.asana4j.utils.StringUtils;
+
 import java.util.List;
 
 public interface Project extends HasId, HasName {
@@ -18,7 +20,7 @@ public interface Project extends HasId, HasName {
 
     List<User> getMembers();
 
-    String getColor();
+    Color getColor();
 
     String getNotes();
 
@@ -28,6 +30,62 @@ public interface Project extends HasId, HasName {
 
     ProjectUpdater startUpdate();
 
+    enum Color {
+        DARK_PINK("dark-pink"),
+        DARK_GREEN("dark-green"),
+        DARK_BLUE("dark-blue"),
+        DARK_RED("dark-red"),
+        DARK_TEAL("dark-teal"),
+        DARK_BROWN("dark-brown"),
+        DARK_ORANGE("dark-orange"),
+        DARK_PURPLE("dark-purple"),
+        DARK_WARM_GRAY("dark-warm-gray"),
+        LIGHT_PINK("light-pink"),
+        LIGHT_GREEN("light-green"),
+        LIGHT_BLUE("light-blue"),
+        LIGHT_RED("light-red"),
+        LIGHT_TEAL("light-teal"),
+        LIGHT_YELLOW("light-yellow"),
+        LIGHT_ORANGE("light-orange"),
+        LIGHT_PURPLE("light-purple"),
+        LIGHT_WARM_GRAY("light-warm-gray"),
+        NONE (null) {
+            @Override
+            public boolean isColorMatch(String colorCode) {
+                return StringUtils.emptyOrOnlyWhiteSpace(colorCode);
+            }
+        },
+        ;
+
+        private String colorCode;
+
+        Color(String colorCode) {
+            this.colorCode = colorCode;
+        }
+
+        public String getColorCode(){
+            return this.colorCode;
+        }
+
+        public boolean isColorMatch(String colorCode) {
+            return this.colorCode.equalsIgnoreCase(colorCode);
+        }
+
+        @Override
+        public String toString() {
+            return getColorCode();
+        }
+
+        public static Color getColorByCode(String colorCode){
+            for (Color color : Color.values()) {
+                if (color.isColorMatch(colorCode)){
+                    return color;
+                }
+            }
+            return Color.NONE;
+        }
+
+    }
     interface ProjectUpdater{
 
         ProjectUpdater setName(String name);
@@ -38,7 +96,7 @@ public interface Project extends HasId, HasName {
 
         ProjectUpdater setDueDate(String date);
 
-        ProjectUpdater setColor(String color);
+        ProjectUpdater setColor(Color color);
 
         ProjectUpdater setNotes(String notes);
 

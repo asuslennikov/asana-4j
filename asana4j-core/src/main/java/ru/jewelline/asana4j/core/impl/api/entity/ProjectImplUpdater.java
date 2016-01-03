@@ -22,7 +22,7 @@ public class ProjectImplUpdater implements Project.ProjectUpdater {
     private String dueDate;
     private boolean archived;
     private boolean pub;
-    private String color;
+    private Project.Color color;
     private String notes;
 
     public ProjectImplUpdater(ProjectImpl target) {
@@ -76,7 +76,7 @@ public class ProjectImplUpdater implements Project.ProjectUpdater {
     }
 
     @Override
-    public ProjectImplUpdater setColor(String color) {
+    public ProjectImplUpdater setColor(Project.Color color) {
         this.color = color;
         this.updatedFields.add(ProjectImplProcessor.COLOR);
         return this;

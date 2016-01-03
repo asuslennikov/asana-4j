@@ -23,7 +23,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     private boolean archived;
     private boolean pub;
     private List<User> members;
-    private String color;
+    private Color color;
     private String notes;
     private Workspace workspace;
 
@@ -117,11 +117,11 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     }
 
     @Override
-    public String getColor() {
+    public Color getColor() {
         return this.color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
