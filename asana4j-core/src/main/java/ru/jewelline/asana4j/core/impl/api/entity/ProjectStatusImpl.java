@@ -4,6 +4,7 @@ import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,11 @@ public class ProjectStatusImpl extends ApiEntityImpl<ProjectStatusImpl> implemen
     @Override
     protected List<JsonFieldReader<ProjectStatusImpl>> getFieldReaders() {
         return Arrays.<JsonFieldReader<ProjectStatusImpl>>asList(ProjectStatusImplProcessor.values());
+    }
+
+    @Override
+    protected List<JsonFieldWriter<ProjectStatusImpl>> getFieldWriters() {
+        return Arrays.<JsonFieldWriter<ProjectStatusImpl>>asList(ProjectStatusImplProcessor.values());
     }
 
     @Override

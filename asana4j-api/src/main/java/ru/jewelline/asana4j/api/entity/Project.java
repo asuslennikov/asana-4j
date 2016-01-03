@@ -25,4 +25,29 @@ public interface Project extends HasId, HasName {
     Workspace getWorkspace();
 
     void delete();
+
+    ProjectUpdater startUpdate();
+
+    interface ProjectUpdater{
+
+        ProjectUpdater setName(String name);
+
+        ProjectUpdater setOwner(User user);
+
+        ProjectUpdater setStatus(ProjectStatus.Color color, String text, User author);
+
+        ProjectUpdater setDueDate(String date);
+
+        ProjectUpdater setColor(String color);
+
+        ProjectUpdater setNotes(String notes);
+
+        ProjectUpdater setArchived(boolean isArchived);
+
+        ProjectUpdater setPublic(boolean isPublic);
+
+        Project abandon();
+
+        Project update();
+    }
 }

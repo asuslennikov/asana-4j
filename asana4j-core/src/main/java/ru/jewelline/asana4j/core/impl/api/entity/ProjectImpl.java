@@ -6,9 +6,11 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
@@ -25,6 +27,9 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     private String notes;
     private Workspace workspace;
 
+    private ProjectUpdater updater;
+    private List<JsonFieldWriter<ProjectImpl>> updatedFields = Collections.emptyList();
+
     public ProjectImpl(ApiEntityContext context) {
         super(ProjectImpl.class, context);
     }
@@ -32,6 +37,11 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     @Override
     protected List<JsonFieldReader<ProjectImpl>> getFieldReaders() {
         return Arrays.<JsonFieldReader<ProjectImpl>>asList(ProjectImplProcessor.values());
+    }
+
+    @Override
+    protected List<JsonFieldWriter<ProjectImpl>> getFieldWriters() {
+        return this.updatedFields;
     }
 
     @Override
@@ -164,5 +174,19 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
             .path("projects/" + getId())
             .buildAs(HttpMethod.DELETE)
             .execute();
+    }
+
+    @Override
+    public ProjectUpdater startUpdate() {
+        if (this.updater != null) {
+            throw new IllegalStateException("Another update process is in progress");
+        }
+        this.updater = new ProjectImplUpdater(this);
+        return this.updater;
+    }
+
+    public void stopUpdate(List<JsonFieldWriter<ProjectImpl>> updatedFields){
+        this.updater = null;
+        this.updatedFields = updatedFields;
     }
 }
