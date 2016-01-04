@@ -4,88 +4,69 @@ import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
-import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
+import ru.jewelline.asana4j.core.impl.api.entity.io.FieldsUpdater;
+import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
-public class ProjectImplUpdater implements Project.ProjectUpdater {
+public class ProjectImplUpdater extends FieldsUpdater implements Project.ProjectUpdater {
 
     private final ProjectImpl target;
-    private final List<JsonFieldWriter<ProjectImpl>> updatedFields;
-
-    private String name;
-    private User owner;
-    private ProjectStatusImpl status;
-    private String dueDate;
-    private boolean archived;
-    private boolean pub;
-    private Project.Color color;
-    private String notes;
 
     public ProjectImplUpdater(ProjectImpl target) {
         this.target = target;
-        this.updatedFields = new ArrayList<>();
     }
 
     @Override
-    public ProjectImplUpdater setName(String name) {
-        this.name = name;
-        this.updatedFields.add(ProjectImplProcessor.NAME);
+    public Project.ProjectUpdater setName(String name) {
+        putField(ProjectImplProcessor.NAME.getFieldName(), name);
         return this;
     }
 
     @Override
-    public ProjectImplUpdater setOwner(User owner) {
-        this.owner = owner;
-        this.updatedFields.add(ProjectImplProcessor.OWNER);
+    public Project.ProjectUpdater setOwner(User user) {
+        putField(ProjectImplProcessor.OWNER.getFieldName(), user);
         return this;
     }
 
     @Override
-    public Project.ProjectUpdater setStatus(ProjectStatus.Color color, String text, User author) {
-        this.status = this.target.getContext().getEntity(ProjectStatusImpl.class);
-        this.status.setColor(color);
-        this.status.setText(text);
-        this.status.setAuthor(author);
-        this.updatedFields.add(ProjectImplProcessor.CURRENT_STATUS);
+    public Project.ProjectUpdater setStatus(ProjectStatus.Color color, String text) {
+        Map<String, Object> status = new SimpleFieldsUpdater()
+                .setField(ProjectStatusImplProcessor.COLOR.getFieldName(), color.getColorCode())
+                .setField(ProjectStatusImplProcessor.TEXT.getFieldName(), text)
+                .wrapAsMap();
+        putField(ProjectImplProcessor.CURRENT_STATUS.getFieldName(), status);
         return this;
     }
 
     @Override
-    public ProjectImplUpdater setDueDate(String dueDate) {
-        this.dueDate = dueDate;
-        this.updatedFields.add(ProjectImplProcessor.DUE_DATE);
+    public Project.ProjectUpdater setDueDate(String date) {
+        putField(ProjectImplProcessor.DUE_DATE.getFieldName(), date);
         return this;
     }
 
     @Override
-    public ProjectImplUpdater setArchived(boolean archived) {
-        this.archived = archived;
-        this.updatedFields.add(ProjectImplProcessor.ARCHIVED);
+    public Project.ProjectUpdater setColor(Project.Color color) {
+        putField(ProjectImplProcessor.COLOR.getFieldName(), color.getColorCode());
         return this;
     }
 
     @Override
-    public ProjectImplUpdater setPublic(boolean isPublic) {
-        this.pub = isPublic;
-        this.updatedFields.add(ProjectImplProcessor.PUBLIC);
+    public Project.ProjectUpdater setNotes(String notes) {
+        putField(ProjectImplProcessor.NOTES.getFieldName(), notes);
         return this;
     }
 
     @Override
-    public ProjectImplUpdater setColor(Project.Color color) {
-        this.color = color;
-        this.updatedFields.add(ProjectImplProcessor.COLOR);
+    public Project.ProjectUpdater setArchived(boolean isArchived) {
+        putField(ProjectImplProcessor.ARCHIVED.getFieldName(), isArchived);
         return this;
     }
 
     @Override
-    public ProjectImplUpdater setNotes(String notes) {
-        this.notes = notes;
-        this.updatedFields.add(ProjectImplProcessor.NOTES);
+    public Project.ProjectUpdater setPublic(boolean isPublic) {
+        putField(ProjectImplProcessor.PUBLIC.getFieldName(), isPublic);
         return this;
     }
 
@@ -115,20 +96,11 @@ public class ProjectImplUpdater implements Project.ProjectUpdater {
 
     @Override
     public Project update() {
-        // even if this fields are not modified they will be updated after the request
-        this.target.setName(this.name);
-        this.target.setOwner(this.owner);
-        this.target.setCurrentStatus(this.status);
-        this.target.setDueDate(this.dueDate);
-        this.target.setColor(this.color);
-        this.target.setNotes(this.notes);
-        this.target.setArchived(this.archived);
-        this.target.setPublic(this.pub);
-        this.target.stopUpdate(this.updatedFields);
+        this.target.stopUpdate();
         return this.target.getContext()
                 .newRequest()
                 .path("projects/" + this.target.getId())
-                .setEntity(this.target)
+                .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)
                 .execute()
                 .asApiObject(new ApiEntityDeserializer<>(this.target));
@@ -136,7 +108,7 @@ public class ProjectImplUpdater implements Project.ProjectUpdater {
 
     @Override
     public Project abandon() {
-        this.target.stopUpdate(Collections.<JsonFieldWriter<ProjectImpl>>emptyList());
+        this.target.stopUpdate();
         return this.target;
     }
 }

@@ -53,4 +53,8 @@ public abstract class FieldsUpdater {
     protected SerializableEntity wrapFieldsAsEntity() {
         return new CachedJsonEntity(this.fields);
     }
+
+    protected Map<String, Object> wrapAsMap(){
+        return Collections.unmodifiableMap(this.fields);
+    }
 }

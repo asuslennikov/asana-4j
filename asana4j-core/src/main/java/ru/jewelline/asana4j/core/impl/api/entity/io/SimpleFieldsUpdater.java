@@ -3,6 +3,8 @@ package ru.jewelline.asana4j.core.impl.api.entity.io;
 import ru.jewelline.asana4j.api.entity.HasId;
 import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 
+import java.util.Map;
+
 public class SimpleFieldsUpdater extends FieldsUpdater {
 
     public SimpleFieldsUpdater setField(String fieldName, Object[] arr) {
@@ -28,5 +30,10 @@ public class SimpleFieldsUpdater extends FieldsUpdater {
     @Override
     public SerializableEntity wrapFieldsAsEntity() {
         return super.wrapFieldsAsEntity();
+    }
+
+    @Override
+    public Map<String, Object> wrapAsMap() {
+        return super.wrapAsMap();
     }
 }

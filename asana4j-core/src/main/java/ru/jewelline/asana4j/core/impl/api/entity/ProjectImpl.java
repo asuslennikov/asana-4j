@@ -11,7 +11,6 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
@@ -29,7 +28,6 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     private Workspace workspace;
 
     private ProjectUpdater updater;
-    private List<JsonFieldWriter<ProjectImpl>> updatedFields = Collections.emptyList();
 
     public ProjectImpl(ApiEntityContext context) {
         super(ProjectImpl.class, context);
@@ -42,7 +40,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
 
     @Override
     protected List<JsonFieldWriter<ProjectImpl>> getFieldWriters() {
-        return this.updatedFields;
+        return Arrays.<JsonFieldWriter<ProjectImpl>>asList(ProjectImplProcessor.values());
     }
 
     @Override
@@ -195,9 +193,8 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.updater;
     }
 
-    public void stopUpdate(List<JsonFieldWriter<ProjectImpl>> updatedFields){
+    public void stopUpdate(){
         this.updater = null;
-        this.updatedFields = updatedFields;
     }
 
     @Override

@@ -96,7 +96,7 @@ public interface Project extends HasId, HasName {
 
         ProjectUpdater setOwner(User user);
 
-        ProjectUpdater setStatus(ProjectStatus.Color color, String text, User author);
+        ProjectUpdater setStatus(ProjectStatus.Color color, String text);
 
         ProjectUpdater setDueDate(String date);
 
