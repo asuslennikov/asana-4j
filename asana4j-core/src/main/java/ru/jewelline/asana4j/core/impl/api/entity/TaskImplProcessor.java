@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.entity.Project;
+import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 
@@ -33,7 +34,7 @@ public enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
     ASSIGNEE_STATUS("assignee_status") {
         @Override
         public void read(JSONObject source, TaskImpl target) throws JSONException {
-            target.setAssigneeStatus(source.getString(getFieldName()));
+            target.setAssigneeStatus(Task.AssigneeStatus.getStatusByCode(source.getString(getFieldName())));
         }
     },
     CREATED_AT("created_at") {

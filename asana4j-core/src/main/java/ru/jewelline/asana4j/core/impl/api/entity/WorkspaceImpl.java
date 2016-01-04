@@ -1,18 +1,18 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Project;
+import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
-import ru.jewelline.asana4j.core.impl.api.entity.io.CachedJsonEntity;
+import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Workspace {
@@ -117,8 +117,9 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     private User addUserInternal(Object userReference) {
         return getContext().newRequest()
                 .path("workspaces/" + this.getId() + "/addUser")
-                .setQueryParameter("user", userReference.toString())
-                .setEntity(new CachedJsonEntity(new HashMap<String, Object>()))
+                .setEntity(new SimpleFieldsUpdater()
+                        .setField("user", userReference.toString())
+                        .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(UserImpl.class));
@@ -142,8 +143,9 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     private void removeUserInternal(Object userReference) {
         getContext().newRequest()
                 .path("workspaces/" + this.getId() + "/removeUser")
-                .setEntity(new CachedJsonEntity(new HashMap<String, Object>()))
-                .setQueryParameter("user", userReference.toString())
+                .setEntity(new SimpleFieldsUpdater()
+                        .setField("user", userReference.toString())
+                        .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute();
     }
@@ -160,13 +162,19 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     @Override
     public Project createProject(String name) {
+        SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
+                .setField("workspace", getId())
+                .setField("name", name);
         return getContext().newRequest()
                 .path("projects")
-                .setEntity(new CachedJsonEntity(new HashMap<String, Object>()))
-                .setQueryParameter("workspace", String.valueOf(getId()))
-                .setQueryParameter("name", name)
+                .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(ProjectImpl.class));
+    }
+
+    @Override
+    public Task.TaskCreator createTask() {
+        return new TaskImplCreator(getContext()).setWorkspace(this);
     }
 }

@@ -32,6 +32,8 @@ public interface Project extends HasId, HasName {
 
     ProjectUpdater startUpdate();
 
+    Task.TaskCreator createTask();
+
     enum Color {
         DARK_PINK("dark-pink"),
         DARK_GREEN("dark-green"),

@@ -8,6 +8,7 @@ import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.AuthenticationRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.DataRootRequestModifier;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.JsonContentTypeModifier;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.LoggingRequestModifier;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
@@ -41,6 +42,7 @@ public class ApiRequestWithModifiersBuilder extends ApiRequestBuilderImpl {
         RequestModifier[] mandatoryRequestModifiers = new RequestModifier[]{
                 new AuthenticationRequestModifier(this.authenticationService),
                 new DataRootRequestModifier(),
+                new JsonContentTypeModifier(),
                 new LoggingRequestModifier()
         };
         if (this.requestModifiers == null || this.requestModifiers.length == 0) {

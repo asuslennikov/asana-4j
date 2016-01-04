@@ -199,4 +199,9 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         this.updater = null;
         this.updatedFields = updatedFields;
     }
+
+    @Override
+    public Task.TaskCreator createTask() {
+        return new TaskImplCreator(getContext()).setProjects(this);
+    }
 }

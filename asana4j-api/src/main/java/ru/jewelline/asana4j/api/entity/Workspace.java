@@ -24,4 +24,6 @@ public interface Workspace extends HasId, HasName {
     List<Project> getProjects();
 
     Project createProject(String name);
+
+    Task.TaskCreator createTask();
 }

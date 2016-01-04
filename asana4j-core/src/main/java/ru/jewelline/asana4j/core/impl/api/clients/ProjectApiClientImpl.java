@@ -6,11 +6,9 @@ import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
-import ru.jewelline.asana4j.core.impl.api.entity.io.CachedJsonEntity;
+import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
-
-import java.util.HashMap;
 
 public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiClient {
 
@@ -24,11 +22,12 @@ public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiCli
 
     @Override
     public Project create(long workspaceId, String projectName) {
+        SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
+                .setField("workspace", workspaceId)
+                .setField("name", projectName);
         return newRequest()
                 .path("projects")
-                .setEntity(new CachedJsonEntity(new HashMap<String, Object>()))
-                .setQueryParameter("workspace", String.valueOf(workspaceId))
-                .setQueryParameter("name", projectName)
+                .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getProjectDeserializer());

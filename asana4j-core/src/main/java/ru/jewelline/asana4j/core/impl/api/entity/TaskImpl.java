@@ -16,7 +16,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     private long id;
     private String name;
     private User assignee;
-    private String assigneeStatus;
+    private AssigneeStatus assigneeStatus;
     private String createdAt;
     private boolean completed;
     private String completedAt;
@@ -69,11 +69,11 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     }
 
     @Override
-    public String getAssigneeStatus() {
+    public AssigneeStatus getAssigneeStatus() {
         return this.assigneeStatus;
     }
 
-    public void setAssigneeStatus(String assigneeStatus) {
+    public void setAssigneeStatus(AssigneeStatus assigneeStatus) {
         this.assigneeStatus = assigneeStatus;
     }
 
