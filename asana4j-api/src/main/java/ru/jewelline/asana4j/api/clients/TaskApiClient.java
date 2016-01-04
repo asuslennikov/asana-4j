@@ -10,5 +10,5 @@ public interface TaskApiClient {
 
     PagedList<Task> getTasksForProject(long projectId, RequestModifier... requestModifiers);
 
-
+    void deleteTask(long taskId);
 }

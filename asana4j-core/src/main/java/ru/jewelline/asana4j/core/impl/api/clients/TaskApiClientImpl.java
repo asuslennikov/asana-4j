@@ -18,8 +18,6 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
     private EntityDeserializer<TaskImpl> getTaskDeserializer() {
         return getEntityContext().getDeserializer(TaskImpl.class);
-
-
     }
 
     @Override
@@ -38,5 +36,13 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getTaskDeserializer());
+    }
+
+    @Override
+    public void deleteTask(long taskId) {
+        newRequest()
+                .path("tasks/" + taskId)
+                .buildAs(HttpMethod.GET)
+                .execute();
     }
 }

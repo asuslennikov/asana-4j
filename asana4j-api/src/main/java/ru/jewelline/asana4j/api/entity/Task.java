@@ -9,4 +9,6 @@ public interface Task extends HasId, HasName {
     boolean isCompleted();
 
     String getNotes();
+
+    void delete();
 }
