@@ -1,5 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
@@ -151,7 +152,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     @Override
-    public List<Project> getProjects() {
+    public PagedList<Project> getProjects() {
         // TODO should we update a workspace of project to this instance?
         return getContext().newRequest()
                 .path("workspaces/" + this.getId() + "/projects")
