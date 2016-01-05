@@ -175,6 +175,6 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     @Override
     public Task.TaskCreator createTask() {
-        return new TaskImplCreator(getContext()).setWorkspace(this);
+        return new TaskImplCreator(getContext()).setWorkspace(getId());
     }
 }

@@ -26,7 +26,7 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
         registerApiEntities();
     }
 
-    private void registerApiEntities(){
+    private void registerApiEntities() {
         registerEntityClass(UserImpl.class);
         registerEntityClass(WorkspaceImpl.class);
         registerEntityClass(ProjectStatusImpl.class);
@@ -44,7 +44,8 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
                 try {
                     Constructor<T> constructor = entityClass.getDeclaredConstructor(ApiEntityContext.class);
                     return constructor.newInstance(ApiEntityContext.this);
-                } catch (NoSuchMethodException | InstantiationException e) {
+                } catch (NoSuchMethodException e) {
+                } catch (InstantiationException e) {
                 } catch (InvocationTargetException e) {
                 } catch (IllegalAccessException e) {
                 }

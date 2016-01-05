@@ -32,6 +32,8 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     private String notes;
     private Workspace workspace;
 
+    private TaskUpdater updater;
+
     public TaskImpl(ApiEntityContext context) {
         super(TaskImpl.class, context);
     }
@@ -199,6 +201,11 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return workspace;
     }
 
+    @Override
+    public boolean isSection() {
+        return getName() != null && getName().endsWith(":");
+    }
+
     public void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
@@ -235,5 +242,101 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .path("tasks/" + getId())
                 .buildAs(HttpMethod.DELETE)
                 .execute();
+    }
+
+    @Override
+    public Task.TaskUpdater startUpdate() {
+        if (this.updater != null) {
+            throw new IllegalStateException("Another update process is in progress");
+        }
+        this.updater = new TaskImplUpdater(this);
+        return this.updater;
+    }
+
+    public void stopUpdate() {
+        this.updater = null;
+    }
+
+    @Override
+    public TaskCreator createSubTask() {
+        return new TaskImplCreator(this.getContext()).setParent(this.getId());
+    }
+
+    @Override
+    public List<Task> getSubTasks() {
+        return getContext().newRequest()
+                .path("tasks/" + getId() + "/subtasks")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(this.getContext().getDeserializer(TaskImpl.class));
+    }
+
+    @Override
+    public void setParentTask(Long parentTaskId) {
+        getContext().newRequest()
+                .path("tasks/" + getId() + "/setParent")
+                .setQueryParameter("parent", String.valueOf(parentTaskId))
+                .buildAs(HttpMethod.POST)
+                .execute();
+    }
+
+    @Override
+    public AddProjectBuilder addProject(long projectId) {
+        return new AddProjectBuilderImpl(getContext(), getId(), projectId);
+    }
+
+    @Override
+    public void removeProject(long projectId) {
+        getContext().newRequest()
+                .path("/tasks/" + getId() + "/removeProject")
+                .setQueryParameter("project", String.valueOf(projectId))
+                .buildAs(HttpMethod.POST)
+                .execute();
+    }
+
+    private static class AddProjectBuilderImpl implements AddProjectBuilder {
+        private final ApiEntityContext entityContext;
+        private final long taskId;
+        private final long projectId;
+
+        private Long insertAfter;
+        private Long insertBefore;
+        private Long section;
+
+        public AddProjectBuilderImpl(ApiEntityContext entityContext, long taskId, long projectId) {
+            this.entityContext = entityContext;
+            this.taskId = taskId;
+            this.projectId = projectId;
+        }
+
+        @Override
+        public void update() {
+            this.entityContext.newRequest()
+                    .path("tasks/" + this.taskId + "/addProject")
+                    .setQueryParameter("project", String.valueOf(projectId))
+                    .setQueryParameter("insertAfter", String.valueOf(this.insertAfter))
+                    .setQueryParameter("insertBefore", String.valueOf(this.insertBefore))
+                    .setQueryParameter("section", String.valueOf(this.section))
+                    .buildAs(HttpMethod.POST)
+                    .execute();
+        }
+
+        @Override
+        public AddProjectBuilder section(Long sectionId) {
+            this.section = sectionId;
+            return this;
+        }
+
+        @Override
+        public AddProjectBuilder insertBefore(Long taskId) {
+            this.insertBefore = taskId;
+            return this;
+        }
+
+        @Override
+        public AddProjectBuilder insertAfter(Long taskId) {
+            this.insertAfter = taskId;
+            return this;
+        }
     }
 }

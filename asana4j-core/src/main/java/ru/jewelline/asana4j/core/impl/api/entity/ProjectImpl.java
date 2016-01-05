@@ -199,6 +199,6 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
 
     @Override
     public Task.TaskCreator createTask() {
-        return new TaskImplCreator(getContext()).setProjects(this);
+        return new TaskImplCreator(getContext()).setProjects(getId());
     }
 }

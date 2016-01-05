@@ -36,7 +36,21 @@ public interface Task extends HasId, HasName {
 
     Workspace getWorkspace();
 
+    boolean isSection();
+
     void delete();
+
+    TaskUpdater startUpdate();
+
+    List<Task> getSubTasks();
+
+    TaskCreator createSubTask();
+
+    void setParentTask(Long parentTaskId);
+
+    AddProjectBuilder addProject(long projectId);
+
+    void removeProject(long projectId);
 
     enum AssigneeStatus {
         INBOX("inbox"),
@@ -76,7 +90,7 @@ public interface Task extends HasId, HasName {
 
     interface TaskBuilder<T extends TaskBuilder> {
 
-        T setAssignee(User assignee);
+        T setAssignee(Object assigneeReference);
 
         T setAssigneeStatus(AssigneeStatus assigneeStatus);
 
@@ -96,9 +110,11 @@ public interface Task extends HasId, HasName {
 
     interface TaskCreator extends TaskBuilder<TaskCreator> {
 
-        TaskCreator setWorkspace(Workspace workspace);
+        TaskCreator setWorkspace(long workspaceId);
 
-        TaskCreator setProjects(Project... projects);
+        TaskCreator setProjects(long... projectIds);
+
+        TaskCreator setParent(long parentTaskId);
 
         Task create();
     }
@@ -108,5 +124,16 @@ public interface Task extends HasId, HasName {
         Task abandon();
 
         Task update();
+    }
+
+    interface AddProjectBuilder {
+
+        AddProjectBuilder insertAfter(Long taskId);
+
+        AddProjectBuilder insertBefore(Long taskId);
+
+        AddProjectBuilder section(Long sectionId);
+
+        void update();
     }
 }

@@ -1,7 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Task;
-import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.io.FieldsUpdater;
 
 public abstract class TaskImplBuilder<T extends Task.TaskBuilder> extends FieldsUpdater implements Task.TaskBuilder<T> {
@@ -14,8 +13,8 @@ public abstract class TaskImplBuilder<T extends Task.TaskBuilder> extends Fields
     }
 
     @Override
-    public T setAssignee(User assignee) {
-        putField(TaskImplProcessor.ASSIGNEE.getFieldName(), assignee);
+    public T setAssignee(Object assigneeReference) {
+        putField(TaskImplProcessor.ASSIGNEE.getFieldName(), assigneeReference);
         return this.implClass.cast(this);
     }
 
