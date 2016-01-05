@@ -32,7 +32,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceAp
     @Override
     public PagedList<Workspace> getWorkspaces(RequestModifier... requestModifiers) {
         return newRequest(requestModifiers)
-                .path("workspaces/")
+                .path("workspaces")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getWorkspaceDeserializer());

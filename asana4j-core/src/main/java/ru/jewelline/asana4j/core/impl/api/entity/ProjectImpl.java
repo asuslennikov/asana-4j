@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
+import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
@@ -10,7 +11,6 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
@@ -28,7 +28,6 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     private Workspace workspace;
 
     private ProjectUpdater updater;
-    private List<JsonFieldWriter<ProjectImpl>> updatedFields = Collections.emptyList();
 
     public ProjectImpl(ApiEntityContext context) {
         super(ProjectImpl.class, context);
@@ -41,7 +40,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
 
     @Override
     protected List<JsonFieldWriter<ProjectImpl>> getFieldWriters() {
-        return this.updatedFields;
+        return Arrays.<JsonFieldWriter<ProjectImpl>>asList(ProjectImplProcessor.values());
     }
 
     @Override
@@ -139,6 +138,15 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.workspace;
     }
 
+    @Override
+    public List<Task> getTasks() {
+        return getContext().newRequest()
+                .path("projects/" + getId() + "/tasks")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(TaskImpl.class));
+    }
+
     public void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
@@ -185,8 +193,12 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.updater;
     }
 
-    public void stopUpdate(List<JsonFieldWriter<ProjectImpl>> updatedFields){
+    public void stopUpdate(){
         this.updater = null;
-        this.updatedFields = updatedFields;
+    }
+
+    @Override
+    public Task.TaskCreator createTask() {
+        return new TaskImplCreator(getContext()).setProjects(getId());
     }
 }

@@ -67,13 +67,8 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
         this.photoUrl = photoUrl;
     }
 
-    public WorkspaceImpl addWorkspace() {
-        WorkspaceImpl workspace = getContext().getEntity(WorkspaceImpl.class);
-        if (this.workspaces == null){
-            this.workspaces = new ArrayList<>();
-        }
-        this.workspaces.add(workspace);
-        return workspace;
+    public void setWorkspaces(List<Workspace> workspaces) {
+        this.workspaces = workspaces;
     }
 
     @Override

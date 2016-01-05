@@ -30,6 +30,10 @@ public interface Project extends HasId, HasName {
 
     ProjectUpdater startUpdate();
 
+    List<Task> getTasks();
+
+    Task.TaskCreator createTask();
+
     enum Color {
         DARK_PINK("dark-pink"),
         DARK_GREEN("dark-green"),
@@ -49,13 +53,12 @@ public interface Project extends HasId, HasName {
         LIGHT_ORANGE("light-orange"),
         LIGHT_PURPLE("light-purple"),
         LIGHT_WARM_GRAY("light-warm-gray"),
-        NONE (null) {
+        NONE(null) {
             @Override
             public boolean isColorMatch(String colorCode) {
                 return StringUtils.emptyOrOnlyWhiteSpace(colorCode);
             }
-        },
-        ;
+        },;
 
         private String colorCode;
 
@@ -63,7 +66,7 @@ public interface Project extends HasId, HasName {
             this.colorCode = colorCode;
         }
 
-        public String getColorCode(){
+        public String getColorCode() {
             return this.colorCode;
         }
 
@@ -76,9 +79,9 @@ public interface Project extends HasId, HasName {
             return getColorCode();
         }
 
-        public static Color getColorByCode(String colorCode){
+        public static Color getColorByCode(String colorCode) {
             for (Color color : Color.values()) {
-                if (color.isColorMatch(colorCode)){
+                if (color.isColorMatch(colorCode)) {
                     return color;
                 }
             }
@@ -86,13 +89,14 @@ public interface Project extends HasId, HasName {
         }
 
     }
-    interface ProjectUpdater{
+
+    interface ProjectUpdater {
 
         ProjectUpdater setName(String name);
 
         ProjectUpdater setOwner(User user);
 
-        ProjectUpdater setStatus(ProjectStatus.Color color, String text, User author);
+        ProjectUpdater setStatus(ProjectStatus.Color color, String text);
 
         ProjectUpdater setDueDate(String date);
 
