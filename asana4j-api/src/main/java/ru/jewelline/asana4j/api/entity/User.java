@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * A user object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
- * <br />
+ * <p>
  * Like other objects in the system, users are referred to by numerical IDs. However, the special string identifier
  * <code>me</code> can be used anywhere a user ID is accepted, to refer to the current authenticated user.
  *
@@ -22,7 +22,7 @@ public interface User extends HasId, HasName {
     String getEmail();
 
     /**
-     * @return A map of the user’s profile photo in various sizes, or null if no photo is set. < br/>
+     * @return A map of the user's profile photo in various sizes, or null if no photo is set. <p>
      * Sizes provided are 21, 27, 36, 60, and 128. Images are in PNG format.
      * @api.field <code>photo</code>
      * @api.access Read-only
@@ -31,7 +31,7 @@ public interface User extends HasId, HasName {
     String getPhotoUrl();
 
     /**
-     * @return Workspaces and organizations this user may access. <br />
+     * @return Workspaces and organizations this user may access.<p>
      * The API will only return workspaces and organizations that are also available for the authenticated user.
      * @api.field <code>workspaces</code>
      * @api.access Read-only

@@ -1,5 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
@@ -263,7 +264,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     }
 
     @Override
-    public List<Task> getSubTasks() {
+    public PagedList<Task> getSubTasks() {
         return getContext().newRequest()
                 .path("tasks/" + getId() + "/subtasks")
                 .buildAs(HttpMethod.GET)

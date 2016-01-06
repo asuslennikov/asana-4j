@@ -8,11 +8,11 @@ import java.util.List;
 /**
  * A project represents a prioritized list of tasks in Asana. It exists in a single workspace or organization
  * and is accessible to a subset of users in that workspace or organization, depending on its permissions.
- * <br />
+ * <p>
  * Projects in organizations are shared with a single team. You cannot currently change the team of a project
  * via the API. Non-organization workspaces do not have teams and so you should not specify the team of project
  * in a regular workspace.
- * <br />
+ * <p>
  * Followers of a project are a subset of the members of that project. Followers of a project will receive all
  * updates including tasks created, added and removed from that project. Members of the project have access to
  * and will receive status updates of the project. Adding followers to a project will add them as members if
@@ -95,7 +95,7 @@ public interface Project extends HasId, HasName {
      * {@link Project.Color} enum.
      * @api.field <code>color</code>
      * @api.access Read-write
-     * @see Project.ProjectUpdater#setColor(Color)
+     * @see Project.ProjectUpdater#setColor(Project.Color)
      * @see Project.Color
      */
     Color getColor();
@@ -123,25 +123,26 @@ public interface Project extends HasId, HasName {
 
     /**
      * This method removes the project.
-     * <br />
-     * <i>Triggers HTTP communication with server</i>
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
      * @api.link <a href="https://asana.com/developers/api-reference/projects#delete">Delete a project</a>
      */
     void delete();
 
     /**
      * Starts an update process for the project.
+     *
      * @return A specific builder which allows to update required fields and save these changes (or discard).
      * @throws IllegalStateException if another update process is in progress
-     * @api.linl <a href="https://asana.com/developers/api-reference/projects#update">Update a project</a>
+     * @api.link <a href="https://asana.com/developers/api-reference/projects#update">Update a project</a>
      * @see Project.ProjectUpdater
      */
     ProjectUpdater startUpdate();
 
     /**
-     * Returns list of tasks in the project
-     * <br />
-     * <i>Triggers HTTP communication with server</i>
+     * Returns list of tasks in the project.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
      * @return Returns the compact task records for all tasks within the given project, ordered by their priority
      * within the project. Tasks can exist in more than one project at a time.
      * @api.link <a href="https://asana.com/developers/api-reference/projects#get-tasks">Get project tasks</a>
@@ -151,7 +152,8 @@ public interface Project extends HasId, HasName {
     PagedList<Task> getTasks();
 
     /**
-     * Starts a creation process for the new task in the workspace.
+     * Starts a creation process for the new task in the project.
+     *
      * @return A specific builder which allows to specify required fields for the new task.
      * @api.link <a href="https://asana.com/developers/api-reference/tasks#create">Create a task</a>
      * @see Task
@@ -161,6 +163,7 @@ public interface Project extends HasId, HasName {
 
     /**
      * Enum which holds all available project colors.
+     *
      * @see Project#getColor()
      */
     enum Color {
@@ -206,6 +209,7 @@ public interface Project extends HasId, HasName {
         /**
          * Checks if the given value matches the color code of the {@link Color}
          * instance.
+         *
          * @param colorCode one of color codes or null.
          * @return <code>true</code> if the color code matches the one from the instance.
          * @see #getColorCode()
@@ -221,6 +225,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Matches the <code>colorCode</code> parameter to one of instances from the {@link Color} enum
+         *
          * @param colorCode a string representation of project color or null
          * @return A {@link Project.Color} instance
          */
@@ -238,12 +243,14 @@ public interface Project extends HasId, HasName {
     /**
      * A builder class which allows for user to set new values for project fields. Only touched fields will be
      * updated.
+     *
      * @see Project#startUpdate()
      */
     interface ProjectUpdater {
 
         /**
          * Sets a new name for the project.
+         *
          * @param name new name for the project, can be <code>null</code>.
          * @return The builder.
          * @see Project#getName()
@@ -252,6 +259,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Sets a new owner for the project.
+         *
          * @param user new owner for the project, can be <code>null</code>.
          * @return The builder.
          * @see Project#getOwner()
@@ -260,8 +268,9 @@ public interface Project extends HasId, HasName {
 
         /**
          * Sets description of the project's status.
+         *
          * @param color new project color.
-         * @param text textual description for the new project state.
+         * @param text  textual description for the new project state.
          * @return The builder.
          * @see Project#getCurrentStatus()
          * @see ProjectStatus.Color
@@ -270,6 +279,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Sets the day on which this project is due.
+         *
          * @param date new due date, can be <code>null</code>.
          * @return The builder.
          * @see Project#getDueDate()
@@ -278,6 +288,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Sets the color of the project.
+         *
          * @param color new project color.
          * @return The builder.
          * @see Project#getColor()
@@ -287,6 +298,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Sets a description for the project.
+         *
          * @param notes free-form textual information associated with the project.
          * @return The builder.
          * @see Project#getNotes()
@@ -295,6 +307,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Sets the archived status for the project.
+         *
          * @param isArchived <code>true</code> if the project is archived, <code>false</code> if not.
          * @return The builder.
          * @see Project#isArchived()
@@ -303,6 +316,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Sets the public status for the project.
+         *
          * @param isPublic <code>true</code> the project is public to the organization, <code>false</code> if not.
          * @return The builder.
          * @see Project#isPublic()
@@ -311,6 +325,7 @@ public interface Project extends HasId, HasName {
 
         /**
          * Dismisses changes for the project.
+         *
          * @return The project with original fields.
          * @see Project
          */
@@ -318,10 +333,10 @@ public interface Project extends HasId, HasName {
 
         /**
          * Applies changes for the project.
-         * <br />
-         * <i>Triggers HTTP communication with server</i>
+         * <p><i>Triggers HTTP communication with server</i></p>
+         *
          * @return The complete updated project record.
-         * @api.linl <a href="https://asana.com/developers/api-reference/projects#update">Update a project</a>
+         * @api.link <a href="https://asana.com/developers/api-reference/projects#update">Update a project</a>
          */
         Project update();
     }

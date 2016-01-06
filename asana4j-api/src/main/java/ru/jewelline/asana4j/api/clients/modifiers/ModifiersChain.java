@@ -29,7 +29,7 @@ public final class ModifiersChain {
 
     /**
      * Controls execution flow for request modifiers.
-     * <br /><b>There is no guarantee</b> that next modifier will be called immediately after the method call.
+     * <p><b>There is no guarantee</b> that next modifier will be called immediately after the method call.
      * For now it is true, but in future this call can just mark the next modifier for execution, i.e. implementation of
      * this method is not a part of public API and can be changed even with minor update.
      *
