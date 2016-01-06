@@ -7,11 +7,6 @@ import ru.jewelline.asana4j.http.HttpMethod;
 import java.util.Map;
 
 public interface ApiRequestBuilder {
-    // TODO move this constants into appropriate RequestModifiers
-    String OPTION_PRETTY = "pretty";
-    String OPTION_METHOD = "method";
-    String OPTION_EXPAND = "expand";
-    String OPTION_JSONP = "jsonp";
 
     ApiRequestBuilder path(String apiSuffix);
 
