@@ -250,7 +250,7 @@ public interface Task extends HasId, HasName {
      * @see PagedList
      * @see RequestModifier
      */
-    PagedList<Stories> getStories(RequestModifier... requestModifiers);
+    PagedList<Story> getStories(RequestModifier... requestModifiers);
 
     /**
      * Enum which holds all available assignee statuses.

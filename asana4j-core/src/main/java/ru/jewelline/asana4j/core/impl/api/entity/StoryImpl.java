@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
-import ru.jewelline.asana4j.api.entity.Stories;
+import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
@@ -9,7 +9,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import java.util.Arrays;
 import java.util.List;
 
-public class StoriesImpl extends ApiEntityImpl<StoriesImpl> implements Stories {
+public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
 
     private long id;
     private String createdAt;
@@ -23,13 +23,13 @@ public class StoriesImpl extends ApiEntityImpl<StoriesImpl> implements Stories {
     private String source;
     private String type;
 
-    public StoriesImpl(ApiEntityContext context) {
-        super(StoriesImpl.class, context);
+    public StoryImpl(ApiEntityContext context) {
+        super(StoryImpl.class, context);
     }
 
     @Override
-    protected List<JsonFieldReader<StoriesImpl>> getFieldReaders() {
-        return Arrays.<JsonFieldReader<StoriesImpl>>asList(StoriesImplProcessor.values());
+    protected List<JsonFieldReader<StoryImpl>> getFieldReaders() {
+        return Arrays.<JsonFieldReader<StoryImpl>>asList(StoryImplProcessor.values());
     }
 
     @Override
@@ -139,7 +139,7 @@ public class StoriesImpl extends ApiEntityImpl<StoriesImpl> implements Stories {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return id == ((StoriesImpl) o).id;
+        return id == ((StoryImpl) o).id;
     }
 
     @Override

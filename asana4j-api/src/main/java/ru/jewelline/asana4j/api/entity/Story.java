@@ -10,7 +10,7 @@ import java.util.List;
  * Stories are a form of history in the system, and as such they are read-only. Once generated, it is not possible
  * to modify a story.
  */
-public interface Stories extends HasId {
+public interface Story extends HasId {
     /**
      * @return The time at which this story was created.
      * @api.field <code>created_at</code>
