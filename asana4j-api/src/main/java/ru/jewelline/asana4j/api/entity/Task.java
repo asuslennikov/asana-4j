@@ -1,6 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 
 import java.util.List;
 
@@ -238,6 +239,33 @@ public interface Task extends HasId, HasName {
      * @api.link <a href="https://asana.com/developers/api-reference/tasks#projects">Task, project, and section associations</a>
      */
     void removeProject(long projectId);
+
+    /**
+     * Returns list of all stories for that task.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @return Returns the compact records for all stories on the task.
+     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+     * @api.link <a href="https://asana.com/developers/api-reference/stories#get-all">Get stories on object</a>
+     * @see Story
+     * @see PagedList
+     * @see RequestModifier
+     */
+    PagedList<Story> getStories(RequestModifier... requestModifiers);
+
+    /**
+     * Adds a comment to a task. The comment will be authored by the currently authenticated user, and timestamped
+     * when the server receives the request.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param text             The plain text of the comment to add.
+     * @param requestModifiers Additional request modifiers such as pagination, requested fields and so on.
+     * @return Returns the full record for the new story added to the task.
+     * @api.link <a href="https://asana.com/developers/api-reference/stories#post-comment">Commenting on an object</a>
+     * @see Story
+     * @see RequestModifier
+     */
+    Story addComment(String text, RequestModifier... requestModifiers);
 
     /**
      * Enum which holds all available assignee statuses.
