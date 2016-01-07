@@ -32,6 +32,7 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
         registerEntityClass(ProjectStatusImpl.class);
         registerEntityClass(ProjectImpl.class);
         registerEntityClass(TaskImpl.class);
+        registerEntityClass(StoriesImpl.class);
     }
 
     private <T extends ApiEntityImpl<T>> void registerEntityClass(final Class<T> entityClass) {
