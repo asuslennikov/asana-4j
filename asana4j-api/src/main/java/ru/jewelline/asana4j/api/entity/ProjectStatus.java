@@ -8,6 +8,7 @@ import ru.jewelline.asana4j.utils.StringUtils;
 public interface ProjectStatus {
     /**
      * Enum which holds all available colors for the project's status
+     *
      * @see ProjectStatus#getColor()
      */
     enum Color {

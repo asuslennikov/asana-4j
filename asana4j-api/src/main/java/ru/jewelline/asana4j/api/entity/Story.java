@@ -9,6 +9,9 @@ import java.util.List;
  * <p>
  * Stories are a form of history in the system, and as such they are read-only. Once generated, it is not possible
  * to modify a story.
+ *
+ * @api.link <a href="https://asana.com/developers/api-reference/stories">Stories</a>
+ * @see HasId
  */
 public interface Story extends HasId {
     /**
