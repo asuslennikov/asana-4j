@@ -1,11 +1,13 @@
 package ru.jewelline.asana4j.example;
 
 import ru.jewelline.asana4j.api.clients.ProjectApiClient;
+import ru.jewelline.asana4j.api.clients.StoryApiClient;
 import ru.jewelline.asana4j.api.clients.TaskApiClient;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.clients.ProjectApiClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.StoryApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.TaskApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.UserApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
@@ -26,6 +28,7 @@ public class Asana {
     private WorkspaceApiClientImpl workspaceClient;
     private ProjectApiClientImpl projectClient;
     private TaskApiClientImpl taskClient;
+    private StoryApiClient storyClient;
 
     public Asana() {
         URLCreator urlCreator = new UrlCreatorJavaSeUtil();
@@ -37,6 +40,7 @@ public class Asana {
         this.workspaceClient = new WorkspaceApiClientImpl(this.authenticationService, this.httpClient);
         this.projectClient = new ProjectApiClientImpl(this.authenticationService, this.httpClient);
         this.taskClient = new TaskApiClientImpl(this.authenticationService, this.httpClient);
+        this.storyClient = new StoryApiClientImpl(this.authenticationService, this.httpClient);
     }
 
     public HttpClient getHttpClient() {
@@ -61,5 +65,9 @@ public class Asana {
 
     public TaskApiClient getTaskClient() {
         return this.taskClient;
+    }
+
+    public StoryApiClient getStoryClient(){
+        return this.storyClient;
     }
 }

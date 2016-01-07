@@ -9,6 +9,7 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
@@ -304,6 +305,18 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(StoryImpl.class));
+    }
+
+    @Override
+    public Story addComment(String text, RequestModifier... requestModifiers) {
+        return getContext().newRequest(requestModifiers)
+                .path("tasks/" + getId() + "/stories")
+                .setEntity(new SimpleFieldsUpdater()
+                        .setField("text", text)
+                        .wrapFieldsAsEntity())
+                .buildAs(HttpMethod.POST)
+                .execute()
+                .asApiObject(getContext().getDeserializer(StoryImpl.class));
     }
 
     private static class AddProjectBuilderImpl implements AddProjectBuilder {
