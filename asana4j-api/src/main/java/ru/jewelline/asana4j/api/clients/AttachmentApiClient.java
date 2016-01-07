@@ -20,4 +20,16 @@ public interface AttachmentApiClient {
      */
     PagedList<Attachment> getTaskAttachments(long taskId, RequestModifier... requestModifiers);
 
+    /**
+     * Returns a specific existing attachment.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param attachmentId     Globally unique identifier for the attachment.
+     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+     * @return Returns the full record for a single attachment.
+     * @api.link <a href="https://asana.com/developers/api-reference/attachments#get-single">Get single attachment</a>
+     * @see Attachment
+     * @see RequestModifier
+     */
+    Attachment getAttachmentById(long attachmentId, RequestModifier... requestModifiers);
 }
