@@ -1,6 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 
 import java.util.List;
 
@@ -238,6 +239,18 @@ public interface Task extends HasId, HasName {
      * @api.link <a href="https://asana.com/developers/api-reference/tasks#projects">Task, project, and section associations</a>
      */
     void removeProject(long projectId);
+
+    /**
+     * Returns list of all stories for that task.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @return Returns the compact records for all stories on the task.
+     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+     * @api.link <a href="https://asana.com/developers/api-reference/stories#get-all">Get stories on object</a>
+     * @see PagedList
+     * @see RequestModifier
+     */
+    PagedList<Stories> getStories(RequestModifier... requestModifiers);
 
     /**
      * Enum which holds all available assignee statuses.

@@ -130,4 +130,30 @@ public class StoriesImpl extends ApiEntityImpl<StoriesImpl> implements Stories {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        return id == ((StoriesImpl) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder("Story [");
+        out.append("id = ").append(getId());
+        out.append(", type = ").append(getType());
+        out.append(", text = ").append(getText());
+        out.append(']');
+        return out.toString();
+    }
 }
