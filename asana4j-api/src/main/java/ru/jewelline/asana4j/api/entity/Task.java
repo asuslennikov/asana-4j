@@ -244,8 +244,8 @@ public interface Task extends HasId, HasName {
      * Returns list of all stories for that task.
      * <p><i>Triggers HTTP communication with server</i></p>
      *
-     * @return Returns the compact records for all stories on the task.
      * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+     * @return Returns the compact records for all stories on the task.
      * @api.link <a href="https://asana.com/developers/api-reference/stories#get-all">Get stories on object</a>
      * @see Story
      * @see PagedList
@@ -266,6 +266,19 @@ public interface Task extends HasId, HasName {
      * @see RequestModifier
      */
     Story addComment(String text, RequestModifier... requestModifiers);
+
+    /**
+     * Returns list of all attachments for that task.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+     * @return Returns the compact records for all attachments on the task.
+     * @api.link <a href="https://asana.com/developers/api-reference/attachments#get-all-task">Get all attachments</a>
+     * @see Attachment
+     * @see PagedList
+     * @see RequestModifier
+     */
+    PagedList<Attachment> getAttachments(RequestModifier... requestModifiers);
 
     /**
      * Enum which holds all available assignee statuses.

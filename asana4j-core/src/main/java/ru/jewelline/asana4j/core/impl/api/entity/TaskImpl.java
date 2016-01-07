@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.Task;
@@ -317,6 +318,15 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(StoryImpl.class));
+    }
+
+    @Override
+    public PagedList<Attachment> getAttachments(RequestModifier... requestModifiers) {
+        return getContext().newRequest(requestModifiers)
+                .path("tasks/" + getId() + "/attachments")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(AttachmentImpl.class));
     }
 
     private static class AddProjectBuilderImpl implements AddProjectBuilder {
