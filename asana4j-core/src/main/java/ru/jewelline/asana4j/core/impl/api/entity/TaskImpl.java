@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.Task;
@@ -9,9 +10,11 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -317,6 +320,27 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(StoryImpl.class));
+    }
+
+    @Override
+    public PagedList<Attachment> getAttachments(RequestModifier... requestModifiers) {
+        return getContext().newRequest(requestModifiers)
+                .path("tasks/" + getId() + "/attachments")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(AttachmentImpl.class));
+    }
+
+    @Override
+    public Attachment uploadAttachment(String name, InputStream attachment) {
+        MultipartFormEntity entity = new MultipartFormEntity(name, attachment);
+        return getContext().newRequest()
+                .path("tasks/" + getId() + "/attachments")
+                .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
+                .setEntity(entity)
+                .buildAs(HttpMethod.POST)
+                .execute()
+                .asApiObject(getContext().getDeserializer(AttachmentImpl.class));
     }
 
     private static class AddProjectBuilderImpl implements AddProjectBuilder {

@@ -4,23 +4,24 @@ import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
+import ru.jewelline.asana4j.core.impl.api.ApiClient;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
-import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderProvider;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.http.HttpRequestBuilder;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiEntityContext implements ApiRequestBuilderProvider {
+public class ApiEntityContext implements ApiClient {
 
-    private final ApiRequestBuilderProvider requestBuilderProvider;
+    private final ApiClient apiClient;
     private final Map<Class<? extends ApiEntityImpl<?>>, ApiEntityInstanceProvider<? extends ApiEntityImpl<?>>> instanceProviders;
 
-    public ApiEntityContext(ApiRequestBuilderProvider requestBuilderProvider) {
-        this.requestBuilderProvider = requestBuilderProvider;
+    public ApiEntityContext(ApiClient apiClient) {
+        this.apiClient = apiClient;
         this.instanceProviders = new HashMap<>();
         // TODO Don't pass 'this' out of a constructor (through anonymous inner class)
         registerApiEntities();
@@ -33,6 +34,7 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
         registerEntityClass(ProjectImpl.class);
         registerEntityClass(TaskImpl.class);
         registerEntityClass(StoryImpl.class);
+        registerEntityClass(AttachmentImpl.class);
     }
 
     private <T extends ApiEntityImpl<T>> void registerEntityClass(final Class<T> entityClass) {
@@ -76,7 +78,12 @@ public class ApiEntityContext implements ApiRequestBuilderProvider {
     }
 
     @Override
+    public HttpRequestBuilder newRawRequest() {
+        return this.apiClient.newRawRequest();
+    }
+
+    @Override
     public ApiRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return this.requestBuilderProvider.newRequest(requestModifiers);
+        return this.apiClient.newRequest(requestModifiers);
     }
 }

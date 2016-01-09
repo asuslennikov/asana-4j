@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.utils;
 
+import java.nio.charset.Charset;
+
 public final class StringUtils {
     private StringUtils() {
     }
@@ -34,5 +36,9 @@ public final class StringUtils {
             }
         }
         return true;
+    }
+
+    public static Charset getCharset(){
+        return Charset.isSupported("UTF-8") ? Charset.forName("UTF-8") : Charset.defaultCharset();
     }
 }
