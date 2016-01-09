@@ -4,7 +4,9 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.http.HttpMethod;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class QueryFieldsModifier extends ApiOptionModifier {
     private static final String OPTION_FIELDS = "fields";
@@ -29,12 +31,15 @@ public class QueryFieldsModifier extends ApiOptionModifier {
         for (String field : this.fields) {
             sb.append(field).append(',');
         }
+        sb.append("id");
         sb.setLength(sb.length() - 1); // remove the last comma
         requestBuilder.setQueryParameter(GET_API_OPTION_PREFIX + OPTION_FIELDS, sb.toString());
     }
 
     @Override
     protected void appendToJsonOptions(JSONObject options) {
-        options.put(OPTION_FIELDS, Arrays.asList(this.fields));
+        List<String> fielsdsForQuery = new ArrayList<>(Arrays.asList(this.fields));
+        fielsdsForQuery.add("id");
+        options.put(OPTION_FIELDS, fielsdsForQuery);
     }
 }

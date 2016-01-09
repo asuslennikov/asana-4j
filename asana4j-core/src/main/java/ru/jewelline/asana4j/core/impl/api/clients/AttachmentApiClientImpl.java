@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
+import ru.jewelline.asana4j.api.clients.modifiers.QueryFieldsModifier;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
@@ -9,6 +10,8 @@ import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
+
+import java.io.OutputStream;
 
 public class AttachmentApiClientImpl extends ApiClientImpl implements AttachmentApiClient {
 
@@ -36,5 +39,17 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getAttachmentDeserializer());
+    }
+
+    @Override
+    public boolean downloadAttachmentPreview(long attachmentId, OutputStream destinationStream) {
+        Attachment attachment = getAttachmentById(attachmentId, new QueryFieldsModifier("download_url", "view_url"));
+        return attachment.downloadPreview(destinationStream);
+    }
+
+    @Override
+    public boolean downloadAttachment(long attachmentId, OutputStream destinationStream) {
+        Attachment attachment = getAttachmentById(attachmentId, new QueryFieldsModifier("download_url", "view_url"));
+        return attachment.download(destinationStream);
     }
 }

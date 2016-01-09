@@ -4,10 +4,16 @@ import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.asana4j.utils.StringUtils;
 
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.List;
 
 public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Attachment {
+
+    private static final int RESPONSE_OK_ANSWER_CODE = 200;
 
     private long id;
     private String name;
@@ -23,7 +29,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
 
     @Override
     protected List<JsonFieldReader<AttachmentImpl>> getFieldReaders() {
-        return null;
+        return Arrays.<JsonFieldReader<AttachmentImpl>>asList(AttachmentImplProcessor.values());
     }
 
     @Override
@@ -112,5 +118,29 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         out.append(", name = ").append(getName());
         out.append(']');
         return out.toString();
+    }
+
+    @Override
+    public boolean download(OutputStream destinationStream) {
+        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())){
+            return getContext().newRawRequest()
+                    .path(getDownloadUrl())
+                    .buildAs(HttpMethod.GET)
+                    .sendAndReadResponse(destinationStream)
+                    .code() == RESPONSE_OK_ANSWER_CODE;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean downloadPreview(OutputStream destinationStream) {
+        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())){
+            return getContext().newRawRequest()
+                    .path(getViewUrl())
+                    .buildAs(HttpMethod.GET)
+                    .sendAndReadResponse(destinationStream)
+                    .code() == RESPONSE_OK_ANSWER_CODE;
+        }
+        return false;
     }
 }

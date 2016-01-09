@@ -1,5 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
+import java.io.OutputStream;
+
 /**
  * An attachment object represents any file attached to a task in Asana, whether it’s an uploaded file or one
  * associated via a third-party service such as Dropbox or Google Drive.
@@ -50,6 +52,28 @@ public interface Attachment extends HasId, HasName {
     String getViewUrl();
 
     /**
+     * Downloads the attachment using a result of the {@link #getDownloadUrl()} method as a source URL.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param destinationStream A destination stream for that attachment.
+     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
+     * (for example if the {@link #getDownloadUrl()} is empty).
+     * @see #getDownloadUrl()
+     */
+    boolean download(OutputStream destinationStream);
+
+    /**
+     * Downloads the attachment preview using a result of the {@link #getViewUrl()} method as a source URL.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param destinationStream A destination stream for that attachment.
+     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
+     * (for example if the {@link #getViewUrl()} is empty).
+     * @see #getViewUrl()
+     */
+    boolean downloadPreview(OutputStream destinationStream);
+
+    /**
      * Enum which holds all available hosts for an attachment.
      *
      * @see Attachment#getHost()
@@ -58,8 +82,7 @@ public interface Attachment extends HasId, HasName {
         ASANA("asana"),
         DROPBOX("dropbox"),
         GDRIVE("gdrive"),
-        BOX("box"),
-        ;
+        BOX("box"),;
 
         private String hostType;
 
@@ -71,12 +94,13 @@ public interface Attachment extends HasId, HasName {
          * @return A string representation of attachment's host, for example: <code>asana</code> for {@link #ASANA}
          * instance.
          */
-        public String getHostType(){
+        public String getHostType() {
             return this.hostType;
         }
 
         /**
          * Checks if the given value matches the host type of the {@link Attachment.Host} instance.
+         *
          * @param hostType one of hosts.
          * @return <code>true</code> if the host type matches the one from the instance.
          * @see #getHostType()
@@ -92,12 +116,13 @@ public interface Attachment extends HasId, HasName {
 
         /**
          * Matches the <code>hostType</code> parameter to one of instances from the {@link Attachment.Host} enum.
+         *
          * @param hostType a string representation of attachment's host or null
          * @return A {@link Attachment.Host} instance
          */
-        public static Host getHostByType(String hostType){
+        public static Host getHostByType(String hostType) {
             for (Host host : Host.values()) {
-                if (host.isHostMatch(hostType)){
+                if (host.isHostMatch(hostType)) {
                     return host;
                 }
             }

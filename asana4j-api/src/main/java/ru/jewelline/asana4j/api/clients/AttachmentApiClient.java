@@ -4,6 +4,8 @@ import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 
+import java.io.OutputStream;
+
 public interface AttachmentApiClient {
 
     /**
@@ -32,4 +34,28 @@ public interface AttachmentApiClient {
      * @see RequestModifier
      */
     Attachment getAttachmentById(long attachmentId, RequestModifier... requestModifiers);
+
+    /**
+     * Downloads the attachment using a result of the {@link Attachment#getDownloadUrl()} method as a source URL.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param attachmentId      Globally unique identifier for the attachment.
+     * @param destinationStream A destination stream for that attachment.
+     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
+     * (for example if the {@link Attachment#getDownloadUrl()} is empty).
+     * @see Attachment#getDownloadUrl()
+     */
+    boolean downloadAttachment(long attachmentId, OutputStream destinationStream);
+
+    /**
+     * Downloads the attachment preview using a result of the {@link Attachment#getViewUrl()} method as a source URL.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param attachmentId      Globally unique identifier for the attachment.
+     * @param destinationStream A destination stream for that attachment.
+     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
+     * (for example if the {@link Attachment#getViewUrl()} is empty).
+     * @see Attachment#getViewUrl()
+     */
+    boolean downloadAttachmentPreview(long attachmentId, OutputStream destinationStream);
 }
