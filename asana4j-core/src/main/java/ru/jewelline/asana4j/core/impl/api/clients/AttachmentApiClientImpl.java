@@ -8,9 +8,11 @@ import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class AttachmentApiClientImpl extends ApiClientImpl implements AttachmentApiClient {
@@ -51,5 +53,17 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
     public boolean downloadAttachment(long attachmentId, OutputStream destinationStream) {
         Attachment attachment = getAttachmentById(attachmentId, new QueryFieldsModifier("download_url", "view_url"));
         return attachment.download(destinationStream);
+    }
+
+    @Override
+    public Attachment uploadAttachment(long taskId, String name, InputStream attachment) {
+        MultipartFormEntity entity = new MultipartFormEntity(name, attachment);
+        return newRequest()
+                .path("tasks/" + taskId + "/attachments")
+                .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
+                .setEntity(entity)
+                .buildAs(HttpMethod.POST)
+                .execute()
+                .asApiObject(getAttachmentDeserializer());
     }
 }

@@ -4,6 +4,7 @@ import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface AttachmentApiClient {
@@ -58,4 +59,18 @@ public interface AttachmentApiClient {
      * @see Attachment#getViewUrl()
      */
     boolean downloadAttachmentPreview(long attachmentId, OutputStream destinationStream);
+
+    /**
+     * This method uploads an attachment to a task and returns a compact record for the new attachment.
+     * The 100MB size limit on attachments in Asana is enforced on this endpoint.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param taskId     Globally unique identifier for the task.
+     * @param name       A name for attachment.
+     * @param attachment Payload which should be added as an attachment for the task.
+     * @return Returns a compact record for a single attachment.
+     * @api.link <a href="https://asana.com/developers/api-reference/attachments#upload">Upload an attachment</a>
+     * @see Attachment
+     */
+    Attachment uploadAttachment(long taskId, String name, InputStream attachment);
 }
