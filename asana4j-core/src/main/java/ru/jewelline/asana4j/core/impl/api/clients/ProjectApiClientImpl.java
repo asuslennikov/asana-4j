@@ -4,16 +4,15 @@ import ru.jewelline.asana4j.api.clients.ProjectApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiClient {
 
-    public ProjectApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
-        super(authenticationService, httpClient);
+    public ProjectApiClientImpl(RequestFactory requestFactory) {
+        super(requestFactory);
     }
 
     private EntityDeserializer<ProjectImpl> getProjectDeserializer() {
@@ -25,7 +24,7 @@ public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiCli
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
                 .setField("workspace", workspaceId)
                 .setField("name", projectName);
-        return newRequest()
+        return apiRequest()
                 .path("projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
@@ -35,7 +34,7 @@ public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiCli
 
     @Override
     public Project getProjectById(long projectId, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("projects/" + projectId)
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -44,7 +43,7 @@ public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiCli
 
     @Override
     public void deleteProject(long projectId, RequestModifier... requestModifiers) {
-        newRequest(requestModifiers)
+        apiRequest(requestModifiers)
                 .path("projects/" + projectId)
                 .buildAs(HttpMethod.DELETE)
                 .execute();

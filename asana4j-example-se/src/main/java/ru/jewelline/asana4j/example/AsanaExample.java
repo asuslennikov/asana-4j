@@ -12,7 +12,7 @@ import ru.jewelline.asana4j.auth.AuthenticationType;
 
 public class AsanaExample {
     public static void main(String[] args) {
-        Asana asana = new Asana();
+        AsanaSE asana = new AsanaSE();
         asana.getAuthenticationService().setAuthenticationType(AuthenticationType.BASIC);
         asana.getAuthenticationService()
                 .setAuthenticationProperty(AuthenticationProperties.API_KEY, "aHlJ25hc.9HdyPs3sDkQ31WSui95vWtE"); // Insert your API key here

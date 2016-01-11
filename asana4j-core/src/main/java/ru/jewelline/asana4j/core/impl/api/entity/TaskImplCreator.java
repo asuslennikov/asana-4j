@@ -1,6 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class TaskImplCreator extends TaskImplBuilder<Task.TaskCreator> implements Task.TaskCreator {
@@ -32,7 +33,7 @@ public class TaskImplCreator extends TaskImplBuilder<Task.TaskCreator> implement
 
     @Override
     public Task create() {
-        return this.context.newRequest()
+        return this.context.apiRequest()
                 .path("tasks")
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)

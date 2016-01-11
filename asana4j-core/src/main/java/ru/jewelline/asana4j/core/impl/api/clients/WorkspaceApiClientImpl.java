@@ -5,15 +5,14 @@ import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceApiClient {
 
-    public WorkspaceApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
-        super(authenticationService, httpClient);
+    public WorkspaceApiClientImpl(RequestFactory requestFactory) {
+        super(requestFactory);
     }
 
     private EntityDeserializer<WorkspaceImpl> getWorkspaceDeserializer() {
@@ -22,7 +21,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceAp
 
     @Override
     public Workspace getWorkspaceById(long id, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("workspaces/" + id)
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -31,7 +30,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceAp
 
     @Override
     public PagedList<Workspace> getWorkspaces(RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("workspaces")
                 .buildAs(HttpMethod.GET)
                 .execute()

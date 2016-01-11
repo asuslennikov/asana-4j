@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
@@ -141,7 +142,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
 
     @Override
     public PagedList<Task> getTasks() {
-        return getContext().newRequest()
+        return getContext().apiRequest()
                 .path("projects/" + getId() + "/tasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -179,7 +180,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
 
     @Override
     public void delete() {
-        getContext().newRequest()
+        getContext().apiRequest()
             .path("projects/" + getId())
             .buildAs(HttpMethod.DELETE)
             .execute();

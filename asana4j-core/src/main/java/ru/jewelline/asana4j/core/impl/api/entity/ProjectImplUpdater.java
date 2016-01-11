@@ -98,7 +98,7 @@ public class ProjectImplUpdater extends FieldsUpdater implements Project.Project
     public Project update() {
         this.target.stopUpdate();
         return this.target.getContext()
-                .newRequest()
+                .apiRequest()
                 .path("projects/" + this.target.getId())
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)

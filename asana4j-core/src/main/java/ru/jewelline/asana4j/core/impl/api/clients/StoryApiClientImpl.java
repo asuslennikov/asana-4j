@@ -5,16 +5,15 @@ import ru.jewelline.asana4j.api.clients.StoryApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.StoryImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient {
 
-    public StoryApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
-        super(authenticationService, httpClient);
+    public StoryApiClientImpl(RequestFactory requestFactory) {
+        super(requestFactory);
     }
 
     private EntityDeserializer<StoryImpl> getStoryDeserializer() {
@@ -23,7 +22,7 @@ public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient 
 
     @Override
     public Story getStoryById(long storyId, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("stories/" + String.valueOf(storyId))
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -32,7 +31,7 @@ public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient 
 
     @Override
     public PagedList<Story> getTaskStories(long taskId, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("tasks/" + taskId + "/stories")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -41,7 +40,7 @@ public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient 
 
     @Override
     public Story createTaskComment(long taskId, String text, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("tasks/" + taskId + "/stories")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("text", text)

@@ -5,15 +5,14 @@ import ru.jewelline.asana4j.api.clients.TaskApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
-    public TaskApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
-        super(authenticationService, httpClient);
+    public TaskApiClientImpl(RequestFactory requestFactory) {
+        super(requestFactory);
     }
 
     private EntityDeserializer<TaskImpl> getTaskDeserializer() {
@@ -22,7 +21,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
     @Override
     public Task getTaskById(long taskId, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("tasks/" + taskId)
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -31,7 +30,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
     @Override
     public PagedList<Task> getTasksForProject(long projectId, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("projects/" + projectId + "/tasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -40,7 +39,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
     @Override
     public void deleteTask(long taskId) {
-        newRequest()
+        apiRequest()
                 .path("tasks/" + taskId)
                 .buildAs(HttpMethod.GET)
                 .execute();

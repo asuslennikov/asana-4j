@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.http.HttpMethod;
@@ -123,7 +124,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
     @Override
     public boolean download(OutputStream destinationStream) {
         if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())){
-            return getContext().newRawRequest()
+            return getContext().httpRequest()
                     .path(getDownloadUrl())
                     .buildAs(HttpMethod.GET)
                     .sendAndReadResponse(destinationStream)
@@ -135,7 +136,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
     @Override
     public boolean downloadPreview(OutputStream destinationStream) {
         if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())){
-            return getContext().newRawRequest()
+            return getContext().httpRequest()
                     .path(getViewUrl())
                     .buildAs(HttpMethod.GET)
                     .sendAndReadResponse(destinationStream)

@@ -6,7 +6,6 @@ import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
-import ru.jewelline.asana4j.core.impl.api.entity.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.JsonEntitySerializer;
 
 import java.io.InputStream;

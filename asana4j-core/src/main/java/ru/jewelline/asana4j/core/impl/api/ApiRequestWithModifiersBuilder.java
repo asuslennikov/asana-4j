@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.core.impl.api.clients;
+package ru.jewelline.asana4j.core.impl.api;
 
 import ru.jewelline.asana4j.api.ApiRequest;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
@@ -6,7 +6,6 @@ import ru.jewelline.asana4j.api.clients.modifiers.ModifiersChain;
 import ru.jewelline.asana4j.api.clients.modifiers.PrettyJsonResponseModifier;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.core.impl.api.ApiRequestBuilderImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.AuthenticationRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.DataRootRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.clients.modifiers.JsonContentTypeModifier;
@@ -25,7 +24,7 @@ public class ApiRequestWithModifiersBuilder extends ApiRequestBuilderImpl {
     private final AuthenticationService authenticationService;
     private RequestModifier[] requestModifiers;
 
-    public ApiRequestWithModifiersBuilder(AuthenticationService authenticationService, HttpClient httpClient) {
+    public ApiRequestWithModifiersBuilder(HttpClient httpClient, AuthenticationService authenticationService) {
         super(httpClient);
         this.authenticationService = authenticationService;
     }

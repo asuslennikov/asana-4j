@@ -1,13 +1,18 @@
-package ru.jewelline.asana4j.core.impl.api.entity;
+package ru.jewelline.asana4j.core.impl.api.entity.common;
 
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.core.impl.api.ApiClient;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
-import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
-import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.RequestFactory;
+import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.ProjectStatusImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.StoryImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
 
 import java.lang.reflect.Constructor;
@@ -15,13 +20,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiEntityContext implements ApiClient {
+public class ApiEntityContext implements RequestFactory {
 
-    private final ApiClient apiClient;
+    private final RequestFactory requestFactory;
     private final Map<Class<? extends ApiEntityImpl<?>>, ApiEntityInstanceProvider<? extends ApiEntityImpl<?>>> instanceProviders;
 
-    public ApiEntityContext(ApiClient apiClient) {
-        this.apiClient = apiClient;
+    public ApiEntityContext(RequestFactory requestFactory) {
+        this.requestFactory = requestFactory;
         this.instanceProviders = new HashMap<>();
         // TODO Don't pass 'this' out of a constructor (through anonymous inner class)
         registerApiEntities();
@@ -78,12 +83,12 @@ public class ApiEntityContext implements ApiClient {
     }
 
     @Override
-    public HttpRequestBuilder newRawRequest() {
-        return this.apiClient.newRawRequest();
+    public HttpRequestBuilder httpRequest() {
+        return this.requestFactory.httpRequest();
     }
 
     @Override
-    public ApiRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return this.apiClient.newRequest(requestModifiers);
+    public ApiRequestBuilder apiRequest(RequestModifier... requestModifiers) {
+        return this.requestFactory.apiRequest(requestModifiers);
     }
 }

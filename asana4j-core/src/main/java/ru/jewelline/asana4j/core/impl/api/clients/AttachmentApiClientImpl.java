@@ -6,10 +6,9 @@ import ru.jewelline.asana4j.api.clients.modifiers.QueryFieldsModifier;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.auth.AuthenticationService;
+import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.io.InputStream;
@@ -17,8 +16,8 @@ import java.io.OutputStream;
 
 public class AttachmentApiClientImpl extends ApiClientImpl implements AttachmentApiClient {
 
-    public AttachmentApiClientImpl(AuthenticationService authenticationService, HttpClient httpClient) {
-        super(authenticationService, httpClient);
+    public AttachmentApiClientImpl(RequestFactory requestFactory) {
+        super(requestFactory);
     }
 
     private EntityDeserializer<AttachmentImpl> getAttachmentDeserializer() {
@@ -27,7 +26,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
 
     @Override
     public PagedList<Attachment> getTaskAttachments(long taskId, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("tasks/" + taskId + "/attachments")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -36,7 +35,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
 
     @Override
     public Attachment getAttachmentById(long attachmentId, RequestModifier... requestModifiers) {
-        return newRequest(requestModifiers)
+        return apiRequest(requestModifiers)
                 .path("attachments/" + String.valueOf(attachmentId))
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -58,7 +57,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
     @Override
     public Attachment uploadAttachment(long taskId, String name, InputStream attachment) {
         MultipartFormEntity entity = new MultipartFormEntity(name, attachment);
-        return newRequest()
+        return apiRequest()
                 .path("tasks/" + taskId + "/attachments")
                 .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
                 .setEntity(entity)

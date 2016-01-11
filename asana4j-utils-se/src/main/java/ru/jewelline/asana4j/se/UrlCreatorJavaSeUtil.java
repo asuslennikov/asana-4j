@@ -1,10 +1,10 @@
 package ru.jewelline.asana4j.se;
 
+import ru.jewelline.asana4j.utils.StringUtils;
 import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,15 +54,13 @@ public class UrlCreatorJavaSeUtil implements URLCreator {
             String result = str;
             if (str != null) {
                 try {
-                    result = URLEncoder.encode(str, "UTF-8");
+                    result = URLEncoder.encode(str, StringUtils.getCharset().displayName());
                 } catch (UnsupportedEncodingException e) {
-                    // try with default charset
-                    try {
-                        result = URLEncoder.encode(str, Charset.defaultCharset().displayName());
-                    } catch (UnsupportedEncodingException e2) {
-                        // this shouldn't happen because we use a default charset
-                        result = str;
-                    }
+                    /*
+                     * can happen only if charset doesn't exist for the given name,
+                     * but we use the charset instance, so it always exists
+                     */
+                    result = str;
                 }
             } else {
                 result = "";

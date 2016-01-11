@@ -8,6 +8,7 @@ import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
@@ -245,7 +246,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void delete() {
-        getContext().newRequest()
+        getContext().apiRequest()
                 .path("tasks/" + getId())
                 .buildAs(HttpMethod.DELETE)
                 .execute();
@@ -271,7 +272,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public PagedList<Task> getSubTasks() {
-        return getContext().newRequest()
+        return getContext().apiRequest()
                 .path("tasks/" + getId() + "/subtasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -280,7 +281,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void setParentTask(Long parentTaskId) {
-        getContext().newRequest()
+        getContext().apiRequest()
                 .path("tasks/" + getId() + "/setParent")
                 .setQueryParameter("parent", String.valueOf(parentTaskId))
                 .buildAs(HttpMethod.POST)
@@ -294,7 +295,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void removeProject(long projectId) {
-        getContext().newRequest()
+        getContext().apiRequest()
                 .path("/tasks/" + getId() + "/removeProject")
                 .setQueryParameter("project", String.valueOf(projectId))
                 .buildAs(HttpMethod.POST)
@@ -303,7 +304,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public PagedList<Story> getStories(RequestModifier... requestModifiers) {
-        return getContext().newRequest(requestModifiers)
+        return getContext().apiRequest(requestModifiers)
                 .path("tasks/" + getId() + "/stories")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -312,7 +313,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public Story addComment(String text, RequestModifier... requestModifiers) {
-        return getContext().newRequest(requestModifiers)
+        return getContext().apiRequest(requestModifiers)
                 .path("tasks/" + getId() + "/stories")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("text", text)
@@ -324,7 +325,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public PagedList<Attachment> getAttachments(RequestModifier... requestModifiers) {
-        return getContext().newRequest(requestModifiers)
+        return getContext().apiRequest(requestModifiers)
                 .path("tasks/" + getId() + "/attachments")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -334,7 +335,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     @Override
     public Attachment uploadAttachment(String name, InputStream attachment) {
         MultipartFormEntity entity = new MultipartFormEntity(name, attachment);
-        return getContext().newRequest()
+        return getContext().apiRequest()
                 .path("tasks/" + getId() + "/attachments")
                 .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
                 .setEntity(entity)
@@ -360,7 +361,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
         @Override
         public void update() {
-            this.entityContext.newRequest()
+            this.entityContext.apiRequest()
                     .path("tasks/" + this.taskId + "/addProject")
                     .setQueryParameter("project", String.valueOf(projectId))
                     .setQueryParameter("insertAfter", String.valueOf(this.insertAfter))

@@ -5,6 +5,7 @@ import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
@@ -92,7 +93,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     @Override
     public void update() {
-        getContext().newRequest()
+        getContext().apiRequest()
                 .path("workspaces/" + this.getId())
                 .setEntity(this)
                 .buildAs(HttpMethod.PUT)
@@ -116,7 +117,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     private User addUserInternal(Object userReference) {
-        return getContext().newRequest()
+        return getContext().apiRequest()
                 .path("workspaces/" + this.getId() + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -142,7 +143,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     private void removeUserInternal(Object userReference) {
-        getContext().newRequest()
+        getContext().apiRequest()
                 .path("workspaces/" + this.getId() + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -154,7 +155,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     @Override
     public PagedList<Project> getProjects() {
         // TODO should we update a workspace of project to this instance?
-        return getContext().newRequest()
+        return getContext().apiRequest()
                 .path("workspaces/" + this.getId() + "/projects")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -166,7 +167,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
                 .setField("workspace", getId())
                 .setField("name", name);
-        return getContext().newRequest()
+        return getContext().apiRequest()
                 .path("projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)

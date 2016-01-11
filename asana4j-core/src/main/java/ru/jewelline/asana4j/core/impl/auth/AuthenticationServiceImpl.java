@@ -6,11 +6,11 @@ import ru.jewelline.asana4j.auth.AuthenticationType;
 import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.PreferencesService;
+import ru.jewelline.asana4j.utils.StringUtils;
 import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -82,7 +82,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void parseOAuthResponse(String data) {
         if (data != null && getAuthenticationType() != null) {
             try {
-                String charset = Charset.isSupported("UTF-8") ? "UTF-8" : Charset.defaultCharset().displayName();
+                String charset = StringUtils.getCharset().displayName();
                 data = URLDecoder.decode(data, charset);
             } catch (UnsupportedEncodingException ex) {
                 // The system should always have the platform default

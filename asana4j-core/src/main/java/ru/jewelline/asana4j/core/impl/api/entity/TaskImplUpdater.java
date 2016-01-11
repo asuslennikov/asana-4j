@@ -22,7 +22,7 @@ public class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implement
     @Override
     public Task update() {
         this.target.stopUpdate();
-        this.target.getContext().newRequest()
+        this.target.getContext().apiRequest()
                 .path("tasks/" + this.target.getId())
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)
