@@ -3,11 +3,14 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public enum UserImplProcessor implements JsonFieldReader<UserImpl> {
     ID("id") {
@@ -31,7 +34,14 @@ public enum UserImplProcessor implements JsonFieldReader<UserImpl> {
     PHOTO("photo") {
         @Override
         public void read(JSONObject source, UserImpl target) throws JSONException {
-            target.setPhotoUrl(source.getString(getFieldName()));
+            JSONObject photos = source.getJSONObject(getFieldName());
+            Map<User.PhotoSize, String> converted = new EnumMap(User.PhotoSize.class);
+            for (User.PhotoSize photoSize : User.PhotoSize.values()) {
+                if (!photos.isNull(photoSize.toString())){
+                    converted.put(photoSize, photos.getString(photoSize.toString()));
+                }
+            }
+            target.setPhotoUrl(converted);
         }
     },
     WORKSPACES("workspaces") {

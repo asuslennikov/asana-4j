@@ -1,6 +1,8 @@
 package ru.jewelline.asana4j.api.entity;
 
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A user object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
@@ -27,8 +29,19 @@ public interface User extends HasId, HasName {
      * @api.field <code>photo</code>
      * @api.access Read-only
      */
-    //TODO change type for the url, it should be map with size-path pairs
-    String getPhotoUrl();
+    Map<PhotoSize, String> getPhotoUrl();
+
+    /**
+     * Downloads the user photo with given size.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param size        A photo size for download.
+     * @param destination A destination stream for that attachment.
+     * @return <code>true</code> if photo was downloaded, <code>false</code> if it can not
+     * (for example if the {@link #getPhotoUrl()} is empty or doesn't contain an url for photo with given size).
+     * @see #getPhotoUrl()
+     */
+    boolean downloadPhoto(PhotoSize size, OutputStream destination);
 
     /**
      * @return Workspaces and organizations this user may access.<p>
@@ -37,4 +50,28 @@ public interface User extends HasId, HasName {
      * @api.access Read-only
      */
     List<Workspace> getWorkspaces();
+
+    /**
+     * Enum which holds all available photo sizes.
+     *
+     * @see User#getPhotoUrl()
+     */
+    enum PhotoSize {
+        SIZE_21("image_21x21"),
+        SIZE_27("image_27x27"),
+        SIZE_26("image_36x36"),
+        SIZE_60("image_60x60"),
+        SIZE_128("image_128x128"),;
+
+        private String size;
+
+        PhotoSize(String size) {
+            this.size = size;
+        }
+
+        @Override
+        public String toString() {
+            return this.size;
+        }
+    }
 }

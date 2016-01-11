@@ -5,16 +5,21 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.http.HttpMethod;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
+
+    private static final int RESPONSE_OK_ANSWER_CODE = 200;
 
     private long id;
     private String name;
     private String email;
-    private String photoUrl;
+    private Map<PhotoSize, String> photoUrl;
     private List<Workspace> workspaces;
 
     public UserImpl(ApiEntityContext context) {
@@ -42,8 +47,22 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
     }
 
     @Override
-    public String getPhotoUrl() {
+    public Map<PhotoSize, String> getPhotoUrl() {
         return this.photoUrl;
+    }
+
+    @Override
+    public boolean downloadPhoto(PhotoSize size, OutputStream destination) {
+        if (size != null
+                && this.getPhotoUrl() != null
+                && this.getPhotoUrl().containsKey(size)){
+            return getContext().httpRequest()
+                    .path(this.getPhotoUrl().get(size))
+                    .buildAs(HttpMethod.GET)
+                    .sendAndReadResponse(destination)
+                    .code() == RESPONSE_OK_ANSWER_CODE;
+        }
+        return false;
     }
 
     @Override
@@ -63,7 +82,7 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
         this.email = email;
     }
 
-    public void setPhotoUrl(String photoUrl) {
+    public void setPhotoUrl(Map<PhotoSize, String> photoUrl) {
         this.photoUrl = photoUrl;
     }
 

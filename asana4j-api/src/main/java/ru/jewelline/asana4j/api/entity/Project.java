@@ -237,7 +237,6 @@ public interface Project extends HasId, HasName {
             }
             return Color.NONE;
         }
-
     }
 
     /**
