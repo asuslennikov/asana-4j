@@ -7,13 +7,14 @@ import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.StoryImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient {
 
-    public StoryApiClientImpl(RequestFactory requestFactory) {
-        super(requestFactory);
+    public StoryApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
+        super(requestFactory, entityContext);
     }
 
     private EntityDeserializer<StoryImpl> getStoryDeserializer() {

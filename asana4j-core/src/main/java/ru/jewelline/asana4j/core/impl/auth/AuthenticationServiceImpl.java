@@ -82,10 +82,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void parseOAuthResponse(String data) {
         if (data != null && getAuthenticationType() != null) {
             try {
-                String charset = StringUtils.getCharset().displayName();
-                data = URLDecoder.decode(data, charset);
+                data = URLDecoder.decode(data, StringUtils.getCharset().displayName());
             } catch (UnsupportedEncodingException ex) {
-                // The system should always have the platform default
+                /* can happen only if charset doesn't exist for the given name,
+                   but we use the charset instance, so it always exists */
             }
             getWorker().parseOAuthResponse(data);
         }

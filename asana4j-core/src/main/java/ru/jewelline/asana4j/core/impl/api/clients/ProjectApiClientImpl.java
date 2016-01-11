@@ -6,13 +6,14 @@ import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiClient {
 
-    public ProjectApiClientImpl(RequestFactory requestFactory) {
-        super(requestFactory);
+    public ProjectApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
+        super(requestFactory, entityContext);
     }
 
     private EntityDeserializer<ProjectImpl> getProjectDeserializer() {

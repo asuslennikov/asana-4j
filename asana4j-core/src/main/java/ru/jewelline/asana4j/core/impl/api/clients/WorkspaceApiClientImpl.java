@@ -7,12 +7,13 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceApiClient {
 
-    public WorkspaceApiClientImpl(RequestFactory requestFactory) {
-        super(requestFactory);
+    public WorkspaceApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
+        super(requestFactory, entityContext);
     }
 
     private EntityDeserializer<WorkspaceImpl> getWorkspaceDeserializer() {

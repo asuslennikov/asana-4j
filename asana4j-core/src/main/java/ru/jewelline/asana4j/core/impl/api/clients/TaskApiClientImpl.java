@@ -7,12 +7,13 @@ import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.http.HttpMethod;
 
 public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
-    public TaskApiClientImpl(RequestFactory requestFactory) {
-        super(requestFactory);
+    public TaskApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
+        super(requestFactory, entityContext);
     }
 
     private EntityDeserializer<TaskImpl> getTaskDeserializer() {

@@ -11,9 +11,9 @@ public abstract class ApiClientImpl implements RequestFactory {
     private final RequestFactory requestFactory;
     private final ApiEntityContext entityContext;
 
-    public ApiClientImpl(RequestFactory requestFactory) {
+    public ApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
         this.requestFactory = requestFactory;
-        this.entityContext = new ApiEntityContext(requestFactory);
+        this.entityContext = entityContext;
     }
 
     protected ApiEntityContext getEntityContext(){

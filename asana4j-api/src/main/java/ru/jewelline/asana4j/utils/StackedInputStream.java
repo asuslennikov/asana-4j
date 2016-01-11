@@ -17,7 +17,7 @@ public class StackedInputStream extends InputStream {
             this.underConstruction = new StackedInputStream();
         }
 
-        private final void checkState() {
+        private void checkState() {
             if (done) {
                 throw new IllegalStateException("Builder was already finished.");
             }
