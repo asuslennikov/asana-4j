@@ -64,7 +64,7 @@ public class ApiEntityContext implements RequestFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public final <T extends ApiEntityImpl<T>> ApiEntityInstanceProvider<T> getEntityProvider(Class<T> entityClass) {
+    public <T extends ApiEntityImpl<T>> ApiEntityInstanceProvider<T> getEntityProvider(Class<T> entityClass) {
         ApiEntityInstanceProvider<T> instanceProvider = (ApiEntityInstanceProvider<T>) this.instanceProviders.get(entityClass);
         if (instanceProvider == null) {
             throw new ApiException(ApiException.API_ENTITY_INSTANTIATION_FAIL,
@@ -74,11 +74,11 @@ public class ApiEntityContext implements RequestFactory {
         return instanceProvider;
     }
 
-    public final <T extends ApiEntityImpl<T>> EntityDeserializer<T> getDeserializer(Class<T> entityClass) {
+    public <T extends ApiEntityImpl<T>> EntityDeserializer<T> getDeserializer(Class<T> entityClass) {
         return new ApiEntityDeserializer<>(getEntityProvider(entityClass));
     }
 
-    public final <T extends ApiEntityImpl<T>> T getEntity(Class<T> entityClass) {
+    public <T extends ApiEntityImpl<T>> T getEntity(Class<T> entityClass) {
         return getEntityProvider(entityClass).getInstance();
     }
 
