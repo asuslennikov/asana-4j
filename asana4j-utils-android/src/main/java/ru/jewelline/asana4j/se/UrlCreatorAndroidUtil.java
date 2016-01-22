@@ -30,7 +30,7 @@ public class UrlCreatorAndroidUtil implements URLCreator {
 
         public String build() {
             Uri.Builder uriBuilder = new Uri.Builder();
-            uriBuilder.path(this.baseUrl);
+            uriBuilder.encodedPath(this.baseUrl);
             for (Map.Entry<String, String> queryParameter : queryParameters.entrySet()) {
                 uriBuilder.appendQueryParameter(queryParameter.getKey(), queryParameter.getValue());
             }
