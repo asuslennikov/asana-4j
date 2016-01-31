@@ -5,13 +5,15 @@ An unofficial Java client library for the [Asana](https://asana.com/) API v1.0.
 This library licensed under the [MIT License (MIT)](https://opensource.org/licenses/MIT)
 
 ## Current status
+### Features
 * Authentication - ok (OAuth, Implicit Grant, Authorization Code Grant)
 * API options - ok
 * Errors - basic handling (currently in work)
 * Custom External Data - no support
+### Entities
 * Attachments - ok
 * Events - no support
-* Projects - full support for operations, no parsing for fields: followers, team, created_at, modified_at
+* Projects - ok
 * Stories - ok
 * Tags - no support
 * Tasks - full support for operations, no parsing for fields: membership, tags

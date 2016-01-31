@@ -1,8 +1,10 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
@@ -178,5 +180,14 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     @Override
     public Task.TaskCreator createTask() {
         return new TaskImplCreator(getContext()).setWorkspace(getId());
+    }
+
+    @Override
+    public PagedList<Team> getTeams(RequestModifier... requestModifiers) {
+        return getContext().apiRequest(requestModifiers)
+                .path("organizations/" + getId() + "/teams")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(TeamImpl.class));
     }
 }

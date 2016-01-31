@@ -1,6 +1,8 @@
 package ru.jewelline.asana4j.api.entity;
 
+import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 
 /**
  * A workspace is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
@@ -87,7 +89,7 @@ public interface Workspace extends HasId, HasName {
      * <p><i>Triggers HTTP communication with server</i></p>
      * @param email user email address, see {@link User#getEmail()}
      * @api.link <a href="https://asana.com/developers/api-reference/workspaces#user-mgmt">User management</a>
-     * @see #removeUser(String)
+     * @see #removeUser(long)
      * @see #removeCurrentUser()
      */
     void removeUser(String email);
@@ -143,4 +145,18 @@ public interface Workspace extends HasId, HasName {
      * @see ru.jewelline.asana4j.api.entity.Task.TaskCreator
      */
     Task.TaskCreator createTask();
+
+    /**
+     * Returns the compact records for all teams in the organization visible to the authorized user.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+     * @return Returns the compact records for all teams in the organization visible to the authorized user.
+     * @api.link <a href="https://asana.com/developers/api-reference/teams#get">Get teams in organization</a>
+     * @throws ApiException if you provided an id of regular workspace instead of valid organisation.
+     * @see Team
+     * @see #isOrganisation()
+     * @see RequestModifier
+     */
+    PagedList<Team> getTeams(RequestModifier... requestModifiers);
 }

@@ -5,6 +5,7 @@ import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
 import ru.jewelline.asana4j.api.clients.ProjectApiClient;
 import ru.jewelline.asana4j.api.clients.StoryApiClient;
 import ru.jewelline.asana4j.api.clients.TaskApiClient;
+import ru.jewelline.asana4j.api.clients.TeamClientApi;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
@@ -14,6 +15,7 @@ import ru.jewelline.asana4j.core.impl.api.clients.AttachmentApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.ProjectApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.StoryApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.TaskApiClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.TeamApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.UserApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
@@ -36,6 +38,7 @@ public abstract class AsanaImpl implements Asana {
     private TaskApiClient taskClient;
     private StoryApiClient storyClient;
     private AttachmentApiClient attachmentClient;
+    private TeamClientApi teamClient;
 
     public AsanaImpl(PreferencesService preferencesService, URLCreator urlCreator, Base64 base64) {
         this.preferencesService = preferencesService;
@@ -50,6 +53,7 @@ public abstract class AsanaImpl implements Asana {
         this.taskClient = new TaskApiClientImpl(requestFactory, entityContext);
         this.storyClient = new StoryApiClientImpl(requestFactory, entityContext);
         this.attachmentClient = new AttachmentApiClientImpl(requestFactory, entityContext);
+        this.teamClient = new TeamApiClientImpl(requestFactory, entityContext);
     }
 
     @Override
@@ -90,5 +94,10 @@ public abstract class AsanaImpl implements Asana {
     @Override
     public AttachmentApiClient getAttachmentClient() {
         return this.attachmentClient;
+    }
+
+    @Override
+    public TeamClientApi getTeamClient() {
+        return this.teamClient;
     }
 }
