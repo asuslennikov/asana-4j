@@ -60,7 +60,23 @@ public interface Project extends HasId, HasName {
      */
     String getDueDate();
 
-    // TODO add created_at and modified_at fields
+    /**
+     * Returns the time at which this project was last modified.
+     * <p />
+     * This does not currently reflect any changes in associations such as tasks or comments that may have been
+     * added or removed from the project.
+     * @return The time at which this project was last modified. Example: <code>2012-02-22T02:06:58.147Z</code>.
+     * @api.field <code>created_at</code>
+     * @api.access Read-only
+     */
+    String getCreatedAt();
+
+    /**
+     * @return The time at which this project was created. Example: <code>2012-02-22T02:06:58.147Z</code>.
+     * @api.field <code>modified_at</code>
+     * @api.access Read-only
+     */
+    String getModifiedAt();
 
     /**
      * @return True if the project is archived, false if not. Archived projects do not show in the UI by
@@ -88,7 +104,15 @@ public interface Project extends HasId, HasName {
      */
     List<User> getMembers();
 
-    // TODO add followers field
+    /**
+     * Returns array of users following this project. Followers are a subset of members who receive all notifications
+     * for a project, the default notification setting when adding members to a project in-product.
+     * @return Array of users following this project.
+     * @api.field <code>followers</code>
+     * @api.access Read-only
+     * @see User
+     */
+    List<User> getFollowers();
 
     /**
      * @return Color of the project. Must be one of the values from the
@@ -119,7 +143,13 @@ public interface Project extends HasId, HasName {
      */
     Workspace getWorkspace();
 
-    // TODO add team field
+    /**
+     * @return The team that this project is shared with. This field only exists for projects in organizations.
+     * @api.field <code>team</code>
+     * @api.access Create-only
+     * @see Team
+     */
+    Team getTeam();
 
     /**
      * This method removes the project.

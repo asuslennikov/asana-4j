@@ -4,6 +4,7 @@ import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
@@ -22,12 +23,16 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     private User owner;
     private ProjectStatus currentStatus;
     private String dueDate;
+    private String createdAt;
+    private String modifiedAt;
     private boolean archived;
     private boolean pub;
     private List<User> members;
+    private List<User> followers;
     private Color color;
     private String notes;
     private Workspace workspace;
+    private Team team;
 
     private ProjectUpdater updater;
 
@@ -91,6 +96,24 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     }
 
     @Override
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(String modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    @Override
     public boolean isArchived() {
         return this.archived;
     }
@@ -118,6 +141,15 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     }
 
     @Override
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
+
+    @Override
     public Color getColor() {
         return this.color;
     }
@@ -140,6 +172,19 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.workspace;
     }
 
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    @Override
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     @Override
     public PagedList<Task> getTasks() {
         return getContext().apiRequest()
@@ -147,10 +192,6 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(TaskImpl.class));
-    }
-
-    public void setWorkspace(Workspace workspace) {
-        this.workspace = workspace;
     }
 
     @Override
