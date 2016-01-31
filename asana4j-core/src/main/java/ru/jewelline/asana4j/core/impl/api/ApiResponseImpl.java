@@ -15,6 +15,7 @@ import ru.jewelline.asana4j.utils.StringUtils;
 
 public class ApiResponseImpl implements ApiResponse {
     public static final String DATA_ROOT = "data";
+    public static final String ERRORS_ROOT = "errors";
     public static final String NEXT_PAGE_ROOT = "next_page";
 
     private final HttpResponse<JsonOutputStream> httpResponse;
@@ -50,6 +51,7 @@ public class ApiResponseImpl implements ApiResponse {
     @Override
     public <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
+        checkForErrors(jsonObj);
         if (jsonObj.has(DATA_ROOT)) {
             try {
                 Object dataRoot = jsonObj.get(DATA_ROOT);
@@ -70,6 +72,19 @@ public class ApiResponseImpl implements ApiResponse {
             }
         }
         throw unableToExtractException();
+    }
+
+    private void checkForErrors(JSONObject jsonObj){
+        if (jsonObj.has(ERRORS_ROOT)){
+            JSONArray errors = jsonObj.getJSONArray(ERRORS_ROOT);
+            if (errors.length() > 0) {
+                String message = errors.getJSONObject(0).optString("message");
+                if (code() == 500) {
+                    message = "Server error: " + errors.getJSONObject(0).optString("phrase");
+                }
+                throw new ApiException(code(), message);
+            }
+        }
     }
 
     private Pagination getPagination(JSONObject response) throws JSONException {

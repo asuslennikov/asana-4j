@@ -8,8 +8,9 @@ This library licensed under the [MIT License (MIT)](https://opensource.org/licen
 ### Features
 * Authentication - ok (OAuth, Implicit Grant, Authorization Code Grant)
 * API options - ok
-* Errors - basic handling (currently in work)
+* Errors - basic handling
 * Custom External Data - no support
+
 ### Entities
 * Attachments - ok
 * Events - no support
