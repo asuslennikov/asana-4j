@@ -3,10 +3,12 @@ package ru.jewelline.asana4j.core.impl.api.clients;
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.TeamClientApi;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
+import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TeamImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
@@ -99,5 +101,17 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute();
+    }
+
+    @Override
+    public Project createProject(long teamId, String name) {
+        SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
+                .setField("name", name);
+        return getEntityContext().apiRequest()
+                .path("teams/" + teamId + "/projects")
+                .setEntity(fieldsUpdater.wrapFieldsAsEntity())
+                .buildAs(HttpMethod.POST)
+                .execute()
+                .asApiObject(getEntityContext().getDeserializer(ProjectImpl.class));
     }
 }

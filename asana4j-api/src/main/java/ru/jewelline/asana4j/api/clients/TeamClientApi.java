@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.api.clients;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
@@ -128,4 +129,16 @@ public interface TeamClientApi {
      * @see #removeUserFromTeam(long, String)
      */
     void removeCurrentUserFromTeam(long teamId);
+
+    /**
+     * Creates a project shared with the given team.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param teamId The team to create the project in.
+     * @param name A display name of project.
+     * @return the full record of the newly created project.
+     * @api.link <a href="https://asana.com/developers/api-reference/projects#create">Create a project</a>
+     * @see Project
+     */
+    Project createProject(long teamId, String name);
 }

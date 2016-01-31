@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
@@ -134,5 +135,17 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute();
+    }
+
+    @Override
+    public Project createProject(String name) {
+        SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
+                .setField("name", name);
+        return getContext().apiRequest()
+                .path("teams/" + getId() + "/projects")
+                .setEntity(fieldsUpdater.wrapFieldsAsEntity())
+                .buildAs(HttpMethod.POST)
+                .execute()
+                .asApiObject(getContext().getDeserializer(ProjectImpl.class));
     }
 }

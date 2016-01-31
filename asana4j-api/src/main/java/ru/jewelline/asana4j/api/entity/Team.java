@@ -97,4 +97,16 @@ public interface Team extends HasId, HasName {
      * @see #removeUser(String)
      */
     void removeCurrentUser();
+
+    /**
+     * Creates a project shared with the given team.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param name a display name of project
+     * @return the full record of the newly created project.
+     * @api.link <a href="https://asana.com/developers/api-reference/projects#create">Create a project</a>
+     * @see Project
+     * @see Team#createProject(String)
+     */
+    Project createProject(String name);
 }
