@@ -4,6 +4,7 @@ import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
 import ru.jewelline.asana4j.api.clients.ProjectApiClient;
 import ru.jewelline.asana4j.api.clients.StoryApiClient;
 import ru.jewelline.asana4j.api.clients.TaskApiClient;
+import ru.jewelline.asana4j.api.clients.TeamClientApi;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
@@ -38,4 +39,6 @@ public interface Asana {
     StoryApiClient getStoryClient();
 
     AttachmentApiClient getAttachmentClient();
+
+    TeamClientApi getTeamClient();
 }
