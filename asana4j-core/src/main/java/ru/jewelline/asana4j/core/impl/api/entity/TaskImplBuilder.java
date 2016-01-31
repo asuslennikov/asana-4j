@@ -1,7 +1,11 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import ru.jewelline.asana4j.api.entity.ExternalData;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.core.impl.api.entity.io.FieldsUpdater;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class TaskImplBuilder<T extends Task.TaskBuilder> extends FieldsUpdater implements Task.TaskBuilder<T> {
 
@@ -40,6 +44,15 @@ public abstract class TaskImplBuilder<T extends Task.TaskBuilder> extends Fields
     @Override
     public T setDueAt(long dueAt) {
         putField(TaskImplProcessor.DUE_AT.getFieldName(), dueAt);
+        return this.implClass.cast(this);
+    }
+
+    @Override
+    public T setExternalData(ExternalData externalData) {
+        Map<String, String > externalDataMap = new HashMap<>();
+        externalDataMap.put("id", externalData.getId());
+        externalDataMap.put("data", externalData.getData());
+        putField(TaskImplProcessor.EXTERNAL.getFieldName(), externalDataMap);
         return this.implClass.cast(this);
     }
 

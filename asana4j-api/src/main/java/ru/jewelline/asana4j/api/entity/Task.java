@@ -79,7 +79,20 @@ public interface Task extends HasId, HasName {
      */
     String getDueAt();
 
-    // TODO add external field
+    /**
+     * The external field allows you to store app-specific metadata on tasks, including an id that can be used to
+     * retrieve tasks and a data blob that can store app-specific character strings. Note that you will need to
+     * authenticate with Oauth (see {@link ru.jewelline.asana4j.auth.AuthenticationType#GRANT_CODE})to access or
+     * modify this data. Once an external id is set, you can use the notation <code>external:custom_id</code> to
+     * reference your object anywhere in the API where you may use the original object id.
+     *
+     * @return The external data associated with the task
+     * @api.field <code>external</code>
+     * @api.access Read-write
+     * @see ExternalData
+     * @see Task.TaskBuilder#setExternalData(ExternalData)
+     */
+    ExternalData getExternalData();
 
     /**
      * @return Array of users following this task.
@@ -407,6 +420,15 @@ public interface Task extends HasId, HasName {
          * @see Task#getDueAt()
          */
         T setDueAt(long dueAt);
+
+        /**
+         * Sets an external data for the task.
+         *
+         * @param externalData The custom external data
+         * @return The builder.
+         * @see Task#getExternalData()
+         */
+        T setExternalData(ExternalData externalData);
 
         /**
          * Sets a hearted status for the task.

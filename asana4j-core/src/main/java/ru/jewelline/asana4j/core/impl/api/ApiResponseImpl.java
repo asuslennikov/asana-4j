@@ -32,6 +32,7 @@ public class ApiResponseImpl implements ApiResponse {
     @Override
     public <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
+        checkForErrors(jsonObj);
         if (jsonObj.has(DATA_ROOT)) {
             try {
                 Object dataRoot = jsonObj.get(DATA_ROOT);
