@@ -17,7 +17,7 @@ This library licensed under the [MIT License (MIT)](https://opensource.org/licen
 * Stories - ok
 * Tags - no support
 * Tasks - full support for operations, no parsing for fields: membership, tags
-* Teams - no support
+* Teams - ok
 * Typeahead - no support
 * Users - ok
 * Webhooks - no support
