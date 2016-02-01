@@ -5,11 +5,13 @@ import ru.jewelline.asana4j.api.clients.TagApiClient;
 import ru.jewelline.asana4j.api.clients.TagFilter;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Tag;
+import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.TagImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TagImplCreator;
+import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
@@ -60,5 +62,14 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
             updater.setField("archived", filter.isArchived());
         }
         return updater.wrapFieldsAsEntity();
+    }
+
+    @Override
+    public PagedList<Task> getTasksForTag(long tagId, RequestModifier... requestModifiers) {
+        return apiRequest(requestModifiers)
+                .path("tags/" + tagId + "/tasks")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getEntityContext().getDeserializer(TaskImpl.class));
     }
 }

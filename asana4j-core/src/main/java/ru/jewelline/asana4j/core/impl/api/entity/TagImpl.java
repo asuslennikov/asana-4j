@@ -1,12 +1,16 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
+import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.ProjectColor;
 import ru.jewelline.asana4j.api.entity.Tag;
+import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
+import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.List;
@@ -132,4 +136,12 @@ public class TagImpl extends ApiEntityImpl<TagImpl> implements Tag {
         this.updater = null;
     }
 
+    @Override
+    public PagedList<Task> getTasks(RequestModifier... requestModifiers) {
+        return getContext().apiRequest(requestModifiers)
+                .path("tags/" + getId() + "/tasks")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(TaskImpl.class));
+    }
 }
