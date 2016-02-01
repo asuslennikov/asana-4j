@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
+import ru.jewelline.asana4j.api.entity.ExternalData;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.Task;
@@ -30,6 +31,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     private String completedAt;
     private String dueOn;
     private String dueAt;
+    private ExternalData externalData;
     private List<User> followers;
     private boolean hearted;
     private List<User> heartsAuthors;
@@ -135,6 +137,15 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     @Override
     public String getDueAt() {
         return dueAt;
+    }
+
+    @Override
+    public ExternalData getExternalData() {
+        return externalData;
+    }
+
+    public void setExternalData(ExternalData externalData) {
+        this.externalData = externalData;
     }
 
     public void setDueAt(String dueAt) {

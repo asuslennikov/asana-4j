@@ -84,6 +84,7 @@ public abstract class AuthenticationWorker {
     }
 
     protected void logout() {
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.API_KEY, null);
         getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_CODE, null);
         getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN, null);
         getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.REFRESH_TOKEN, null);

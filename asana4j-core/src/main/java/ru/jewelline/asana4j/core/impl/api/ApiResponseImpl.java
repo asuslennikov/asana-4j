@@ -32,6 +32,7 @@ public class ApiResponseImpl implements ApiResponse {
     @Override
     public <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
         JSONObject jsonObj = httpResponse.output().asJson();
+        checkForErrors(jsonObj);
         if (jsonObj.has(DATA_ROOT)) {
             try {
                 Object dataRoot = jsonObj.get(DATA_ROOT);
@@ -80,7 +81,7 @@ public class ApiResponseImpl implements ApiResponse {
             if (errors.length() > 0) {
                 String message = errors.getJSONObject(0).optString("message");
                 if (code() == 500) {
-                    message = "Server error: " + errors.getJSONObject(0).optString("phrase");
+                    message = "Server error: " + message + ", phrase: " + errors.getJSONObject(0).optString("phrase");
                 }
                 throw new ApiException(code(), message);
             }

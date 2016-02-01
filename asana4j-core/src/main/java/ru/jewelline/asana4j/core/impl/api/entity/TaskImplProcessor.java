@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.jewelline.asana4j.api.entity.ExternalData;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
@@ -65,6 +66,17 @@ public enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
         @Override
         public void read(JSONObject source, TaskImpl target) throws JSONException {
             target.setDueAt(source.getString(getFieldName()));
+        }
+    },
+    EXTERNAL("external"){
+        @Override
+        public void read(JSONObject source, TaskImpl target) throws JSONException {
+            JSONObject externalData = source.getJSONObject(getFieldName());
+            target.setExternalData(new ExternalData(getOptString(externalData, "id"), getOptString(externalData, "data")));
+        }
+
+        private String getOptString(JSONObject obj, String key){
+            return obj.has(key) ? obj.opt(key).toString() : null;
         }
     },
     FOLLOWERS("followers") {
