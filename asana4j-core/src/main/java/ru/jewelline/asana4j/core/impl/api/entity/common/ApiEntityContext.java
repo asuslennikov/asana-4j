@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ApiEntityContext implements RequestFactory {
+public class ApiEntityContext implements RequestFactory {
 
     private final RequestFactory requestFactory;
     private final Map<Class<? extends ApiEntityImpl<?>>, ApiEntityInstanceProvider<? extends ApiEntityImpl<?>>> instanceProviders;
