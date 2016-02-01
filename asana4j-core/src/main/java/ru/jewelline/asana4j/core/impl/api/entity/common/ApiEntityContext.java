@@ -10,6 +10,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectStatusImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.StoryImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.TagImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TeamImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
@@ -42,6 +43,7 @@ public class ApiEntityContext implements RequestFactory {
         registerEntityClass(StoryImpl.class);
         registerEntityClass(AttachmentImpl.class);
         registerEntityClass(TeamImpl.class);
+        registerEntityClass(TagImpl.class);
     }
 
     private <T extends ApiEntityImpl<T>> void registerEntityClass(final Class<T> entityClass) {

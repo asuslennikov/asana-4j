@@ -3,7 +3,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.entity.Project;
+import ru.jewelline.asana4j.api.entity.ProjectColor;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
@@ -194,13 +194,13 @@ enum  ProjectImplProcessor implements JsonFieldReader<ProjectImpl>, JsonFieldWri
     COLOR("color") {
         @Override
         public void write(ProjectImpl source, JSONObject target) throws JSONException {
-            Project.Color color = source.getColor() != null ? source.getColor() : Project.Color.NONE;
+            ProjectColor color = source.getColor() != null ? source.getColor() : ProjectColor.NONE;
             target.put(getFieldName(), color.getColorCode());
         }
 
         @Override
         public void read(JSONObject source, ProjectImpl target) throws JSONException {
-            target.setColor(Project.Color.getColorByCode(source.getString(getFieldName())));
+            target.setColor(ProjectColor.getColorByCode(source.getString(getFieldName())));
         }
     },
     NOTES("notes") {

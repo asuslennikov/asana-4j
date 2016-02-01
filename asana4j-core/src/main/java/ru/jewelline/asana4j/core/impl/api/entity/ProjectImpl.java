@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.entity.Project;
+import ru.jewelline.asana4j.api.entity.ProjectColor;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.Team;
@@ -29,7 +30,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     private boolean pub;
     private List<User> members;
     private List<User> followers;
-    private Color color;
+    private ProjectColor color;
     private String notes;
     private Workspace workspace;
     private Team team;
@@ -150,11 +151,11 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     }
 
     @Override
-    public Color getColor() {
+    public ProjectColor getColor() {
         return this.color;
     }
 
-    void setColor(Color color) {
+    void setColor(ProjectColor color) {
         this.color = color;
     }
 
