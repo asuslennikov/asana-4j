@@ -32,6 +32,12 @@ class TaskImplCreator extends TaskImplBuilder<Task.TaskCreator> implements Task.
     }
 
     @Override
+    public Task.TaskCreator setTags(long... taskIds) {
+        putField(TaskImplProcessor.TAGS.getFieldName(), taskIds);
+        return this;
+    }
+
+    @Override
     public Task create() {
         return this.context.apiRequest()
                 .path("tasks")

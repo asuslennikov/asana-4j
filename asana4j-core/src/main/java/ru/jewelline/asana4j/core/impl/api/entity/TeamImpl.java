@@ -110,6 +110,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(UserImpl.class));
+        // TODO reload after operation?
     }
 
     @Override
@@ -135,6 +136,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute();
+        // TODO reload after operation?
     }
 
     @Override

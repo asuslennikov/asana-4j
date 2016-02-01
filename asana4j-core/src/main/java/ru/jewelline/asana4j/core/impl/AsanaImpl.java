@@ -4,6 +4,7 @@ import ru.jewelline.asana4j.Asana;
 import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
 import ru.jewelline.asana4j.api.clients.ProjectApiClient;
 import ru.jewelline.asana4j.api.clients.StoryApiClient;
+import ru.jewelline.asana4j.api.clients.TagApiClient;
 import ru.jewelline.asana4j.api.clients.TaskApiClient;
 import ru.jewelline.asana4j.api.clients.TeamClientApi;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
@@ -14,6 +15,7 @@ import ru.jewelline.asana4j.core.impl.api.RequestFactoryImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.AttachmentApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.ProjectApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.StoryApiClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.TagApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.TaskApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.TeamApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.UserApiClientImpl;
@@ -39,6 +41,7 @@ public abstract class AsanaImpl implements Asana {
     private StoryApiClient storyClient;
     private AttachmentApiClient attachmentClient;
     private TeamClientApi teamClient;
+    private TagApiClient tagClient;
 
     public AsanaImpl(PreferencesService preferencesService, URLCreator urlCreator, Base64 base64) {
         this.preferencesService = preferencesService;
@@ -54,6 +57,7 @@ public abstract class AsanaImpl implements Asana {
         this.storyClient = new StoryApiClientImpl(requestFactory, entityContext);
         this.attachmentClient = new AttachmentApiClientImpl(requestFactory, entityContext);
         this.teamClient = new TeamApiClientImpl(requestFactory, entityContext);
+        this.tagClient = new TagApiClientImpl(requestFactory, entityContext);
     }
 
     @Override
@@ -99,5 +103,10 @@ public abstract class AsanaImpl implements Asana {
     @Override
     public TeamClientApi getTeamClient() {
         return this.teamClient;
+    }
+
+    @Override
+    public TagApiClient getTagClient() {
+        return this.tagClient;
     }
 }

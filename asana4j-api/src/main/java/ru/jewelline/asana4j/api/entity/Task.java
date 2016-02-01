@@ -180,7 +180,18 @@ public interface Task extends HasId, HasName {
      */
     boolean isSection();
 
-    // TODO add membership and tags fields
+    // TODO add membership
+
+    /**
+     * @return Array of tags associated with this task.
+     * @api.field <code>tags</code>
+     * @api.access Read-write
+     * @see Tag
+     * @see TaskCreator#setTags(long...)
+     * @see #addTag(long)
+     * @see #removeTag(long)
+     */
+    List<Tag> getTags();
 
     /**
      * This method removes the task.
@@ -306,6 +317,25 @@ public interface Task extends HasId, HasName {
      * @see Attachment
      */
     Attachment uploadAttachment(String name, InputStream attachment);
+
+    /**
+     * Adds a tag to a task.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param tagId The tag to add to the task.
+     * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
+     */
+    void addTag(long tagId);
+
+    /**
+     * Removes a tag from the task.
+     * <p><i>Triggers HTTP communication with server</i></p>
+     *
+     * @param tagId The tag to remove from the task.
+     * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
+     */
+    void removeTag(long tagId);
+
     /**
      * Enum which holds all available assignee statuses.
      *
@@ -502,6 +532,15 @@ public interface Task extends HasId, HasName {
          * @see Task#setParentTask(Long)
          */
         TaskCreator setParent(long parentTaskId);
+
+        /**
+         * Sets tags for the new task.
+         *
+         * @param taskIds Arrays of tag's ids for the task.
+         * @return The builder.
+         * @see Task#getTags()
+         */
+        TaskCreator setTags(long... taskIds);
 
         /**
          * Creates a new task and adds it to the parent task.

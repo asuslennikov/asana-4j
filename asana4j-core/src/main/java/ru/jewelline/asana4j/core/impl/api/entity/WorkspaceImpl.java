@@ -3,6 +3,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
+import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
@@ -127,6 +128,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(UserImpl.class));
+        // TODO reload after operation?
     }
 
     @Override
@@ -152,6 +154,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute();
+        // TODO reload after operation?
     }
 
     @Override
@@ -189,5 +192,10 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(TeamImpl.class));
+    }
+
+    @Override
+    public Tag.TagCreator createTag() {
+        return new TagImplCreator(getContext()).setWorkspace(getId());
     }
 }

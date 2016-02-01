@@ -16,8 +16,8 @@ This library licensed under the [MIT License (MIT)](https://opensource.org/licen
 * Events - no support
 * Projects - ok
 * Stories - ok
-* Tags - no support
-* Tasks - ok (except fields: membership, tags)
+* Tags - ok
+* Tasks - ok (except the membership field)
 * Teams - ok
 * Typeahead - no support
 * Users - ok

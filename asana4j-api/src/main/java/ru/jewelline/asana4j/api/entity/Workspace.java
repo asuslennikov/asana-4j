@@ -171,4 +171,17 @@ public interface Workspace extends HasId, HasName {
      * @see RequestModifier
      */
     PagedList<Team> getTeams(RequestModifier... requestModifiers);
+
+    /**
+     * Starts a new tag creation process. Every tag is required to be created in a specific workspace or organization,
+     * and this cannot be changed once set.
+     *
+     * @return A builder which allows for user to specify parameters for the new tag and complete the creation process
+     * (workspace id is already set, see {@link ru.jewelline.asana4j.api.entity.Tag.TagCreator#setWorkspace(long)} and
+     * {@link #getId()}).
+     * @api.link @api.link <a href="https://asana.com/developers/api-reference/tags#create">Create a tag</a>
+     * @see Tag
+     * @see ru.jewelline.asana4j.api.entity.Tag.TagCreator
+     */
+    Tag.TagCreator createTag();
 }

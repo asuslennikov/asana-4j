@@ -1,6 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Project;
+import ru.jewelline.asana4j.api.entity.ProjectColor;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
@@ -47,7 +48,7 @@ class ProjectImplUpdater extends FieldsUpdater implements Project.ProjectUpdater
     }
 
     @Override
-    public Project.ProjectUpdater setColor(Project.Color color) {
+    public Project.ProjectUpdater setColor(ProjectColor color) {
         putField(ProjectImplProcessor.COLOR.getFieldName(), color.getColorCode());
         return this;
     }
