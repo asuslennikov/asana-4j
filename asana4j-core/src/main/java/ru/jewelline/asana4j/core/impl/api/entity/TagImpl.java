@@ -20,6 +20,8 @@ public class TagImpl extends ApiEntityImpl<TagImpl> implements Tag {
     private String notes;
     private Workspace workspace;
 
+    private Tag.TagUpdater updater;
+
     public TagImpl(ApiEntityContext context) {
         super(TagImpl.class, context);
     }
@@ -115,6 +117,19 @@ public class TagImpl extends ApiEntityImpl<TagImpl> implements Tag {
         out.append(", name = ").append(getName());
         out.append(']');
         return out.toString();
+    }
+
+    @Override
+    public TagUpdater startUpdate() {
+        if (this.updater != null) {
+            throw new IllegalStateException("Another update process is in progress");
+        }
+        this.updater = new TagImplUpdater(this);
+        return this.updater;
+    }
+
+    void stopUpdate() {
+        this.updater = null;
     }
 
 }
