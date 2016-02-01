@@ -81,7 +81,7 @@ public class ApiResponseImpl implements ApiResponse {
             if (errors.length() > 0) {
                 String message = errors.getJSONObject(0).optString("message");
                 if (code() == 500) {
-                    message = "Server error: " + errors.getJSONObject(0).optString("phrase");
+                    message = "Server error: " + message + ", phrase: " + errors.getJSONObject(0).optString("phrase");
                 }
                 throw new ApiException(code(), message);
             }

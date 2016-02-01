@@ -1,5 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity.io;
 
+import org.json.JSONObject;
 import ru.jewelline.asana4j.api.entity.HasId;
 import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 
@@ -20,12 +21,12 @@ public abstract class FieldsUpdater {
         if (obj != null) {
             this.fields.put(fieldName, obj.getId());
         } else {
-            this.fields.put(fieldName, null);
+            this.fields.put(fieldName, JSONObject.NULL);
         }
     }
 
     protected void putField(String fieldName, Object obj) {
-        this.fields.put(fieldName, obj);
+        this.fields.put(fieldName, obj != null ? obj : JSONObject.NULL);
     }
 
     protected void putField(String fieldName, HasId[] arr){

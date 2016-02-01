@@ -2,24 +2,47 @@ package ru.jewelline.asana4j.example;
 
 import ru.jewelline.asana4j.utils.PreferencesService;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Logger;
 
-public class InMemoryPreferenceService implements PreferencesService {
-    private Map<Object, Object> store = new ConcurrentHashMap<>();
+public class FileBasedPreferenceService implements PreferencesService {
+    private Properties store = new Properties();
+    private final String propsFileName;
+
+    public FileBasedPreferenceService(){
+        this("asana.properties");
+    }
+
+    public FileBasedPreferenceService(String propertiesFileName) {
+        this.propsFileName = propertiesFileName;
+        File file = new File(this.propsFileName);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            store.load(new FileInputStream(file));
+        } catch (IOException ioEx){
+            throw new RuntimeException("Unable to instantiate FileBasedPreferenceService. " + ioEx.getLocalizedMessage());
+        }
+    }
+
     @Override
     public Integer getInteger(String key) {
-        return (Integer) store.get(key);
+        return Integer.parseInt(store.getProperty(key));
     }
 
     @Override
     public Long getLong(String key) {
-        return (Long) store.get(key);
+        return Long.parseLong(store.getProperty(key));
     }
 
     @Override
     public String getString(String key) {
-        return (String) store.get(key);
+        return store.getProperty(key);
     }
 
     @Override
@@ -60,6 +83,11 @@ public class InMemoryPreferenceService implements PreferencesService {
             store.put(key, value);
         } else if(key != null){
             store.remove(key);
+        }
+        try {
+            store.store(new FileOutputStream(new File(this.propsFileName)), null);
+        } catch (IOException ioEx) {
+            Logger.getLogger(this.getClass().getName()).severe("Unable to store preferences, reason = " + ioEx.getLocalizedMessage());
         }
     }
 }

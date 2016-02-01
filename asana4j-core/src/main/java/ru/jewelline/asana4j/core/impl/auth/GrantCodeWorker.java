@@ -35,7 +35,7 @@ public class GrantCodeWorker extends AuthenticationWorker {
                     .buildAs(HttpMethod.POST)
                     .sendAndReadResponse(responseBody);
             if (response.code() != HttpURLConnection.HTTP_OK) {
-                throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE);
+                throwAuthenticationError(responseBody);
             }
             JSONObject authResponse = responseBody.asJson();
 
@@ -59,12 +59,25 @@ public class GrantCodeWorker extends AuthenticationWorker {
         String result = null;
         if (obj != null && property != null && obj.has(property)) {
             try {
-                result = obj.getString(property);
+                result = obj.get(property).toString();
             } catch (JSONException e) {
                 // TODO log exception
             }
         }
         return result;
+    }
+
+    private void throwAuthenticationError(JsonOutputStream responseBody) {
+        String message = "Failed to authenticate.";
+        try {
+            JSONObject json = responseBody.asJson();
+            message = json.optString("error_description");
+        } catch (NetworkException ne) {
+            if (ne.getErrorCode() == NetworkException.UNREADABLE_RESPONSE) {
+                message = "Failed to authenticate, unreadable server response.";
+            }
+        }
+        throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE, message);
     }
 
     private byte[] getAccessTokenRequestBody() {

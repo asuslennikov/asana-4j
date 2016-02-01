@@ -72,7 +72,11 @@ public enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
         @Override
         public void read(JSONObject source, TaskImpl target) throws JSONException {
             JSONObject externalData = source.getJSONObject(getFieldName());
-            target.setExternalData(new ExternalData(externalData.opt("id").toString(), externalData.optString("data").toString()));
+            target.setExternalData(new ExternalData(getOptString(externalData, "id"), getOptString(externalData, "data")));
+        }
+
+        private String getOptString(JSONObject obj, String key){
+            return obj.has(key) ? obj.opt(key).toString() : null;
         }
     },
     FOLLOWERS("followers") {
