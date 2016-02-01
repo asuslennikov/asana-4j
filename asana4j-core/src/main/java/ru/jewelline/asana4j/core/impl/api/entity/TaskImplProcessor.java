@@ -12,7 +12,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
+enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
     ID("id") {
         @Override
         public void read(JSONObject source, TaskImpl target) throws JSONException {

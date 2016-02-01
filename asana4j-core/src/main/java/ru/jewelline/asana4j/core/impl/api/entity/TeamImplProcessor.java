@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 
-public enum TeamImplProcessor implements JsonFieldReader<TeamImpl>, JsonFieldWriter<TeamImpl> {
+enum TeamImplProcessor implements JsonFieldReader<TeamImpl>, JsonFieldWriter<TeamImpl> {
     ID("id") {
         @Override
         public void read(JSONObject source, TeamImpl target) throws JSONException {

@@ -6,7 +6,7 @@ import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-public class JsonEntitySerializer implements EntitySerializer<JsonEntity> {
+public final class JsonEntitySerializer implements EntitySerializer<JsonEntity> {
     public static final JsonEntitySerializer INSTANCE = new JsonEntitySerializer();
 
     @Override

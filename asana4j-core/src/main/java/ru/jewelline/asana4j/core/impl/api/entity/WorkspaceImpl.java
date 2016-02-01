@@ -44,7 +44,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
         return id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 

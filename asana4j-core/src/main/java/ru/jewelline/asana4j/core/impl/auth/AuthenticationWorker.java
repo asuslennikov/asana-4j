@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.utils.StringUtils;
 
-public abstract class AuthenticationWorker {
+abstract class AuthenticationWorker {
     public static final String USER_OAUTH_ENDPOINT = "https://app.asana.com/-/oauth_authorize";
     public static final String ACCESS_TOKEN_ENDPOINT = "https://app.asana.com/-/oauth_token";
 

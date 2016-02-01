@@ -38,7 +38,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         return id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
@@ -47,7 +47,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -56,7 +56,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -65,7 +65,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         return downloadUrl;
     }
 
-    public void setDownloadUrl(String downloadUrl) {
+    void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
     }
 
@@ -74,7 +74,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         return host;
     }
 
-    public void setHost(Host host) {
+    void setHost(Host host) {
         this.host = host;
     }
 
@@ -83,7 +83,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         return parent;
     }
 
-    public void setParent(Task parent) {
+    void setParent(Task parent) {
         this.parent = parent;
     }
 
@@ -92,7 +92,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
         return viewUrl;
     }
 
-    public void setViewUrl(String viewUrl) {
+    void setViewUrl(String viewUrl) {
         this.viewUrl = viewUrl;
     }
 
@@ -123,7 +123,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
 
     @Override
     public boolean download(OutputStream destinationStream) {
-        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())){
+        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
             return getContext().httpRequest()
                     .path(getDownloadUrl())
                     .buildAs(HttpMethod.GET)
@@ -135,7 +135,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
 
     @Override
     public boolean downloadPreview(OutputStream destinationStream) {
-        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())){
+        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
             return getContext().httpRequest()
                     .path(getViewUrl())
                     .buildAs(HttpMethod.GET)

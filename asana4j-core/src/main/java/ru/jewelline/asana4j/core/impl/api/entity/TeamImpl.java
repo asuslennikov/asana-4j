@@ -39,7 +39,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
         return id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
@@ -48,7 +48,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 

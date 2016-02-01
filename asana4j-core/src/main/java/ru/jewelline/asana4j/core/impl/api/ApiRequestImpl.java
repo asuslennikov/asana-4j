@@ -9,7 +9,7 @@ import ru.jewelline.asana4j.utils.JsonOutputStream;
 import java.io.InputStream;
 import java.util.Map;
 
-public class ApiRequestImpl implements ApiRequest {
+class ApiRequestImpl implements ApiRequest {
     private final HttpRequest httpRequest;
 
     public ApiRequestImpl(HttpRequest httpRequest) {

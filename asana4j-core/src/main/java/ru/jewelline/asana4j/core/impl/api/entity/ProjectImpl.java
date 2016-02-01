@@ -55,7 +55,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
@@ -64,7 +64,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -73,7 +73,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.owner;
     }
 
-    public void setOwner(User owner) {
+    void setOwner(User owner) {
         this.owner = owner;
     }
 
@@ -82,7 +82,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.currentStatus;
     }
 
-    public void setCurrentStatus(ProjectStatus currentStatus) {
+    void setCurrentStatus(ProjectStatus currentStatus) {
         this.currentStatus = currentStatus;
     }
 
@@ -91,7 +91,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -100,7 +100,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -109,7 +109,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return modifiedAt;
     }
 
-    public void setModifiedAt(String modifiedAt) {
+    void setModifiedAt(String modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
@@ -118,7 +118,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.archived;
     }
 
-    public void setArchived(boolean archived) {
+    void setArchived(boolean archived) {
         this.archived = archived;
     }
 
@@ -127,7 +127,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.pub;
     }
 
-    public void setPublic(boolean isPublic) {
+    void setPublic(boolean isPublic) {
         this.pub = isPublic;
     }
 
@@ -136,7 +136,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.members;
     }
 
-    public void setMembers(List<User> members) {
+    void setMembers(List<User> members) {
         this.members = members;
     }
 
@@ -145,7 +145,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return followers;
     }
 
-    public void setFollowers(List<User> followers) {
+    void setFollowers(List<User> followers) {
         this.followers = followers;
     }
 
@@ -154,7 +154,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.color;
     }
 
-    public void setColor(Color color) {
+    void setColor(Color color) {
         this.color = color;
     }
 
@@ -163,7 +163,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.notes;
     }
 
-    public void setNotes(String notes) {
+    void setNotes(String notes) {
         this.notes = notes;
     }
 
@@ -172,7 +172,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.workspace;
     }
 
-    public void setWorkspace(Workspace workspace) {
+    void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
 
@@ -181,7 +181,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return team;
     }
 
-    public void setTeam(Team team) {
+    void setTeam(Team team) {
         this.team = team;
     }
 

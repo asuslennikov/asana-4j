@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiRequestBuilderImpl implements ApiRequestBuilder {
+class ApiRequestBuilderImpl implements ApiRequestBuilder {
     protected static final String BASE_API_URL = "https://app.asana.com/api/1.0/";
     private final HttpClient httpClient;
 

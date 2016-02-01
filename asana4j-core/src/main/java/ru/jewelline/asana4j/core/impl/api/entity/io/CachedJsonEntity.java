@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class CachedJsonEntity implements JsonEntity {
+public final class CachedJsonEntity implements JsonEntity {
     private final EntitySerializer<JsonEntity> serializer;
     private final JSONObject json;
 

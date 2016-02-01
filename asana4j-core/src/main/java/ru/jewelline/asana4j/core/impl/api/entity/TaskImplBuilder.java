@@ -7,7 +7,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.io.FieldsUpdater;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class TaskImplBuilder<T extends Task.TaskBuilder> extends FieldsUpdater implements Task.TaskBuilder<T> {
+abstract class TaskImplBuilder<T extends Task.TaskBuilder> extends FieldsUpdater implements Task.TaskBuilder<T> {
 
     private final Class<T> implClass;
 

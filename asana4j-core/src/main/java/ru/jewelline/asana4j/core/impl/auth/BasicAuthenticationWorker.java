@@ -4,7 +4,7 @@ import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.utils.Base64;
 
-public class BasicAuthenticationWorker extends AuthenticationWorker {
+final class BasicAuthenticationWorker extends AuthenticationWorker {
 
     private final Base64 base64;
 

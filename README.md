@@ -9,7 +9,7 @@ This library licensed under the [MIT License (MIT)](https://opensource.org/licen
 * Authentication - ok (OAuth, Implicit Grant, Authorization Code Grant)
 * API options - ok
 * Errors - basic handling
-* Custom External Data - no support
+* Custom External Data - ok
 
 ### Entities
 * Attachments - ok
@@ -17,12 +17,12 @@ This library licensed under the [MIT License (MIT)](https://opensource.org/licen
 * Projects - ok
 * Stories - ok
 * Tags - no support
-* Tasks - full support for operations, no parsing for fields: membership, tags
+* Tasks - ok (except fields: membership, tags)
 * Teams - ok
 * Typeahead - no support
 * Users - ok
 * Webhooks - no support
-* Workspaces - partially, no support for organisations
+* Workspaces - ok
 
 
 ## Requirements & dependencies

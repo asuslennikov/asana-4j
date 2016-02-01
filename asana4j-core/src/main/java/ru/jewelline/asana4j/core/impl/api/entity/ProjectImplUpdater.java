@@ -10,7 +10,7 @@ import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Map;
 
-public class ProjectImplUpdater extends FieldsUpdater implements Project.ProjectUpdater {
+class ProjectImplUpdater extends FieldsUpdater implements Project.ProjectUpdater {
 
     private final ProjectImpl target;
 

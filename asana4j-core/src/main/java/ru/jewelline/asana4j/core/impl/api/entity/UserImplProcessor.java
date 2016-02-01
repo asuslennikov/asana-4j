@@ -12,7 +12,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public enum UserImplProcessor implements JsonFieldReader<UserImpl> {
+enum UserImplProcessor implements JsonFieldReader<UserImpl> {
     ID("id") {
         @Override
         public void read(JSONObject source, UserImpl target) throws JSONException {

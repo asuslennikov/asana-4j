@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
 
-public class ApiEntityDeserializer<T extends ApiEntityImpl<T>> implements EntityDeserializer<T> {
+public final class ApiEntityDeserializer<T extends ApiEntityImpl<T>> implements EntityDeserializer<T> {
     private final ApiEntityInstanceProvider<T> instanceProvider;
 
     public ApiEntityDeserializer(ApiEntityInstanceProvider<T> instanceProvider) {

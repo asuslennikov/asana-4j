@@ -38,7 +38,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
@@ -47,7 +47,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -56,7 +56,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
+    void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -65,7 +65,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return hearted;
     }
 
-    public void setHearted(boolean hearted) {
+    void setHearted(boolean hearted) {
         this.hearted = hearted;
     }
 
@@ -74,7 +74,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return heartsAuthors;
     }
 
-    public void setHeartsAuthors(List<User> heartsAuthors) {
+    void setHeartsAuthors(List<User> heartsAuthors) {
         this.heartsAuthors = heartsAuthors;
     }
 
@@ -83,7 +83,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return numberOfHearts;
     }
 
-    public void setNumberOfHearts(int numberOfHearts) {
+    void setNumberOfHearts(int numberOfHearts) {
         this.numberOfHearts = numberOfHearts;
     }
 
@@ -92,7 +92,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return text;
     }
 
-    public void setText(String text) {
+    void setText(String text) {
         this.text = text;
     }
 
@@ -101,7 +101,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return htmlText;
     }
 
-    public void setHtmlText(String htmlText) {
+    void setHtmlText(String htmlText) {
         this.htmlText = htmlText;
     }
 
@@ -110,7 +110,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return target;
     }
 
-    public void setTarget(Task target) {
+    void setTarget(Task target) {
         this.target = target;
     }
 
@@ -119,7 +119,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return source;
     }
 
-    public void setSource(String source) {
+    void setSource(String source) {
         this.source = source;
     }
 
@@ -128,7 +128,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return type;
     }
 
-    public void setType(String type) {
+    void setType(String type) {
         this.type = type;
     }
 

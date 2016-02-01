@@ -6,7 +6,7 @@ import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
 
-public abstract class ApiClientImpl implements RequestFactory {
+abstract class ApiClientImpl implements RequestFactory {
 
     private final RequestFactory requestFactory;
     private final ApiEntityContext entityContext;

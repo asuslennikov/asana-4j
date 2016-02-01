@@ -13,7 +13,7 @@ import ru.jewelline.asana4j.utils.URLCreator;
 
 import java.net.HttpURLConnection;
 
-public class GrantCodeWorker extends AuthenticationWorker {
+final class GrantCodeWorker extends AuthenticationWorker {
 
     private final HttpClient httpClient;
     private final URLCreator urlCreator;

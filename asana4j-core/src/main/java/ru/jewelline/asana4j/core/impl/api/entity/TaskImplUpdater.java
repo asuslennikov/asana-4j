@@ -4,7 +4,7 @@ import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.http.HttpMethod;
 
-public class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implements Task.TaskUpdater {
+class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implements Task.TaskUpdater {
 
     private final TaskImpl target;
 

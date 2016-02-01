@@ -35,7 +35,7 @@ public class ProjectStatusImpl extends ApiEntityImpl<ProjectStatusImpl> implemen
         return this.color;
     }
 
-    public void setColor(Color color) {
+    void setColor(Color color) {
         this.color = color;
     }
 
@@ -44,7 +44,7 @@ public class ProjectStatusImpl extends ApiEntityImpl<ProjectStatusImpl> implemen
         return this.text;
     }
 
-    public void setText(String text) {
+    void setText(String text) {
         this.text = text;
     }
 
@@ -53,7 +53,7 @@ public class ProjectStatusImpl extends ApiEntityImpl<ProjectStatusImpl> implemen
         return this.author;
     }
 
-    public void setAuthor(User author) {
+    void setAuthor(User author) {
         this.author = author;
     }
 

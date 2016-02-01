@@ -15,7 +15,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum  ProjectImplProcessor implements JsonFieldReader<ProjectImpl>, JsonFieldWriter<ProjectImpl> {
+enum  ProjectImplProcessor implements JsonFieldReader<ProjectImpl>, JsonFieldWriter<ProjectImpl> {
     ID("id") {
         @Override
         public void write(ProjectImpl source, JSONObject target) throws JSONException {

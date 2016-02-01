@@ -41,6 +41,7 @@ public class ExternalData {
      * Updates the external id.
      *
      * @param id The external id.
+     * @see #getId()
      */
     public void setId(String id) {
         this.id = id;
@@ -59,6 +60,7 @@ public class ExternalData {
      * Updates the stored data.
      *
      * @param data The external data blob.
+     * @see #getData()
      */
     public void setData(String data) {
         this.data = data;

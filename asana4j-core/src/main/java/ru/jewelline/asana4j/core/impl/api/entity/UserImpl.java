@@ -70,23 +70,23 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
         return this.workspaces;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
-    public void setPhotoUrl(Map<PhotoSize, String> photoUrl) {
+    void setPhotoUrl(Map<PhotoSize, String> photoUrl) {
         this.photoUrl = photoUrl;
     }
 
-    public void setWorkspaces(List<Workspace> workspaces) {
+    void setWorkspaces(List<Workspace> workspaces) {
         this.workspaces = workspaces;
     }
 

@@ -58,7 +58,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return this.id;
     }
 
-    public void setId(long id) {
+    void setId(long id) {
         this.id = id;
     }
 
@@ -67,7 +67,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return this.name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -76,7 +76,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return this.assignee;
     }
 
-    public void setAssignee(User assignee) {
+    void setAssignee(User assignee) {
         this.assignee = assignee;
     }
 
@@ -85,7 +85,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return this.assigneeStatus;
     }
 
-    public void setAssigneeStatus(AssigneeStatus assigneeStatus) {
+    void setAssigneeStatus(AssigneeStatus assigneeStatus) {
         this.assigneeStatus = assigneeStatus;
     }
 
@@ -94,7 +94,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return this.completed;
     }
 
-    public void setCompleted(boolean completed) {
+    void setCompleted(boolean completed) {
         this.completed = completed;
     }
 
@@ -103,7 +103,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return this.notes;
     }
 
-    public void setNotes(String notes) {
+    void setNotes(String notes) {
         this.notes = notes;
     }
 
@@ -112,7 +112,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -121,7 +121,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return completedAt;
     }
 
-    public void setCompletedAt(String completedAt) {
+    void setCompletedAt(String completedAt) {
         this.completedAt = completedAt;
     }
 
@@ -130,7 +130,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return dueOn;
     }
 
-    public void setDueOn(String dueOn) {
+    void setDueOn(String dueOn) {
         this.dueOn = dueOn;
     }
 
@@ -144,7 +144,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return externalData;
     }
 
-    public void setExternalData(ExternalData externalData) {
+    void setExternalData(ExternalData externalData) {
         this.externalData = externalData;
     }
 
@@ -157,7 +157,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return followers;
     }
 
-    public void setFollowers(List<User> followers) {
+    void setFollowers(List<User> followers) {
         this.followers = followers;
     }
 
@@ -166,7 +166,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return hearted;
     }
 
-    public void setHearted(boolean hearted) {
+    void setHearted(boolean hearted) {
         this.hearted = hearted;
     }
 
@@ -175,7 +175,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return heartsAuthors;
     }
 
-    public void setHeartsAuthors(List<User> heartsAuthors) {
+    void setHeartsAuthors(List<User> heartsAuthors) {
         this.heartsAuthors = heartsAuthors;
     }
 
@@ -184,7 +184,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return modifiedAt;
     }
 
-    public void setModifiedAt(String modifiedAt) {
+    void setModifiedAt(String modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
@@ -193,7 +193,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return numberOfHearts;
     }
 
-    public void setNumberOfHearts(int numberOfHearts) {
+    void setNumberOfHearts(int numberOfHearts) {
         this.numberOfHearts = numberOfHearts;
     }
 
@@ -202,7 +202,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return projects;
     }
 
-    public void setProjects(List<Project> projects) {
+    void setProjects(List<Project> projects) {
         this.projects = projects;
     }
 
@@ -211,7 +211,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return parent;
     }
 
-    public void setParent(Task parent) {
+    void setParent(Task parent) {
         this.parent = parent;
     }
 
@@ -225,7 +225,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return getName() != null && getName().endsWith(":");
     }
 
-    public void setWorkspace(Workspace workspace) {
+    void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
 
@@ -272,7 +272,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return this.updater;
     }
 
-    public void stopUpdate() {
+    void stopUpdate() {
         this.updater = null;
     }
 

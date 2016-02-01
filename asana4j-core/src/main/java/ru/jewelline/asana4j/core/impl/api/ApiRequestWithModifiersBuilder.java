@@ -15,7 +15,7 @@ import ru.jewelline.asana4j.http.HttpMethod;
 
 import java.util.Arrays;
 
-public class ApiRequestWithModifiersBuilder extends ApiRequestBuilderImpl {
+class ApiRequestWithModifiersBuilder extends ApiRequestBuilderImpl {
     private static final DataRootRequestModifier DATA_ROOT_REQUEST_MODIFIER = new DataRootRequestModifier();
     private static final JsonContentTypeModifier JSON_CONTENT_TYPE_MODIFIER = new JsonContentTypeModifier();
     private static final LoggingRequestModifier LOGGING_REQUEST_MODIFIER = new LoggingRequestModifier();

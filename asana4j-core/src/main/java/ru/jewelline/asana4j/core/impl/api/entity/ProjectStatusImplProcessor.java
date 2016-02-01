@@ -8,7 +8,7 @@ import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 
-public enum ProjectStatusImplProcessor implements JsonFieldReader<ProjectStatusImpl>, JsonFieldWriter<ProjectStatusImpl> {
+enum ProjectStatusImplProcessor implements JsonFieldReader<ProjectStatusImpl>, JsonFieldWriter<ProjectStatusImpl> {
     COLOR("color") {
         @Override
         public void write(ProjectStatusImpl source, JSONObject target) throws JSONException {

@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 
 import java.io.InputStream;
 
-public class SerializableEntityImpl<T> implements SerializableEntity {
+public final class SerializableEntityImpl<T> implements SerializableEntity {
 
     private final T entity;
     private final EntitySerializer<T> serializer;

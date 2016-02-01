@@ -13,7 +13,7 @@ import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
 
-public class ApiResponseImpl implements ApiResponse {
+class ApiResponseImpl implements ApiResponse {
     public static final String DATA_ROOT = "data";
     public static final String ERRORS_ROOT = "errors";
     public static final String NEXT_PAGE_ROOT = "next_page";

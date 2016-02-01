@@ -9,7 +9,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum StoryImplProcessor implements JsonFieldReader<StoryImpl> {
+enum StoryImplProcessor implements JsonFieldReader<StoryImpl> {
     ID("id") {
         @Override
         public void read(JSONObject source, StoryImpl target) throws JSONException {

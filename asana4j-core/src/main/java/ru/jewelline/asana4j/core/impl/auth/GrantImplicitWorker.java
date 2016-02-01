@@ -4,7 +4,7 @@ import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.utils.URLCreator;
 
-public class GrantImplicitWorker extends AuthenticationWorker {
+final class GrantImplicitWorker extends AuthenticationWorker {
 
     private final URLCreator urlCreator;
 

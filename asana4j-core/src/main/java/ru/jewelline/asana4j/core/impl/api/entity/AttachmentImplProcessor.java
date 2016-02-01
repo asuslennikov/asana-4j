@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 
-public enum AttachmentImplProcessor implements JsonFieldReader<AttachmentImpl> {
+enum AttachmentImplProcessor implements JsonFieldReader<AttachmentImpl> {
     ID("id") {
         @Override
         public void read(JSONObject source, AttachmentImpl target) throws JSONException {
