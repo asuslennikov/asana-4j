@@ -127,6 +127,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(UserImpl.class));
+        // TODO reload after operation?
     }
 
     @Override
@@ -152,6 +153,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute();
+        // TODO reload after operation?
     }
 
     @Override

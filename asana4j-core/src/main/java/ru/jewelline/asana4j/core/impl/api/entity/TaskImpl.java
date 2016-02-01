@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.ExternalData;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Story;
+import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
@@ -41,6 +42,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     private Task parent;
     private String notes;
     private Workspace workspace;
+    private List<Tag> tags;
 
     private TaskUpdater updater;
 
@@ -230,6 +232,15 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     }
 
     @Override
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -353,6 +364,30 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(AttachmentImpl.class));
+    }
+
+    @Override
+    public void addTag(long tagId) {
+        getContext().apiRequest()
+                .path("tasks/" + getId() + "/addTag")
+                .setEntity(new SimpleFieldsUpdater()
+                        .setField("tag", tagId)
+                        .wrapFieldsAsEntity())
+                .buildAs(HttpMethod.POST)
+                .execute();
+        // TODO reload after operation?
+    }
+
+    @Override
+    public void removeTag(long tagId) {
+        getContext().apiRequest()
+                .path("tasks/" + getId() + "/removeTag")
+                .setEntity(new SimpleFieldsUpdater()
+                        .setField("tag", tagId)
+                        .wrapFieldsAsEntity())
+                .buildAs(HttpMethod.POST)
+                .execute();
+        // TODO reload after operation?
     }
 
     private static class AddProjectBuilderImpl implements AddProjectBuilder {

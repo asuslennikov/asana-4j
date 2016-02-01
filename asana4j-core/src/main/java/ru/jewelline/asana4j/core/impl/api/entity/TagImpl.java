@@ -91,4 +91,30 @@ public class TagImpl extends ApiEntityImpl<TagImpl> implements Tag {
     void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        return id == ((TagImpl) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder("Tag [");
+        out.append("id = ").append(getId());
+        out.append(", name = ").append(getName());
+        out.append(']');
+        return out.toString();
+    }
+
 }

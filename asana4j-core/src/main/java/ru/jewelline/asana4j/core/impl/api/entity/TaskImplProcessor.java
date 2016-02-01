@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.entity.ExternalData;
 import ru.jewelline.asana4j.api.entity.Project;
+import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
@@ -175,6 +176,26 @@ enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
         public void read(JSONObject source, TaskImpl target) throws JSONException {
             target.setWorkspace(target.getContext().getDeserializer(WorkspaceImpl.class)
                     .deserialize(source.getJSONObject(getFieldName())));
+        }
+    },
+    TAGS("tags") {
+        @Override
+        public void read(JSONObject source, TaskImpl target) throws JSONException {
+            Object tagsAsObj = source.get(getFieldName());
+            if (tagsAsObj instanceof JSONArray) {
+                readTags(target, (JSONArray) tagsAsObj);
+            }
+        }
+
+        private void readTags(TaskImpl target, JSONArray tags) {
+            if (tags != null && tags.length() > 0) {
+                List<Tag> converted = new ArrayList<>();
+                for (int i = 0; i < tags.length(); i++) {
+                    converted.add(target.getContext().getDeserializer(TagImpl.class)
+                            .deserialize(tags.getJSONObject(i)));
+                }
+                target.setTags(converted);
+            }
         }
     },
     ;
