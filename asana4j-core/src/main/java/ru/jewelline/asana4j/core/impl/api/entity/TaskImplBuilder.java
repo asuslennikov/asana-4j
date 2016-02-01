@@ -50,10 +50,9 @@ public abstract class TaskImplBuilder<T extends Task.TaskBuilder> extends Fields
     @Override
     public T setExternalData(ExternalData externalData) {
         if (externalData != null) {
-            Map<String, String> externalDataMap = new HashMap<>();
-            // null value will not be serialized as JSON, so we use the empty string
-            externalDataMap.put("id", externalData.getId() != null ? externalData.getId() : "");
-            externalDataMap.put("data", externalData.getData() != null ? externalData.getData() : "");
+            Map<String, Object> externalDataMap = new HashMap<>();
+            externalDataMap.put("id", externalData.getId());
+            externalDataMap.put("data", externalData.getData());
             putField(TaskImplProcessor.EXTERNAL.getFieldName(), externalDataMap);
         } else {
             putField(TaskImplProcessor.EXTERNAL.getFieldName(), (Object) null);
