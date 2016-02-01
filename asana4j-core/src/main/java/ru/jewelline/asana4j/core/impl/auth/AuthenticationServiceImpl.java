@@ -31,6 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(this, base64));
         this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(this, urlCreator));
         this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(this, httpClient, urlCreator));
+        this.authenticationWorkers.put(AuthenticationType.PERSONAL_ACCESS_TOKEN, new PersonalAccessTokenWorker(this));
     }
 
     @Override

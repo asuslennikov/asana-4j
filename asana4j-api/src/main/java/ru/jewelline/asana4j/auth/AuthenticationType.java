@@ -32,5 +32,18 @@ public enum AuthenticationType {
      * </ul>
      */
     GRANT_CODE,
+
+    /**
+     * Personal Access Tokens are a useful mechanism for accessing the API in scenarios where OAuth would be considered
+     * overkill, such as access from the command line and personal scripts or applications. A user can create many, but
+     * not unlimited, personal access tokens. When creating a token you must give it a description to help you remember
+     * what you created the token for.
+     * <ul> List of required authentication parameters:
+     *   <li>{@link AuthenticationProperties#ACCESS_TOKEN}</li>
+     * </ul>
+     *
+     * @api.link <a href="https://asana.com/developers/documentation/getting-started/auth#personal-access-token">Personal Access Token</a>
+     */
+    PERSONAL_ACCESS_TOKEN,
     ;
 }

@@ -21,7 +21,7 @@ final class GrantImplicitWorker extends AuthenticationWorker {
                     "The property 'AuthenticationType.Properties.ACCESS_TOKEN' must be specified, see Java doc for " +
                             "AuthenticationService#setAuthenticationProperty(String, String). " +
                             "You can find more information here: " +
-                            "https://asana.com/developers/documentation/getting-started/authentication#AsanaConnect");
+                            "https://asana.com/developers/documentation/getting-started/auth#implicit-grant");
         }
     }
 

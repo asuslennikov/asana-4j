@@ -6,7 +6,7 @@ This library licensed under the [MIT License (MIT)](https://opensource.org/licen
 
 ## Current status
 ### Features
-* Authentication - ok (OAuth, Implicit Grant, Authorization Code Grant)
+* Authentication - ok (Api Key, Implicit Grant, Authorization Code Grant, Personal Access Token)
 * API options - ok
 * Errors - basic handling
 * Custom External Data - ok
