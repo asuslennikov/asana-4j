@@ -1,17 +1,17 @@
-package ru.jewelline.asana4j.http;
+package ru.jewelline.request.http;
 
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
 /**
- * This class provides access to HTTP response information
+ * This class provides access to HTTP response information.
  *
- * @param <T> exact type of output stream which was used as destination for server response
+ * @param <T> exact type of output stream which was used as destination for server response.
  */
 public interface HttpResponse<T extends OutputStream> {
     /**
-     * @return HTTP server response code
+     * @return An HTTP server response code.
      */
     int code();
 

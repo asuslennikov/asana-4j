@@ -1,6 +1,6 @@
-package ru.jewelline.asana4j.http;
+package ru.jewelline.request.http;
 
-public class NetworkException extends RuntimeException {
+public final class NetworkException extends RuntimeException {
     public static final int YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST = 1;
     public static final int UNREADABLE_RESPONSE = 1 << 1;
     public static final int MALFORMED_URL = 1 << 2;

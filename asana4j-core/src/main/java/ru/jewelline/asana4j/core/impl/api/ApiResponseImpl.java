@@ -3,15 +3,14 @@ package ru.jewelline.asana4j.core.impl.api;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.ApiResponse;
-import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.ResponsePostProcessor;
-import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
-import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.asana4j.api.modifiers.Pagination;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
+import ru.jewelline.request.api.ApiException;
+import ru.jewelline.request.api.ApiResponse;
+import ru.jewelline.request.api.PagedList;
+import ru.jewelline.request.api.entity.EntityDeserializer;
+import ru.jewelline.request.http.HttpResponse;
 
 class ApiResponseImpl implements ApiResponse {
     public static final String DATA_ROOT = "data";
@@ -30,7 +29,7 @@ class ApiResponseImpl implements ApiResponse {
     }
 
     @Override
-    public <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
+    public <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer) {
         JSONObject jsonObj = httpResponse.output().asJson();
         checkForErrors(jsonObj);
         if (jsonObj.has(DATA_ROOT)) {
@@ -50,7 +49,7 @@ class ApiResponseImpl implements ApiResponse {
     }
 
     @Override
-    public <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors) {
+    public <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer) {
         JSONObject jsonObj = httpResponse.output().asJson();
         checkForErrors(jsonObj);
         if (jsonObj.has(DATA_ROOT)) {

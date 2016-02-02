@@ -1,19 +1,19 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
-import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.TeamClientApi;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
-import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TeamImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.api.PagedList;
+import ru.jewelline.request.api.entity.EntityDeserializer;
+import ru.jewelline.request.api.modifiers.RequestModifier;
+import ru.jewelline.request.http.HttpMethod;
 
 public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 

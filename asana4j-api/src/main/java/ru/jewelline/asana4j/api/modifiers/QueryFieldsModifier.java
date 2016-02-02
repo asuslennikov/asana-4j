@@ -1,8 +1,9 @@
-package ru.jewelline.asana4j.api.clients.modifiers;
+package ru.jewelline.asana4j.api.modifiers;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.api.modifiers.ModifiersChain;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.Arrays;

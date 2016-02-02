@@ -1,10 +1,10 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.api.modifiers.RequestModifier;
+import ru.jewelline.request.http.HttpRequestBuilder;
 
 abstract class ApiClientImpl implements RequestFactory {
 

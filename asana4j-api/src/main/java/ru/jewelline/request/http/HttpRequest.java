@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.http;
+package ru.jewelline.request.http;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,37 +9,37 @@ import java.util.Map;
  */
 public interface HttpRequest {
     /**
-     * @return a full target url
+     * @return A full target url.
      */
     String getUrl();
 
     /**
-     * @return a map with pairs header-value, these values will be set as http request headers.
+     * @return A map with header-value pairs, these values will be set as HTTP request headers.
      * It is unmodifiable map.
      */
     Map<String, String> getHeaders();
 
     /**
-     * @return a representation of HTTP method for which this request instance was created
+     * @return A representation of HTTP method for which this request instance was created.
      */
     HttpMethod getMethod();
+
     /**
-     * @return a payload which will be send to server, can be <code>null</code>
+     * @return A payload which will be send to server, can be <code>null</code>.
      */
     InputStream getEntity();
 
     /**
-     * Send this HTTP request
-     *
-     * @return response object (will contain just a HTTP response code)
+     * Sends this HTTP request and doesn't read a server response (so no headers, no payload, even a code status
+     * is unknown).
      */
-    HttpResponse<OutputStream> send();
+   void send();
 
     /**
-     * Send this HTTP request and read a server response
+     * Send this HTTP request and read a server response.
      *
      * @param destinationStream output stream in which a server response will be copied
-     * @return response object
+     * @return A response object.
      */
     <T extends OutputStream> HttpResponse<T> sendAndReadResponse(T destinationStream);
 }

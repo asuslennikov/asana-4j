@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.core.impl.http.config;
 
-import ru.jewelline.asana4j.core.impl.http.HttpConfiguration;
+import ru.jewelline.request.http.HttpConfiguration;
 
 public class BaseHttpConfiguration implements HttpConfiguration {
 

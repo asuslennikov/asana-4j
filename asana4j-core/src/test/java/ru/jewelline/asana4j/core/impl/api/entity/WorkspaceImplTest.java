@@ -4,9 +4,9 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
+import ru.jewelline.request.api.ApiException;
+import ru.jewelline.request.api.entity.JsonEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;

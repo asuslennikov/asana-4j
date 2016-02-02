@@ -4,10 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.NetworkException;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -25,7 +25,7 @@ public class HttpRequestBuilderImplTest {
     @Mock
     private URLCreator.Builder urlBuilder;
     @Mock
-    private HttpClientImpl httpClient;
+    private HttpRequestFactoryImpl httpClient;
 
     private HttpRequestBuilderImpl getRequestBuilder() {
         when(urlCreator.builder()).thenReturn(urlBuilder);

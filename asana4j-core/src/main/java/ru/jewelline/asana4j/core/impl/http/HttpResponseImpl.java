@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.request.http.HttpResponse;
 
 import java.io.OutputStream;
 import java.util.Collections;

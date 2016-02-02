@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.HttpResponse;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,13 +13,13 @@ import java.util.Map;
 public class HttpRequestImpl implements HttpRequest {
 
     private final HttpMethod httpMethod;
-    private final HttpClientImpl httpClient;
+    private final HttpRequestFactoryImpl httpClient;
 
     private String url;
     private Map<String, String> headers;
     private InputStream entity;
 
-    public HttpRequestImpl(HttpMethod httpMethod, HttpClientImpl httpClient) {
+    public HttpRequestImpl(HttpMethod httpMethod, HttpRequestFactoryImpl httpClient) {
         if (httpMethod == null) {
             throw new IllegalArgumentException("Http method can not be null");
         }
@@ -64,8 +64,8 @@ public class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
-    public HttpResponse<OutputStream> send() {
-        return this.sendAndReadResponse(null);
+    public void send() {
+        this.sendAndReadResponse(null);
     }
 
     @Override

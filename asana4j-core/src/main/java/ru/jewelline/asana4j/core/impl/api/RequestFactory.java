@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.core.impl.api;
 
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.api.modifiers.RequestModifier;
+import ru.jewelline.request.http.HttpRequestBuilder;
 
 /**
  * An access point for request builders (for {@link HttpRequestBuilder} and {@link ApiRequestBuilder} instances).

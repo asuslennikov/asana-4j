@@ -4,23 +4,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
-import ru.jewelline.asana4j.http.HttpClient;
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpResponse;
-import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestFactory;
+import ru.jewelline.request.http.HttpResponse;
+import ru.jewelline.request.http.NetworkException;
 
 import java.net.HttpURLConnection;
 
 final class GrantCodeWorker extends AuthenticationWorker {
 
-    private final HttpClient httpClient;
+    private final HttpRequestFactory httpRequestFactory;
     private final URLCreator urlCreator;
 
-    public GrantCodeWorker(AuthenticationServiceImpl authenticationService, HttpClient httpClient, URLCreator urlCreator) {
+    public GrantCodeWorker(AuthenticationServiceImpl authenticationService, HttpRequestFactory httpRequestFactory, URLCreator urlCreator) {
         super(authenticationService);
-        this.httpClient = httpClient;
+        this.httpRequestFactory = httpRequestFactory;
         this.urlCreator = urlCreator;
     }
 
@@ -28,7 +28,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
     void authenticate() throws AuthenticationException {
         try {
             JsonOutputStream responseBody = new JsonOutputStream();
-            HttpResponse response = this.httpClient.newRequest()
+            HttpResponse response = this.httpRequestFactory.httpRequest()
                     .path(ACCESS_TOKEN_ENDPOINT)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
                     .entity(getAccessTokenRequestBody())

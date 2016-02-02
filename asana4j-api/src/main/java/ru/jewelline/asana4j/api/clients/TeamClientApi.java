@@ -1,12 +1,12 @@
 package ru.jewelline.asana4j.api.clients;
 
-import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
+import ru.jewelline.request.api.ApiException;
+import ru.jewelline.request.api.PagedList;
+import ru.jewelline.request.api.modifiers.RequestModifier;
 
 public interface TeamClientApi {
 

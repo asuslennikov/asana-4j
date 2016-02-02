@@ -8,15 +8,15 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.api.entity.User;
-import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
-import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.request.api.ApiException;
+import ru.jewelline.request.api.entity.EntityDeserializer;
+import ru.jewelline.request.api.entity.JsonEntity;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.HttpResponse;
 
 import java.io.OutputStream;
 import java.util.Collections;
@@ -25,9 +25,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserImplTest {

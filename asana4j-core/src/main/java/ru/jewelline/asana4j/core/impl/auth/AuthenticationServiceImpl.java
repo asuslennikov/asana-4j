@@ -3,11 +3,11 @@ package ru.jewelline.asana4j.core.impl.auth;
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.auth.AuthenticationType;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.StringUtils;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpRequestFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -24,13 +24,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private volatile AuthenticationType authenticationType;
 
-    public AuthenticationServiceImpl(PreferencesService preferencesService, HttpClient httpClient, URLCreator urlCreator, Base64 base64) {
+    public AuthenticationServiceImpl(PreferencesService preferencesService, HttpRequestFactory httpRequestFactory, URLCreator urlCreator, Base64 base64) {
         this.preferencesService = preferencesService;
         this.authenticationWorkers = new EnumMap<>(AuthenticationType.class);
         // TODO Don't pass 'this' out of a constructor
         this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(this, base64));
         this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(this, urlCreator));
-        this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(this, httpClient, urlCreator));
+        this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(this, httpRequestFactory, urlCreator));
         this.authenticationWorkers.put(AuthenticationType.PERSONAL_ACCESS_TOKEN, new PersonalAccessTokenWorker(this));
     }
 

@@ -1,7 +1,7 @@
-package ru.jewelline.asana4j.api.clients.modifiers;
+package ru.jewelline.asana4j.api.modifiers;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
+import ru.jewelline.request.api.ApiRequestBuilder;
 
 public class PrettyJsonResponseModifier extends ApiOptionModifier {
     private static final String OPTION_PRETTY = "pretty";

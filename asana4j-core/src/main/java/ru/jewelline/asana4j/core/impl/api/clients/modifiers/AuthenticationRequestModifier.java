@@ -1,10 +1,10 @@
 package ru.jewelline.asana4j.core.impl.api.clients.modifiers;
 
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.ModifiersChain;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.api.modifiers.ModifiersChain;
+import ru.jewelline.request.api.modifiers.RequestModifier;
+import ru.jewelline.request.http.HttpMethod;
 
 public class AuthenticationRequestModifier implements RequestModifier {
     private final AuthenticationService authenticationService;

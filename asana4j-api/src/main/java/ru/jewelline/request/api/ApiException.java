@@ -1,6 +1,6 @@
-package ru.jewelline.asana4j.api;
+package ru.jewelline.request.api;
 
-public class ApiException extends RuntimeException {
+public final class ApiException extends RuntimeException {
     public static final int INCORRECT_RESPONSE_FORMAT = 1;
     public static final int INCORRECT_RESPONSE_FIELD_FORMAT = 2;
     public static final int API_ENTITY_SERIALIZATION_FAIL = 3;

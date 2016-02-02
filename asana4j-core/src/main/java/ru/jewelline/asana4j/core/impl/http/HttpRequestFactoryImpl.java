@@ -1,11 +1,12 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-import ru.jewelline.asana4j.http.HttpClient;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
-import ru.jewelline.asana4j.http.HttpResponse;
-import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpConfiguration;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.HttpRequestFactory;
+import ru.jewelline.request.http.HttpResponse;
+import ru.jewelline.request.http.NetworkException;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -17,13 +18,13 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Map;
 
-public class HttpClientImpl implements HttpClient {
+public class HttpRequestFactoryImpl implements HttpRequestFactory {
     private static final int NO_SERVER_RESPONSE_CODE = -1;
 
     private final URLCreator urlCreator;
     private final HttpConfiguration httpConfig;
 
-    public HttpClientImpl(URLCreator urlCreator, HttpConfiguration httpConfig) {
+    public HttpRequestFactoryImpl(URLCreator urlCreator, HttpConfiguration httpConfig) {
         this.urlCreator = urlCreator;
         this.httpConfig = httpConfig;
     }
@@ -55,7 +56,7 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @Override
-    public HttpRequestBuilder newRequest() {
+    public HttpRequestBuilder httpRequest() {
         return new HttpRequestBuilderImpl(this.urlCreator, this);
     }
 

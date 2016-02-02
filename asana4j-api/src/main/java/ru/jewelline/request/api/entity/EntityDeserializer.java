@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api.entity.io;
+package ru.jewelline.request.api.entity;
 
 public interface EntityDeserializer<T> {
 

@@ -1,10 +1,10 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
-import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.NetworkException;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -16,24 +16,24 @@ public class HttpRequestBuilderImpl implements HttpRequestBuilder {
     private static final String HTTP_PREFIX = "http://";
     private static final String HTTPS_PREFIX = "https://";
 
-    private final HttpClientImpl httpClient;
+    private final HttpRequestFactoryImpl httpClient;
 
     private URLCreator.Builder urlBuilder;
     private Map<String, String> headers;
     private InputStream entityStream;
 
-    HttpRequestBuilderImpl(URLCreator urlCreator, HttpClientImpl httpClient) {
+    HttpRequestBuilderImpl(URLCreator urlCreator, HttpRequestFactoryImpl httpClient) {
         this.headers = new HashMap<>();
         this.urlBuilder = urlCreator.builder();
         this.httpClient = httpClient;
     }
 
     @Override
-    public HttpRequestBuilder path(String baseUrl) {
-        if (baseUrl == null || baseUrl.startsWith(HTTP_PREFIX) || baseUrl.startsWith(HTTPS_PREFIX)) {
-            this.urlBuilder.path(baseUrl);
+    public HttpRequestBuilder path(String url) {
+        if (url == null || url.startsWith(HTTP_PREFIX) || url.startsWith(HTTPS_PREFIX)) {
+            this.urlBuilder.path(url);
         } else {
-            this.urlBuilder.path(HTTP_PREFIX + baseUrl);
+            this.urlBuilder.path(HTTP_PREFIX + url);
         }
         return this;
     }

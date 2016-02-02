@@ -7,7 +7,7 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.io.FieldsUpdater;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.util.Map;
 

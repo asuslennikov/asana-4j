@@ -1,15 +1,15 @@
-package ru.jewelline.asana4j.api.clients.modifiers;
+package ru.jewelline.request.api.modifiers;
 
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * This class represents an ordered list of all registered request modifiers. It is immutable class and after its creation
- * it is not possible to add or remove any modifier.
+ * This class represents an ordered list of all registered request modifiers. It is not possible to add or remove
+ * a modifier after instantiation.
  */
 public final class ModifiersChain {
     private static final RequestModifierComparator REQUEST_MODIFIER_COMPARATOR = new RequestModifierComparator();
@@ -20,9 +20,11 @@ public final class ModifiersChain {
     private int counter;
 
     public ModifiersChain(RequestModifier[] requestModifiers) {
-        this.requestModifiers = requestModifiers; // in fact here will be better to create a copy of incoming array
-        if (this.requestModifiers != null && this.requestModifiers.length > 0) {
+        if (requestModifiers != null && requestModifiers.length > 0) {
+            this.requestModifiers = Arrays.copyOf(requestModifiers, requestModifiers.length);
             Arrays.sort(this.requestModifiers, REQUEST_MODIFIER_COMPARATOR);
+        } else {
+            this.requestModifiers = null;
         }
         this.counter = -1;
     }
@@ -34,9 +36,9 @@ public final class ModifiersChain {
      * this method is not a part of public API and can be changed even with minor update.
      *
      * @param requestBuilder never can be <code>null</code>. If RequestModifier implementation passes a <code>null</code>
-     *                       object as an argument the {@link IllegalArgumentException} will be raised.
+     *                       object as an argument, the {@link IllegalArgumentException} will be raised.
      * @param httpMethod     never can be <code>null</code>. If RequestModifier implementation passes a <code>null</code>
-     *                       object as an argument the {@link IllegalArgumentException} will be raised.
+     *                       object as an argument, the {@link IllegalArgumentException} will be raised.
      */
     public void next(ApiRequestBuilder requestBuilder, HttpMethod httpMethod) {
         if (requestBuilder == null) {
@@ -45,7 +47,7 @@ public final class ModifiersChain {
         if (httpMethod == null) {
             throw new IllegalArgumentException("The httpMethod can not be null.");
         }
-        if (this.requestModifiers == null){
+        if (this.requestModifiers == null) {
             return;
         }
         doNext(requestBuilder, httpMethod);
@@ -66,14 +68,16 @@ public final class ModifiersChain {
     }
 
     /**
-     * @return a {@link HttpMethod} for request
+     * @return A {@link HttpMethod} for request. Can changes after each call of
+     * {@link #next(ApiRequestBuilder, HttpMethod)} method.
      */
     public HttpMethod getHttpMethod() {
         return this.httpMethod;
     }
 
     /**
-     * @return a builder for API request
+     * @return A builder for API request. Can changes after each call of
+     * {@link #next(ApiRequestBuilder, HttpMethod)} method.
      */
     public ApiRequestBuilder getRequestBuilder() {
         return this.requestBuilder;

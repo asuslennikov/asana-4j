@@ -1,25 +1,25 @@
-package ru.jewelline.asana4j.http;
+package ru.jewelline.request.http;
 
 import java.io.InputStream;
 
 /**
- * This class allows to build HTTP requests with headers, query parameters and request message
+ * This class allows to build HTTP requests with headers, query parameters and payload
  */
 public interface HttpRequestBuilder {
     /**
      * Sets a base path fot the request
      *
-     * @param baseUrl base part of future request. It is mandatory part and if it is missed, the {@link NetworkException}
-     *                will be thrown during the {@link #buildAs(HttpMethod)} method. Basically it contains server and resource address. <br />
-     *                For example: <br />
-     *                <code>
-     *                http://www.example.com/resource/search
-     *                </code><br />
-     *                If baseUrl doesn't have a <code>http://</code> or <code>https://</code> prefix, the default one
-     *                (<code>http://</code>) will be added.
+     * @param url base part of future request. It is mandatory and if it was missed during creation, the
+     *            {@link NetworkException} will be thrown in the {@link #buildAs(HttpMethod)} method.
+     *            For example: <p/>
+     *            <code>
+     *            http://www.example.com/resource/search
+     *            </code><p/>
+     *            If url doesn't have a <code>http://</code> or <code>https://</code> prefix, the default one
+     *            (<code>http://</code>) will be added.
      * @return The request builder
      */
-    HttpRequestBuilder path(String baseUrl);
+    HttpRequestBuilder path(String url);
 
     /**
      * Adds query parameter to your request. If you call this method twice for the same parameterKey, the second call
@@ -50,19 +50,19 @@ public interface HttpRequestBuilder {
     HttpRequestBuilder entity(byte[] requestBody);
 
     /**
-     * Adds body for you request. Has no effect if you execute this request as GET HTTP request
+     * Adds body for you request. Has no effect if you execute this request as HTTP GET request.
      *
-     * @param entityStream payload for your request
-     * @return The request builder
+     * @param entityStream payload for your request.
+     * @return The request builder.
      */
     HttpRequestBuilder entity(InputStream entityStream);
 
     /**
-     * Creates an instance of HttpRequest
+     * Finalize the creation process of HTTP request.
      *
-     * @return an instance of HttpRequest with specified headers, query parameters and body
+     * @return An instance of HttpRequest with specified headers, query parameters and body.
      * @throws NetworkException with {@link NetworkException#MALFORMED_URL} code will be thrown if you didn't specify
-     *                          a base url (see {@link #path(String)})
+     *                          an url (see {@link #path(String)})
      */
     HttpRequest buildAs(HttpMethod method) throws NetworkException;
 }

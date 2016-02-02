@@ -2,20 +2,16 @@ package ru.jewelline.asana4j.core.impl.http;
 
 import org.junit.Test;
 import org.mockito.Matchers;
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.NetworkException;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.NetworkException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class HttpMethodSettingsTest {
 

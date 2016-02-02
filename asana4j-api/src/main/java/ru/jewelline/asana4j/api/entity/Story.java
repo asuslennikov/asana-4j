@@ -69,12 +69,12 @@ public interface Story extends HasId {
      * Returns HTML formatted text for a comment. This will not include the name of the creator.
      * <p>
      * This field is only returned if explicitly requested using the <code>opt_fields</code> query parameter
-     * (see {@link ru.jewelline.asana4j.api.clients.modifiers.QueryFieldsModifier}).
+     * (see {@link ru.jewelline.asana4j.api.modifiers.QueryFieldsModifier}).
      *
      * @return HTML formatted text for a comment.
      * @api.field <code>html_text</code>
      * @api.access Read-only
-     * @see ru.jewelline.asana4j.api.clients.modifiers.QueryFieldsModifier
+     * @see ru.jewelline.asana4j.api.modifiers.QueryFieldsModifier
      */
     String getHtmlText();
 

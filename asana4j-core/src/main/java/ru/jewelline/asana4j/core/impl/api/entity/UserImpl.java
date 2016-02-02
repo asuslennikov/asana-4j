@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.io.OutputStream;
 import java.util.Arrays;

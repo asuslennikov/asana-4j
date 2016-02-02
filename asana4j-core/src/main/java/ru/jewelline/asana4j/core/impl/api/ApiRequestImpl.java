@@ -1,10 +1,10 @@
 package ru.jewelline.asana4j.core.impl.api;
 
-import ru.jewelline.asana4j.api.ApiRequest;
-import ru.jewelline.asana4j.api.ApiResponse;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.HttpResponse;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
+import ru.jewelline.request.api.ApiRequest;
+import ru.jewelline.request.api.ApiResponse;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.HttpResponse;
 
 import java.io.InputStream;
 import java.util.Map;

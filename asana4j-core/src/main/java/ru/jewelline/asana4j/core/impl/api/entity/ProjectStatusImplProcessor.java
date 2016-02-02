@@ -4,9 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.User;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
+import ru.jewelline.request.api.entity.JsonEntity;
 
 enum ProjectStatusImplProcessor implements JsonFieldReader<ProjectStatusImpl>, JsonFieldWriter<ProjectStatusImpl> {
     COLOR("color") {

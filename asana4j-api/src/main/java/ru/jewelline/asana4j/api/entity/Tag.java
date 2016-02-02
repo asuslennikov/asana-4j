@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
-import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.request.api.PagedList;
+import ru.jewelline.request.api.modifiers.RequestModifier;
 
 import java.util.List;
 

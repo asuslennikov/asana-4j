@@ -1,7 +1,7 @@
-package ru.jewelline.asana4j.api;
+package ru.jewelline.request.api;
 
-import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.asana4j.api.modifiers.Pagination;
+import ru.jewelline.request.api.modifiers.RequestModifier;
 
 import java.util.ArrayList;
 

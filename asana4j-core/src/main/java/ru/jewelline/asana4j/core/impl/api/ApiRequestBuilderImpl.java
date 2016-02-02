@@ -1,16 +1,16 @@
 package ru.jewelline.asana4j.core.impl.api;
 
-import ru.jewelline.asana4j.api.ApiRequest;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
-import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.io.CachedJsonEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SerializableEntityImpl;
-import ru.jewelline.asana4j.http.HttpClient;
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
 import ru.jewelline.asana4j.utils.StringUtils;
+import ru.jewelline.request.api.ApiRequest;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.api.entity.EntitySerializer;
+import ru.jewelline.request.api.entity.JsonEntity;
+import ru.jewelline.request.api.entity.SerializableEntity;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.HttpRequestFactory;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,15 +18,15 @@ import java.util.Map;
 
 class ApiRequestBuilderImpl implements ApiRequestBuilder {
     protected static final String BASE_API_URL = "https://app.asana.com/api/1.0/";
-    private final HttpClient httpClient;
+    private final HttpRequestFactory httpRequestFactory;
 
     private String apiSuffix;
     private Map<String, String> headers;
     private Map<String, String> queryParameters;
     private SerializableEntity entity;
 
-    public ApiRequestBuilderImpl(HttpClient httpClient) {
-        this.httpClient = httpClient;
+    public ApiRequestBuilderImpl(HttpRequestFactory httpRequestFactory) {
+        this.httpRequestFactory = httpRequestFactory;
     }
 
     @Override
@@ -97,7 +97,7 @@ class ApiRequestBuilderImpl implements ApiRequestBuilder {
 
     @Override
     public ApiRequest buildAs(HttpMethod method) {
-        HttpRequestBuilder builder = this.httpClient.newRequest();
+        HttpRequestBuilder builder = this.httpRequestFactory.httpRequest();
         if (this.apiSuffix != null) {
             builder.path(BASE_API_URL + this.apiSuffix);
         } else {

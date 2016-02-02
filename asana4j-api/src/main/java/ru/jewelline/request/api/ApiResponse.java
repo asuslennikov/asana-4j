@@ -1,6 +1,6 @@
-package ru.jewelline.asana4j.api;
+package ru.jewelline.request.api;
 
-import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
+import ru.jewelline.request.api.entity.EntityDeserializer;
 
 public interface ApiResponse {
     /**
@@ -13,12 +13,12 @@ public interface ApiResponse {
      * @param deserializer a JSON convertor which will be used for a single object in the response
      * @return an instance of API object
      */
-    <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors);
+    <T, R extends T> T asApiObject(EntityDeserializer<R> deserializer);
 
     /**
      * Tries to decode the server response and extract list of API objects
      * @param deserializer a JSON convertor which will be used for a single object in the response
      * @return a list of API objects
      */
-    <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer, ResponsePostProcessor... postProcessors);
+    <T, R extends T> PagedList<T> asApiCollection(EntityDeserializer<R> deserializer);
 }

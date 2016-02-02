@@ -22,12 +22,12 @@ import ru.jewelline.asana4j.core.impl.api.clients.UserApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.auth.AuthenticationServiceImpl;
-import ru.jewelline.asana4j.core.impl.http.HttpClientImpl;
+import ru.jewelline.asana4j.core.impl.http.HttpRequestFactoryImpl;
 import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpRequestFactory;
 
 public abstract class AsanaImpl implements Asana {
 
@@ -46,9 +46,9 @@ public abstract class AsanaImpl implements Asana {
     public AsanaImpl(PreferencesService preferencesService, URLCreator urlCreator, Base64 base64) {
         this.preferencesService = preferencesService;
 
-        HttpClient httpClient = new HttpClientImpl(urlCreator, new BaseHttpConfiguration());
-        this.authenticationService = new AuthenticationServiceImpl(preferencesService, httpClient, urlCreator, base64);
-        RequestFactory requestFactory = new RequestFactoryImpl(httpClient, this.authenticationService);
+        HttpRequestFactory httpRequestFactory = new HttpRequestFactoryImpl(urlCreator, new BaseHttpConfiguration());
+        this.authenticationService = new AuthenticationServiceImpl(preferencesService, httpRequestFactory, urlCreator, base64);
+        RequestFactory requestFactory = new RequestFactoryImpl(httpRequestFactory, this.authenticationService);
         ApiEntityContext entityContext = new ApiEntityContext(requestFactory);
         this.userClient = new UserApiClientImpl(requestFactory, entityContext);
         this.workspaceClient = new WorkspaceApiClientImpl(requestFactory, entityContext);

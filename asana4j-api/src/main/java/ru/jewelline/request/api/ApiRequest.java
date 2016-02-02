@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api;
+package ru.jewelline.request.api;
 
 import java.io.InputStream;
 import java.util.Map;

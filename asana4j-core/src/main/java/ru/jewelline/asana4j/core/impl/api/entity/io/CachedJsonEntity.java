@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.core.impl.api.entity.io;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
+import ru.jewelline.request.api.entity.EntitySerializer;
+import ru.jewelline.request.api.entity.JsonEntity;
 
 import java.io.InputStream;
 import java.util.LinkedList;

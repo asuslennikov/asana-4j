@@ -1,8 +1,8 @@
-package ru.jewelline.asana4j.api;
+package ru.jewelline.request.api;
 
-import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
-import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.api.entity.EntitySerializer;
+import ru.jewelline.request.api.entity.SerializableEntity;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.util.Map;
 

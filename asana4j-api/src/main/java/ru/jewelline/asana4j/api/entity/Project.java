@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.api.entity;
 
-import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.request.api.PagedList;
 
 import java.util.List;
 
@@ -176,7 +176,7 @@ public interface Project extends HasId, HasName {
      * within the project. Tasks can exist in more than one project at a time.
      * @api.link <a href="https://asana.com/developers/api-reference/projects#get-tasks">Get project tasks</a>
      * @see Task
-     * @see ru.jewelline.asana4j.api.PagedList
+     * @see PagedList
      */
     PagedList<Task> getTasks();
 

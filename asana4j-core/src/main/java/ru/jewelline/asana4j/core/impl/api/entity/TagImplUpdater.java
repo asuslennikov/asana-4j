@@ -3,7 +3,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Tag.TagUpdater;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.HttpMethod;
 
 class TagImplUpdater extends TagBuilderImpl<TagUpdater> implements TagUpdater {
 

@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
-import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.request.api.PagedList;
+import ru.jewelline.request.api.modifiers.RequestModifier;
 
 import java.io.InputStream;
 import java.util.List;
@@ -218,7 +218,7 @@ public interface Task extends HasId, HasName {
      * @return Returns a compact representation of all of the subtasks of a task.
      * @api.link <a href="https://asana.com/developers/api-reference/tasks#subtasks">Work with subtasks</a>
      * @see Task
-     * @see ru.jewelline.asana4j.api.PagedList
+     * @see PagedList
      */
     PagedList<Task> getSubTasks();
 

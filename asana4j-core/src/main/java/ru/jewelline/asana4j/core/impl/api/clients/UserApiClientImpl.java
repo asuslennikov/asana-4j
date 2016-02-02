@@ -1,14 +1,14 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
-import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.User;
-import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.api.PagedList;
+import ru.jewelline.request.api.entity.EntityDeserializer;
+import ru.jewelline.request.api.modifiers.RequestModifier;
+import ru.jewelline.request.http.HttpMethod;
 
 public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
 

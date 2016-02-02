@@ -2,11 +2,11 @@ package ru.jewelline.asana4j.core.impl.api.entity.common;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.core.impl.api.entity.io.JsonEntitySerializer;
+import ru.jewelline.request.api.ApiException;
+import ru.jewelline.request.api.entity.EntitySerializer;
+import ru.jewelline.request.api.entity.JsonEntity;
 
 import java.io.InputStream;
 import java.util.Collections;

@@ -1,9 +1,9 @@
 package ru.jewelline.asana4j.core.impl.api.entity.common;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
+import ru.jewelline.request.api.ApiException;
+import ru.jewelline.request.api.entity.EntityDeserializer;
 
 public final class ApiEntityDeserializer<T extends ApiEntityImpl<T>> implements EntityDeserializer<T> {
     private final ApiEntityInstanceProvider<T> instanceProvider;

@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.core.impl.http;
 
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.NetworkException;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.NetworkException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +37,7 @@ public enum HttpMethodSettings {
         if (entity != null) {
             connection.setDoOutput(true);
             connection.setRequestMethod(this.httpMethod.method());
-            HttpClientImpl.copyStreams(entity, connection.getOutputStream());
+            HttpRequestFactoryImpl.copyStreams(entity, connection.getOutputStream());
         } else {
             connection.setRequestMethod(this.httpMethod.method());
         }

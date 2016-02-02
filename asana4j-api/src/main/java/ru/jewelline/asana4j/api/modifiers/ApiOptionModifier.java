@@ -1,10 +1,12 @@
-package ru.jewelline.asana4j.api.clients.modifiers;
+package ru.jewelline.asana4j.api.modifiers;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
-import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.api.entity.JsonEntity;
+import ru.jewelline.request.api.entity.SerializableEntity;
+import ru.jewelline.request.api.modifiers.ModifiersChain;
+import ru.jewelline.request.api.modifiers.RequestModifier;
+import ru.jewelline.request.http.HttpMethod;
 
 public abstract class ApiOptionModifier implements RequestModifier {
     protected static final String GET_API_OPTION_PREFIX = "opt_";

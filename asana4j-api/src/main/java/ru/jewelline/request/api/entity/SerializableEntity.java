@@ -1,10 +1,12 @@
-package ru.jewelline.asana4j.api.entity.io;
+package ru.jewelline.request.api.entity;
 
+
+import ru.jewelline.request.api.ApiRequest;
 
 import java.io.InputStream;
 
 /**
- * This interface defines contract for entity which can be send as a payload inside {@link  ru.jewelline.asana4j.api.ApiRequest}
+ * This interface defines contract for entity which can be send as a payload inside {@link  ApiRequest}
  */
 public interface SerializableEntity {
 

@@ -6,10 +6,10 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpRequest;
-import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.NetworkException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,17 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HttpClientImplTest {
+public class HttpRequestFactoryImplTest {
 
     @Mock
     private URLCreator urlCreator;
@@ -44,14 +37,14 @@ public class HttpClientImplTest {
     @Test
     public void test_copyNullSourceToDestination() throws IOException {
         OutputStream outputStream = mock(OutputStream.class);
-        HttpClientImpl.copyStreams(null, outputStream);
+        HttpRequestFactoryImpl.copyStreams(null, outputStream);
         verifyZeroInteractions(outputStream);
     }
 
     @Test
     public void test_copySourceToNull() throws IOException {
         InputStream source = mock(InputStream.class);
-        HttpClientImpl.copyStreams(source, null);
+        HttpRequestFactoryImpl.copyStreams(source, null);
         verifyZeroInteractions(source);
     }
 
@@ -60,7 +53,7 @@ public class HttpClientImplTest {
         byte[] payload = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
         ByteArrayInputStream source = new ByteArrayInputStream(payload);
         ByteArrayOutputStream destination = new ByteArrayOutputStream();
-        HttpClientImpl.copyStreams(source, destination);
+        HttpRequestFactoryImpl.copyStreams(source, destination);
         assertThat(destination.toByteArray()).isEqualTo(payload);
     }
 
@@ -70,25 +63,25 @@ public class HttpClientImplTest {
         InputStream source = new ByteArrayInputStream(payload);
         OutputStream destination = mock(OutputStream.class);
         doThrow(new IOException("test")).when(destination).close();
-        HttpClientImpl.copyStreams(source, destination);
+        HttpRequestFactoryImpl.copyStreams(source, destination);
 
         verify(destination).flush();
         //assert no exception
     }
 
-    private HttpClientImpl testInstance() {
-        return new HttpClientImpl(this.urlCreator, this.httpConfig) {
+    private HttpRequestFactoryImpl testInstance() {
+        return new HttpRequestFactoryImpl(this.urlCreator, this.httpConfig) {
             @Override
             protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
-                return HttpClientImplTest.this.connection;
+                return HttpRequestFactoryImplTest.this.connection;
             }
         };
     }
 
     @Test
     public void test_clientCanReturnNewBuilderInstance() {
-        HttpClientImpl httpClient = testInstance();
-        assertThat(httpClient.newRequest() != httpClient.newRequest()).isTrue();
+        HttpRequestFactoryImpl httpClient = testInstance();
+        assertThat(httpClient.httpRequest() != httpClient.httpRequest()).isTrue();
     }
 
     @Test(expected = NetworkException.class)

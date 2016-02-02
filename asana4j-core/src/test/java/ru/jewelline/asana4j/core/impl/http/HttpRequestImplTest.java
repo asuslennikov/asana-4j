@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.http.HttpMethod;
-import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,23 +16,21 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpRequestImplTest {
 
     @Mock
-    private HttpClientImpl httpClient;
+    private HttpRequestFactoryImpl httFactory;
 
     private HttpRequestImpl testInstance() {
-        return new HttpRequestImpl(HttpMethod.PUT, this.httpClient);
+        return new HttpRequestImpl(HttpMethod.PUT, this.httFactory);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_createWithNullHttpMethod() {
-        new HttpRequestImpl(null, this.httpClient);
+        new HttpRequestImpl(null, this.httFactory);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -140,30 +138,29 @@ public class HttpRequestImplTest {
     public void test_send() {
         HttpRequestImpl httpRequest = testInstance();
         HttpResponse mock = mock(HttpResponse.class);
-        when(this.httpClient.execute(eq(httpRequest), any(HttpResponseImpl.class))).thenReturn(mock);
-        HttpResponse<OutputStream> response = httpRequest.send();
-        assertThat(response).isNotNull();
-        verify(this.httpClient).execute(eq(httpRequest), any(HttpResponseImpl.class));
+        when(this.httFactory.execute(eq(httpRequest), any(HttpResponseImpl.class))).thenReturn(mock);
+        httpRequest.send();
+        verify(this.httFactory).execute(eq(httpRequest), any(HttpResponseImpl.class));
     }
 
     @Test
     public void test_sendWithNullDestination() {
         HttpRequestImpl httpRequest = testInstance();
         HttpResponse mock = mock(HttpResponse.class);
-        when(this.httpClient.execute(eq(httpRequest), any(HttpResponseImpl.class))).thenReturn(mock);
+        when(this.httFactory.execute(eq(httpRequest), any(HttpResponseImpl.class))).thenReturn(mock);
         HttpResponse<OutputStream> response = httpRequest.sendAndReadResponse(null);
         assertThat(response).isNotNull();
-        verify(this.httpClient).execute(eq(httpRequest), any(HttpResponseImpl.class));
+        verify(this.httFactory).execute(eq(httpRequest), any(HttpResponseImpl.class));
     }
 
     @Test
     public void test_sendWithDestination() {
         HttpRequestImpl httpRequest = testInstance();
         HttpResponse mock = mock(HttpResponse.class);
-        when(this.httpClient.execute(eq(httpRequest), any(HttpResponseImpl.class))).thenReturn(mock);
+        when(this.httFactory.execute(eq(httpRequest), any(HttpResponseImpl.class))).thenReturn(mock);
         OutputStream destinationStream = new ByteArrayOutputStream();
         HttpResponse<OutputStream> response = httpRequest.sendAndReadResponse(destinationStream);
         assertThat(response).isNotNull();
-        verify(this.httpClient).execute(eq(httpRequest), any(HttpResponseImpl.class));
+        verify(this.httFactory).execute(eq(httpRequest), any(HttpResponseImpl.class));
     }
 }

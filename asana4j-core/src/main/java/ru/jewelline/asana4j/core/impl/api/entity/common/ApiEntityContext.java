@@ -1,9 +1,5 @@
 package ru.jewelline.asana4j.core.impl.api.entity.common;
 
-import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
-import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
@@ -15,7 +11,11 @@ import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TeamImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
+import ru.jewelline.request.api.ApiException;
+import ru.jewelline.request.api.ApiRequestBuilder;
+import ru.jewelline.request.api.entity.EntityDeserializer;
+import ru.jewelline.request.api.modifiers.RequestModifier;
+import ru.jewelline.request.http.HttpRequestBuilder;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
