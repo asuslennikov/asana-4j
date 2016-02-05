@@ -1,0 +1,7 @@
+-classpath: target/classes
+-dsannotations: *
+Private-Package: \
+    ru.jewelline.request.http.impl
+Export-Package:  \
+	ru.jewelline.request.http, \
+	ru.jewelline.request.http.config
