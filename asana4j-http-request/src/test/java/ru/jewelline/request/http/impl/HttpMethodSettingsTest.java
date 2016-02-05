@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.core.impl.http;
+package ru.jewelline.request.http.impl;
 
 import org.junit.Test;
 import org.mockito.Matchers;

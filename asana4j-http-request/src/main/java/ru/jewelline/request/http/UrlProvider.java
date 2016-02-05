@@ -1,10 +1,11 @@
-package ru.jewelline.asana4j.utils;
+package ru.jewelline.request.http;
 
-public interface URLCreator {
+public interface UrlProvider {
 
-    Builder builder();
+    Builder newBuilder();
 
     interface Builder {
+
         Builder path(String path);
 
         Builder addQueryParameter(String key, String value);

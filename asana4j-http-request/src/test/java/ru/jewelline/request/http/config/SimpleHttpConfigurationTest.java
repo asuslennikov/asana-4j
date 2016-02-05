@@ -1,14 +1,13 @@
-package ru.jewelline.asana4j.core.impl.http;
+package ru.jewelline.request.http.config;
 
 import org.junit.Test;
-import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BaseHttpConfigurationTest {
+public class SimpleHttpConfigurationTest {
 
-    protected BaseHttpConfiguration testInstance() {
-        return new BaseHttpConfiguration();
+    protected SimpleHttpConfiguration testInstance() {
+        return new SimpleHttpConfiguration();
     }
 
     @Test
@@ -19,12 +18,12 @@ public class BaseHttpConfigurationTest {
 
     @Test
     public void test_checkDefaultValueForRetryCount() {
-        assertThat(testInstance().getRetryCount()).isEqualTo(BaseHttpConfiguration.RETRY_COUNT);
+        assertThat(testInstance().getRetryCount()).isEqualTo(SimpleHttpConfiguration.RETRY_COUNT);
     }
 
     @Test
     public void test_setCorrectRetryCount() {
-        BaseHttpConfiguration config = testInstance();
+        SimpleHttpConfiguration config = testInstance();
         int newRetryCount = 5;
         config.setRetryCount(newRetryCount);
         assertThat(config.getRetryCount()).isEqualTo(newRetryCount);
@@ -32,26 +31,26 @@ public class BaseHttpConfigurationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test_setZeroRetryCount() {
-        BaseHttpConfiguration config = testInstance();
+        SimpleHttpConfiguration config = testInstance();
         int newRetryCount = 0;
         config.setRetryCount(newRetryCount);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_setNegativeRetryCount() {
-        BaseHttpConfiguration config = testInstance();
+        SimpleHttpConfiguration config = testInstance();
         int newRetryCount = -1000;
         config.setRetryCount(newRetryCount);
     }
 
     @Test
     public void test_checkDefaultValueForConnectionTimeout() {
-        assertThat(testInstance().getConnectionTimeout()).isEqualTo(BaseHttpConfiguration.CONNECTION_TIMEOUT);
+        assertThat(testInstance().getConnectionTimeout()).isEqualTo(SimpleHttpConfiguration.CONNECTION_TIMEOUT);
     }
 
     @Test
     public void test_setCorrectConnectionTimeout() {
-        BaseHttpConfiguration config = testInstance();
+        SimpleHttpConfiguration config = testInstance();
         int newConnectionTimeout = 5;
         config.setConnectionTimeout(newConnectionTimeout);
         assertThat(config.getConnectionTimeout()).isEqualTo(newConnectionTimeout);
@@ -59,7 +58,7 @@ public class BaseHttpConfigurationTest {
 
     @Test
     public void test_setZeroConnectionTimeout() {
-        BaseHttpConfiguration config = testInstance();
+        SimpleHttpConfiguration config = testInstance();
         int newConnectionTimeout = 0;
         config.setConnectionTimeout(newConnectionTimeout);
         assertThat(config.getConnectionTimeout()).isEqualTo(newConnectionTimeout);
@@ -67,7 +66,7 @@ public class BaseHttpConfigurationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test_setNegativeConnectionTimeout() {
-        BaseHttpConfiguration config = testInstance();
+        SimpleHttpConfiguration config = testInstance();
         int newConnectionTimeout = -1000;
         config.setConnectionTimeout(newConnectionTimeout);
     }

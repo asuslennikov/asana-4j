@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.core.impl.http;
+package ru.jewelline.request.http.impl;
 
 import org.assertj.core.data.MapEntry;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class HttpResponseImplTest {
 
     @Test
     public void test_hasEmptyHeadersAfterCreation() {
-        HttpResponseImpl httpResponse = testInstance();
+        HttpResponseImpl<?> httpResponse = testInstance();
         assertThat(httpResponse.headers()).isEmpty();
     }
 
@@ -60,13 +60,13 @@ public class HttpResponseImplTest {
     @Test
     public void test_createAndGetNullOutput() {
         HttpResponseImpl<?> httpResponse = testInstance();
-        assertThat(httpResponse.output()).isNull();
+        assertThat(httpResponse.payload()).isNull();
     }
 
     @Test
     public void test_createAndGetOutput() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        HttpResponseImpl<ByteArrayOutputStream> httpResponse = new HttpResponseImpl<>(stream);
-        assertThat(httpResponse.output()).isEqualTo(stream);
+        HttpResponseImpl<?> httpResponse = new HttpResponseImpl<>(stream);
+        assertThat(httpResponse.payload()).isEqualTo(stream);
     }
 }

@@ -1,13 +1,14 @@
-package ru.jewelline.asana4j.core.impl.http;
+package ru.jewelline.request.http.impl;
 
+import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.utils.URLCreator;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequest;
 import ru.jewelline.request.http.NetworkException;
+import ru.jewelline.request.http.UrlProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -21,67 +22,74 @@ import static org.mockito.Mockito.when;
 public class HttpRequestBuilderImplTest {
 
     @Mock
-    private URLCreator urlCreator;
+    private UrlProvider urlProvider;
     @Mock
-    private URLCreator.Builder urlBuilder;
+    private UrlProvider.Builder urlBuilder;
     @Mock
-    private HttpRequestFactoryImpl httpClient;
+    private HttpRequestFactoryImpl httpRequestFactory;
 
     private HttpRequestBuilderImpl getRequestBuilder() {
-        when(urlCreator.builder()).thenReturn(urlBuilder);
-        return new HttpRequestBuilderImpl(this.urlCreator, this.httpClient);
+        when(urlProvider.newBuilder()).thenReturn(urlBuilder);
+        return new HttpRequestBuilderImpl(this.httpRequestFactory, this.urlProvider);
     }
 
     @Test
     public void test_addDefaultTransportPrefix() {
         String path = "www.example.com";
-        getRequestBuilder().path(path);
-        verify(urlBuilder).path("http://" + path);
+        HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
+        requestBuilder.path(path);
+        assertThat(requestBuilder.getPath()).isEqualTo("http://" + path);
     }
 
     @Test
     public void test_notAppendDefaultTransportPrefixForHttp() {
         String path = "http://www.example.com";
-        getRequestBuilder().path(path);
-        verify(urlBuilder).path(path);
+        HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
+        requestBuilder.path(path);
+        assertThat(requestBuilder.getPath()).isEqualTo(path);
     }
 
     @Test
     public void test_notAppendDefaultTransportPrefixForHttps() {
         String path = "https://www.example.com";
-        getRequestBuilder().path(path);
-        verify(urlBuilder).path(path);
+        HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
+        requestBuilder.path(path);
+        assertThat(requestBuilder.getPath()).isEqualTo(path);
     }
 
     @Test
     public void test_allowResetPathByNullValue() {
-        String path = null;
-        getRequestBuilder().path(path);
-        verify(urlBuilder).path(path);
+        HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
+        requestBuilder.path("non.null");
+        requestBuilder.path(null);
+        assertThat(requestBuilder.getPath()).isEqualTo(null);
     }
 
     @Test
     public void test_propagateQueryParameters() {
         String qpKey = "key";
         String qpValue = "value";
-        getRequestBuilder().setQueryParameter(qpKey, qpValue);
-        verify(urlBuilder).addQueryParameter(qpKey, qpValue);
+        HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
+        requestBuilder.setQueryParameter(qpKey, qpValue);
+        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, qpValue));
     }
 
     @Test
     public void test_propagateQueryParametersKeyNull() {
         String qpKey = null;
         String qpValue = "value";
-        getRequestBuilder().setQueryParameter(qpKey, qpValue);
-        verify(urlBuilder).addQueryParameter(qpKey, qpValue);
+        HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
+        requestBuilder.setQueryParameter(qpKey, qpValue);
+        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, qpValue));
     }
 
     @Test
     public void test_propagateQueryParametersValueNull() {
         String qpKey = "key";
         String qpValue = null;
-        getRequestBuilder().setQueryParameter(qpKey, qpValue);
-        verify(urlBuilder).addQueryParameter(qpKey, qpValue);
+        HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
+        requestBuilder.setQueryParameter(qpKey, qpValue);
+        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, qpValue));
     }
 
     @Test
@@ -94,41 +102,41 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_setNullByteArrayAsPayload(){
+    public void test_setNullByteArrayAsPayload() {
         byte[] payload = null;
-        getRequestBuilder().entity(payload);
+        getRequestBuilder().setEntity(payload);
 
         // assert no exception
     }
 
     @Test
-    public void test_setEmptyByteArrayAsPayload(){
+    public void test_setEmptyByteArrayAsPayload() {
         byte[] payload = new byte[0];
-        getRequestBuilder().entity(payload);
+        getRequestBuilder().setEntity(payload);
 
         // assert no exception
     }
 
     @Test
-    public void test_setByteArrayAsPayload(){
+    public void test_setByteArrayAsPayload() {
         byte[] payload = new byte[]{1, 2, 3};
-        getRequestBuilder().entity(payload);
+        getRequestBuilder().setEntity(payload);
 
         // assert no exception
     }
 
     @Test
-    public void test_setNullStreamAsPayload(){
+    public void test_setNullStreamAsPayload() {
         InputStream payload = null;
-        getRequestBuilder().entity(payload);
+        getRequestBuilder().setEntity(payload);
 
         // assert no exception
     }
 
     @Test
-    public void test_setStreamAsPayload(){
+    public void test_setStreamAsPayload() {
         InputStream payload = new ByteArrayInputStream(new byte[]{});
-        getRequestBuilder().entity(payload);
+        getRequestBuilder().setEntity(payload);
 
         // assert no exception
     }
@@ -168,7 +176,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestJustWithPathAndMethod(){
+    public void test_buildRequestJustWithPathAndMethod() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -182,7 +190,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithPathMethodAndQueryParameters(){
+    public void test_buildRequestWithPathMethodAndQueryParameters() {
         String path = "http://www.example.com";
         String pathWithParams = path + "?key=value";
         HttpMethod httpMethod = HttpMethod.GET;
@@ -198,7 +206,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithPathMethodAndHeaders(){
+    public void test_buildRequestWithPathMethodAndHeaders() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -214,7 +222,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithDublicateHeaders(){
+    public void test_buildRequestWithDublicateHeaders() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -232,7 +240,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithDifferentHeaders(){
+    public void test_buildRequestWithDifferentHeaders() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -249,7 +257,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithByteEntity(){
+    public void test_buildRequestWithByteEntity() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         byte[] payload = {1, 2, 3};
@@ -257,7 +265,7 @@ public class HttpRequestBuilderImplTest {
 
         HttpRequest httpRequest = getRequestBuilder()
                 .path(path)
-                .entity(payload)
+                .setEntity(payload)
                 .buildAs(httpMethod);
 
         assertThat(httpRequest.getUrl()).isEqualTo(path);
@@ -267,7 +275,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithStreamEntity(){
+    public void test_buildRequestWithStreamEntity() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         InputStream payload = new ByteArrayInputStream(new byte[]{1, 2, 3});
@@ -275,7 +283,7 @@ public class HttpRequestBuilderImplTest {
 
         HttpRequest httpRequest = getRequestBuilder()
                 .path(path)
-                .entity(payload)
+                .setEntity(payload)
                 .buildAs(httpMethod);
 
         assertThat(httpRequest.getUrl()).isEqualTo(path);

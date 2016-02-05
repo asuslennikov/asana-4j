@@ -1,15 +1,16 @@
-package ru.jewelline.asana4j.core.impl.http;
+package ru.jewelline.request.http.impl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
-import ru.jewelline.asana4j.utils.URLCreator;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequest;
 import ru.jewelline.request.http.NetworkException;
+import ru.jewelline.request.http.UrlProvider;
+import ru.jewelline.request.http.config.HttpConfiguration;
+import ru.jewelline.request.http.config.SimpleHttpConfiguration;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,10 +30,10 @@ import static org.mockito.Mockito.*;
 public class HttpRequestFactoryImplTest {
 
     @Mock
-    private URLCreator urlCreator;
+    private UrlProvider urlProvider;
     @Mock
     private HttpURLConnection connection;
-    private BaseHttpConfiguration httpConfig = new BaseHttpConfiguration();
+    private HttpConfiguration httpConfig = new SimpleHttpConfiguration();
 
     @Test
     public void test_copyNullSourceToDestination() throws IOException {
@@ -70,7 +71,7 @@ public class HttpRequestFactoryImplTest {
     }
 
     private HttpRequestFactoryImpl testInstance() {
-        return new HttpRequestFactoryImpl(this.urlCreator, this.httpConfig) {
+        return new HttpRequestFactoryImpl(this.httpConfig, this.urlProvider) {
             @Override
             protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
                 return HttpRequestFactoryImplTest.this.connection;
@@ -81,12 +82,12 @@ public class HttpRequestFactoryImplTest {
     @Test
     public void test_clientCanReturnNewBuilderInstance() {
         HttpRequestFactoryImpl httpClient = testInstance();
-        assertThat(httpClient.httpRequest() != httpClient.httpRequest()).isTrue();
+        assertThat(httpClient.newRequest() != httpClient.newRequest()).isTrue();
     }
 
     @Test(expected = NetworkException.class)
     public void test_executeWithNullResponse() {
-        testInstance().execute(mock(HttpRequestImpl.class), null);
+        testInstance().execute(mock(HttpRequest.class), null);
     }
 
     @Test(expected = NetworkException.class)
@@ -97,7 +98,7 @@ public class HttpRequestFactoryImplTest {
     @Test
     public void test_returnsTheSameResponse() {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
         assertThat(response == testInstance().execute(request, response)).isTrue();
     }
@@ -105,7 +106,7 @@ public class HttpRequestFactoryImplTest {
     @Test
     public void test_configureConnectionWithoutHeaders() {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
         when(request.getHeaders()).thenReturn(Collections.<String, String>emptyMap());
 
@@ -120,7 +121,7 @@ public class HttpRequestFactoryImplTest {
     @Test
     public void test_configureConnectionWithHeaders() {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
         Map<String, String> headers = new HashMap<>();
         headers.put("key1", "value1");
@@ -139,8 +140,8 @@ public class HttpRequestFactoryImplTest {
     @Test
     public void test_configureConnectionNoInput() {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        when(response.output()).thenReturn(null);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(response.payload()).thenReturn(null);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
 
         // business method
@@ -155,8 +156,8 @@ public class HttpRequestFactoryImplTest {
     public void test_configureConnectionWithInput() {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
         OutputStream outputStream = mock(OutputStream.class);
-        when(response.output()).thenReturn(outputStream);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(response.payload()).thenReturn(outputStream);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
 
         // business method
@@ -171,8 +172,8 @@ public class HttpRequestFactoryImplTest {
     public void test_verifySetResponseCode() throws IOException {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
         OutputStream outputStream = mock(OutputStream.class);
-        when(response.output()).thenReturn(outputStream);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(response.payload()).thenReturn(outputStream);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
         int responseCode = 200;
         when(connection.getResponseCode()).thenReturn(responseCode);
@@ -189,8 +190,8 @@ public class HttpRequestFactoryImplTest {
     public void test_pickDataStreamForGoodCode() throws IOException {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
         OutputStream outputStream = mock(OutputStream.class);
-        when(response.output()).thenReturn(outputStream);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(response.payload()).thenReturn(outputStream);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = 201;
         InputStream inputStream = mock(InputStream.class);
@@ -210,8 +211,8 @@ public class HttpRequestFactoryImplTest {
     public void test_pickErrorStreamForBadCode() throws IOException {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
         OutputStream outputStream = mock(OutputStream.class);
-        when(response.output()).thenReturn(outputStream);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        when(response.payload()).thenReturn(outputStream);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = 400;
         when(response.code()).thenReturn(responseCode);
@@ -229,9 +230,9 @@ public class HttpRequestFactoryImplTest {
 
 
     @Test
-    public void test_getNoStreamForGoodCodeAndNoOutput() throws IOException {
+    public void test_getNoStreamForGoodCodeAndNopayload() throws IOException {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = 201;
         when(response.code()).thenReturn(responseCode);
@@ -244,9 +245,9 @@ public class HttpRequestFactoryImplTest {
     }
 
     @Test
-    public void test_getNoStreamForBadCodeAndNoOutput() throws IOException {
+    public void test_getNoStreamForBadCodeAndNopayload() throws IOException {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = 400;
         when(response.code()).thenReturn(responseCode);
@@ -259,9 +260,9 @@ public class HttpRequestFactoryImplTest {
     }
 
     @Test
-    public void test_doAdditionalAttemptsInCaseOfNoResponseCode(){
+    public void test_doAdditionalAttemptsInCaseOfNoResponseCode() {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = -1;
         when(response.code()).thenReturn(responseCode);
@@ -280,7 +281,7 @@ public class HttpRequestFactoryImplTest {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put(hKey, hValue);
         HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequestImpl request = mock(HttpRequestImpl.class);
+        HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = 201;
         when(response.code()).thenReturn(responseCode);
