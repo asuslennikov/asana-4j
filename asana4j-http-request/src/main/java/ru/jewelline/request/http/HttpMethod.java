@@ -10,7 +10,7 @@ public enum HttpMethod {
     DELETE("DELETE"),
     ;
 
-    private String httpMethod;
+    private final String httpMethod;
 
     HttpMethod(String httpMethod) {
         this.httpMethod = httpMethod;

@@ -33,6 +33,6 @@ public final class NetworkException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return String.format("ATH%03d: ", getErrorCode()) + super.getMessage();
+        return String.format("NE%03d: ", getErrorCode()) + super.getMessage();
     }
 }

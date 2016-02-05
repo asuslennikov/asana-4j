@@ -12,7 +12,7 @@ import java.util.Map;
 final class UrlBuilderImpl implements UrlBuilder {
     private final Charset urlCharset;
     private String path;
-    private Map<String, String> queryParameters = new HashMap<>();
+    private final Map<String, String> queryParameters = new HashMap<>();
 
     UrlBuilderImpl(Charset urlCharset) {
         this.urlCharset = urlCharset;
@@ -49,7 +49,7 @@ final class UrlBuilderImpl implements UrlBuilder {
     }
 
     private String encode(String str) {
-        String result = str;
+        String result;
         if (str != null) {
             try {
                 result = URLEncoder.encode(str, this.urlCharset.displayName()).replace("+", "%20");

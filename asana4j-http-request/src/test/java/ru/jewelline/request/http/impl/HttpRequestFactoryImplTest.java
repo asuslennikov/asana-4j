@@ -23,14 +23,21 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpRequestFactoryImplTest {
 
+    private final HttpConfiguration httpConfig = new SimpleHttpConfiguration();
     @Mock
     private HttpURLConnection connection;
-    private HttpConfiguration httpConfig = new SimpleHttpConfiguration();
 
     @Test
     public void test_copyNullSourceToDestination() throws IOException {
@@ -70,7 +77,7 @@ public class HttpRequestFactoryImplTest {
     private HttpRequestFactoryImpl testInstance() {
         return new HttpRequestFactoryImpl(this.httpConfig) {
             @Override
-            protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
+            HttpURLConnection createConnection(HttpRequest request) throws IOException {
                 return HttpRequestFactoryImplTest.this.connection;
             }
         };

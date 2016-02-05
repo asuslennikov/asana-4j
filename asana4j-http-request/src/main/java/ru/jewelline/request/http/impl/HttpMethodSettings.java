@@ -23,7 +23,7 @@ enum HttpMethodSettings {
     DELETE(HttpMethod.DELETE),
     ;
 
-    private HttpMethod httpMethod;
+    private final HttpMethod httpMethod;
 
     HttpMethodSettings(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;

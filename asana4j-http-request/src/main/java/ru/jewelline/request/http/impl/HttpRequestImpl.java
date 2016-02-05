@@ -70,12 +70,12 @@ final class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
-    public HttpResponse<?> execute() {
+    public HttpResponse<ByteArrayOutputStream> execute() {
         return execute(new ByteArrayOutputStream(8192));
     }
 
     @Override
     public <T extends OutputStream> HttpResponse<T> execute(T destinationStream) {
-        return this.httpRequestFactory.execute(this, new HttpResponseImpl(destinationStream));
+        return this.httpRequestFactory.execute(this, new HttpResponseImpl<>(destinationStream));
     }
 }

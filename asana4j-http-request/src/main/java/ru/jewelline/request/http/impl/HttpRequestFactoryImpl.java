@@ -55,6 +55,11 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
     }
 
     @Override
+    public HttpConfiguration getHttpConfiguration() {
+        return this.httpConfig;
+    }
+
+    @Override
     public UrlBuilder urlBuilder() {
         return new UrlBuilderImpl(this.httpConfig.getUrlCharset());
     }
@@ -67,7 +72,7 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
         return new HttpRequestBuilderWithModifiiers(this).withRequestModifiers(requestModifiers);
     }
 
-    <T extends OutputStream> HttpResponse execute(HttpRequest request, HttpResponseImpl<T> response) {
+    <T extends OutputStream> HttpResponse<T> execute(HttpRequest request, HttpResponseImpl<T> response) {
         if (request == null || response == null) {
             throw new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
                     "You are trying to send an empty request. It is not allowed.");
@@ -105,12 +110,12 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
         return response;
     }
 
-    protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
+    HttpURLConnection createConnection(HttpRequest request) throws IOException {
         URL url = new URL(request.getUrl());
         return (HttpURLConnection) url.openConnection();
     }
 
-    protected HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequest request) {
+    private HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequest request) {
         Map<String, String> headers = request.getHeaders();
         if (headers != null && !headers.isEmpty()) {
             for (Map.Entry<String, String> header : headers.entrySet()) {
@@ -122,7 +127,7 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
         return connection;
     }
 
-    protected void readServerResponse(HttpResponseImpl httpResponse, HttpURLConnection connection) throws IOException {
+    private void readServerResponse(HttpResponseImpl httpResponse, HttpURLConnection connection) throws IOException {
         httpResponse.setCode(connection.getResponseCode());
         if (httpResponse.code() == NO_SERVER_RESPONSE_CODE) {
             return;

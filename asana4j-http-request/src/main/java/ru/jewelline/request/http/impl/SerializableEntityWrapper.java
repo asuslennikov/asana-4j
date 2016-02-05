@@ -30,9 +30,11 @@ final class SerializableEntityWrapper<T> implements SerializableEntity {
             if (wrapper != null && !(wrapper instanceof SerializableEntityWrapper)) {
                 throw new IllegalArgumentException("Incorrect entity type for serialization.");
             }
-            return wrapper != null
-                    ? ((SerializableEntityWrapper) wrapper).serializer.serialize(((SerializableEntityWrapper) wrapper).entity)
-                    : null;
+            return serializeInternal((SerializableEntityWrapper<?>) wrapper);
+        }
+
+        private <T> InputStream serializeInternal(SerializableEntityWrapper<T> wrapper) {
+            return wrapper != null ? wrapper.serializer.serialize(wrapper.entity) : null;
         }
     }
 }

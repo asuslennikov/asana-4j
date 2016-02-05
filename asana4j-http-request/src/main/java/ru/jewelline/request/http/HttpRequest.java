@@ -1,5 +1,6 @@
 package ru.jewelline.request.http;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
@@ -36,11 +37,11 @@ public interface HttpRequest {
     void send();
 
     /**
-     * Send this HTTP request and read a server response into {@link java.io.ByteArrayOutputStream} instance.
+     * Send this HTTP request and read a server response into {@link ByteArrayOutputStream} instance.
      *
      * @return A response object.
      */
-    HttpResponse<?> execute();
+    HttpResponse<ByteArrayOutputStream> execute();
 
     /**
      * Send this HTTP request and read a server response.
