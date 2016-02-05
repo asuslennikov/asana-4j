@@ -1,8 +1,6 @@
-package ru.jewelline.asana4j.core.impl.http.config;
+package ru.jewelline.request.http.config;
 
-import ru.jewelline.request.http.HttpConfiguration;
-
-public class BaseHttpConfiguration implements HttpConfiguration {
+public final class SimpleHttpConfiguration implements HttpConfiguration {
 
     public static final int RETRY_COUNT = 3;
     public static final int CONNECTION_TIMEOUT = 30000;
@@ -10,7 +8,7 @@ public class BaseHttpConfiguration implements HttpConfiguration {
     private int retryCount = RETRY_COUNT;
     private int connectionTimeout = CONNECTION_TIMEOUT;
 
-    public BaseHttpConfiguration() {
+    public SimpleHttpConfiguration() {
     }
 
     @Override
@@ -19,7 +17,7 @@ public class BaseHttpConfiguration implements HttpConfiguration {
     }
 
     public void setRetryCount(int retryCount) {
-        if (retryCount <= 0){
+        if (retryCount <= 0) {
             throw new IllegalArgumentException("Retry count can not be less then 1");
         }
         this.retryCount = retryCount;

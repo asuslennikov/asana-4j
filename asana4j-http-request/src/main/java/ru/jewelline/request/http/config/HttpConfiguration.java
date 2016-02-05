@@ -1,4 +1,4 @@
-package ru.jewelline.request.http;
+package ru.jewelline.request.http.config;
 
 /**
  * Provides settings for an HTTP request.
