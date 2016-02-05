@@ -8,7 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequest;
 import ru.jewelline.request.http.NetworkException;
-import ru.jewelline.request.http.UrlProvider;
+import ru.jewelline.request.http.UrlBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -22,15 +22,13 @@ import static org.mockito.Mockito.when;
 public class HttpRequestBuilderImplTest {
 
     @Mock
-    private UrlProvider urlProvider;
-    @Mock
-    private UrlProvider.Builder urlBuilder;
+    private UrlBuilder urlBuilder;
     @Mock
     private HttpRequestFactoryImpl httpRequestFactory;
 
     private HttpRequestBuilderImpl getRequestBuilder() {
-        when(urlProvider.newBuilder()).thenReturn(urlBuilder);
-        return new HttpRequestBuilderImpl(this.httpRequestFactory, this.urlProvider);
+        when(httpRequestFactory.urlBuilder()).thenReturn(urlBuilder);
+        return new HttpRequestBuilderImpl(this.httpRequestFactory);
     }
 
     @Test

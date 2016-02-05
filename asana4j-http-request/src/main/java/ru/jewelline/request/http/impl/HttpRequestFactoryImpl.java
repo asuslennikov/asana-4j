@@ -5,7 +5,7 @@ import ru.jewelline.request.http.HttpRequestBuilder;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.HttpResponse;
 import ru.jewelline.request.http.NetworkException;
-import ru.jewelline.request.http.UrlProvider;
+import ru.jewelline.request.http.UrlBuilder;
 import ru.jewelline.request.http.config.HttpConfiguration;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
@@ -23,11 +23,9 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
     private static final int NO_SERVER_RESPONSE_CODE = -1;
 
     private final HttpConfiguration httpConfig;
-    private final UrlProvider urlProvider;
 
-    public HttpRequestFactoryImpl(HttpConfiguration httpConfig, UrlProvider urlProvider) {
+    public HttpRequestFactoryImpl(HttpConfiguration httpConfig) {
         this.httpConfig = httpConfig;
-        this.urlProvider = urlProvider;
     }
 
     public static void copyStreams(InputStream source, OutputStream destination) throws IOException {
@@ -57,8 +55,16 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
     }
 
     @Override
+    public UrlBuilder urlBuilder() {
+        return new UrlBuilderImpl(this.httpConfig.getUrlCharset());
+    }
+
+    @Override
     public HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return new HttRequestBuilderWithModifiiers(this, this.urlProvider).withRequestModifiers(requestModifiers);
+        if (requestModifiers == null || requestModifiers.length == 0){
+            return new HttpRequestBuilderImpl(this);
+        }
+        return new HttpRequestBuilderWithModifiiers(this).withRequestModifiers(requestModifiers);
     }
 
     <T extends OutputStream> HttpResponse execute(HttpRequest request, HttpResponseImpl<T> response) {

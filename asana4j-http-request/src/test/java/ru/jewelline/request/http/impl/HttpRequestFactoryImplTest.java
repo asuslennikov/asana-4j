@@ -8,7 +8,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequest;
 import ru.jewelline.request.http.NetworkException;
-import ru.jewelline.request.http.UrlProvider;
 import ru.jewelline.request.http.config.HttpConfiguration;
 import ru.jewelline.request.http.config.SimpleHttpConfiguration;
 
@@ -29,8 +28,6 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class HttpRequestFactoryImplTest {
 
-    @Mock
-    private UrlProvider urlProvider;
     @Mock
     private HttpURLConnection connection;
     private HttpConfiguration httpConfig = new SimpleHttpConfiguration();
@@ -71,7 +68,7 @@ public class HttpRequestFactoryImplTest {
     }
 
     private HttpRequestFactoryImpl testInstance() {
-        return new HttpRequestFactoryImpl(this.httpConfig, this.urlProvider) {
+        return new HttpRequestFactoryImpl(this.httpConfig) {
             @Override
             protected HttpURLConnection createConnection(HttpRequest request) throws IOException {
                 return HttpRequestFactoryImplTest.this.connection;

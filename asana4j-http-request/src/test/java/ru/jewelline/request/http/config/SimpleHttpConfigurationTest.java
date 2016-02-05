@@ -2,6 +2,8 @@ package ru.jewelline.request.http.config;
 
 import org.junit.Test;
 
+import java.nio.charset.Charset;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleHttpConfigurationTest {
@@ -69,5 +71,19 @@ public class SimpleHttpConfigurationTest {
         SimpleHttpConfiguration config = testInstance();
         int newConnectionTimeout = -1000;
         config.setConnectionTimeout(newConnectionTimeout);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_setNullUrlCharset() {
+        SimpleHttpConfiguration config = testInstance();
+        config.setUrlCharset(null);
+    }
+
+    @Test
+    public void test_setCorrectUrlCharset() {
+        SimpleHttpConfiguration config = testInstance();
+        Charset charset = Charset.defaultCharset();
+        config.setUrlCharset(charset);
+        assertThat(config.getUrlCharset()).isEqualTo(charset);
     }
 }

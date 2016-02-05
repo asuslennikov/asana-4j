@@ -4,7 +4,7 @@ import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequest;
 import ru.jewelline.request.http.HttpRequestBuilder;
 import ru.jewelline.request.http.NetworkException;
-import ru.jewelline.request.http.UrlProvider;
+import ru.jewelline.request.http.UrlBuilder;
 import ru.jewelline.request.http.entity.EntitySerializer;
 import ru.jewelline.request.http.entity.SerializableEntity;
 
@@ -20,16 +20,16 @@ class HttpRequestBuilderImpl implements HttpRequestBuilder {
     private static final String HTTPS_PREFIX = "https://";
 
     private final HttpRequestFactoryImpl httpRequestFactory;
-    private final UrlProvider.Builder urlBuilder;
+    private final UrlBuilder urlBuilder;
 
     private String path;
     private Map<String, String> queryParameters;
     private Map<String, String> headers;
     private SerializableEntity entity;
 
-    HttpRequestBuilderImpl(HttpRequestFactoryImpl httpRequestFactory, UrlProvider urlProvider) {
-        this.urlBuilder = urlProvider.newBuilder();
+    HttpRequestBuilderImpl(HttpRequestFactoryImpl httpRequestFactory) {
         this.httpRequestFactory = httpRequestFactory;
+        this.urlBuilder = this.httpRequestFactory.urlBuilder();
     }
 
     @Override

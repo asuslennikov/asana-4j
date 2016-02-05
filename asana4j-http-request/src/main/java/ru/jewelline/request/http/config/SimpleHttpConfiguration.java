@@ -1,5 +1,7 @@
 package ru.jewelline.request.http.config;
 
+import java.nio.charset.Charset;
+
 public final class SimpleHttpConfiguration implements HttpConfiguration {
 
     public static final int RETRY_COUNT = 3;
@@ -7,8 +9,10 @@ public final class SimpleHttpConfiguration implements HttpConfiguration {
 
     private int retryCount = RETRY_COUNT;
     private int connectionTimeout = CONNECTION_TIMEOUT;
+    private Charset urlCharset;
 
     public SimpleHttpConfiguration() {
+        this.urlCharset = Charset.isSupported("UTF-8") ? Charset.forName("UTF-8") : Charset.defaultCharset();
     }
 
     @Override
@@ -26,6 +30,18 @@ public final class SimpleHttpConfiguration implements HttpConfiguration {
     @Override
     public int getConnectionTimeout() {
         return this.connectionTimeout;
+    }
+
+    @Override
+    public Charset getUrlCharset() {
+        return this.urlCharset;
+    }
+
+    public void setUrlCharset(Charset urlCharset) {
+        if (urlCharset == null) {
+            throw new IllegalArgumentException("Url charset can not be null.");
+        }
+        this.urlCharset = urlCharset;
     }
 
     public void setConnectionTimeout(int connectionTimeout) {

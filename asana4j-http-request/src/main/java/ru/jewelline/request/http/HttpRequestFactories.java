@@ -8,11 +8,11 @@ public final class HttpRequestFactories {
     private HttpRequestFactories() {
     }
 
-    public static HttpRequestFactory from(UrlProvider urlProvider) {
-        return from(new SimpleHttpConfiguration(), urlProvider);
+    public static HttpRequestFactory standard() {
+        return from(new SimpleHttpConfiguration());
     }
 
-    public static HttpRequestFactory from(HttpConfiguration configuration, UrlProvider urlProvider) {
-        return new HttpRequestFactoryImpl(configuration, urlProvider);
+    public static HttpRequestFactory from(HttpConfiguration configuration) {
+        return new HttpRequestFactoryImpl(configuration);
     }
 }
