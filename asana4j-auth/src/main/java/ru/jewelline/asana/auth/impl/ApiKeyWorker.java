@@ -2,6 +2,7 @@ package ru.jewelline.asana.auth.impl;
 
 import ru.jewelline.asana.auth.AuthenticationException;
 import ru.jewelline.asana.auth.AuthenticationProperty;
+import ru.jewelline.asana.common.Base64;
 
 final class ApiKeyWorker extends AuthenticationWorker {
 

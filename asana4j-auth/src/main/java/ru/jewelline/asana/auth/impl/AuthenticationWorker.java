@@ -1,10 +1,9 @@
 package ru.jewelline.asana.auth.impl;
 
-
 import ru.jewelline.asana.auth.AuthenticationException;
 import ru.jewelline.asana.auth.AuthenticationProperty;
 import ru.jewelline.asana.auth.AuthenticationService;
-import ru.jewelline.common.StringUtils;
+import ru.jewelline.asana.common.StringUtils;
 
 abstract class AuthenticationWorker {
     public static final String USER_OAUTH_ENDPOINT = "https://app.asana.com/-/oauth_authorize";
@@ -32,7 +31,7 @@ abstract class AuthenticationWorker {
         return null;
     }
 
-    abstract void authenticate() throws AuthenticationException, AuthenticationException;
+    abstract void authenticate() throws AuthenticationException;
 
     abstract String getOAuthUrl();
 

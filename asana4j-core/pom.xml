@@ -17,13 +17,15 @@
     <dependencies>
         <dependency>
             <groupId>ru.jewelline.asana4j</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>http-request</artifactId>
         </dependency>
         <dependency>
             <groupId>ru.jewelline.asana4j</groupId>
-            <artifactId>api</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
+            <artifactId>common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.jewelline.asana4j</groupId>
+            <artifactId>auth</artifactId>
         </dependency>
 
         <dependency>

@@ -1,7 +1,10 @@
 package ru.jewelline.asana.auth.impl;
 
+import ru.jewelline.asana.auth.AuthCodeGrantResponse;
 import ru.jewelline.asana.auth.AuthenticationException;
 import ru.jewelline.asana.auth.AuthenticationProperty;
+import ru.jewelline.asana.common.EntityBasedOutputStream;
+import ru.jewelline.asana.common.EntityContext;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.HttpResponse;
@@ -13,65 +16,50 @@ import java.net.HttpURLConnection;
 final class GrantCodeWorker extends AuthenticationWorker {
 
     private final HttpRequestFactory httpRequestFactory;
+    private final EntityContext entityContext;
 
-    public GrantCodeWorker(AuthenticationServiceImpl authenticationService, HttpRequestFactory httpRequestFactory) {
+    public GrantCodeWorker(AuthenticationServiceImpl authenticationService, HttpRequestFactory httpRequestFactory, EntityContext entityContext) {
         super(authenticationService);
         this.httpRequestFactory = httpRequestFactory;
+        this.entityContext = entityContext;
     }
 
     @Override
     void authenticate() throws AuthenticationException {
         try {
-            JsonOutputStream responseBody = new JsonOutputStream();
-            HttpResponse response = this.httpRequestFactory.newRequest()
+            AuthCodeGrantResponse authResponse = this.httpRequestFactory.newRequest()
                     .path(ACCESS_TOKEN_ENDPOINT)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
                     .setEntity(getAccessTokenRequestBody())
                     .buildAs(HttpMethod.POST)
-                    .execute(responseBody);
-            if (response.code() != HttpURLConnection.HTTP_OK) {
-                throwAuthenticationError(responseBody);
-            }
-            JSONObject authResponse = responseBody.asJson();
-
+                    .execute(this.entityContext.getReader(AuthCodeGrantResponse.class))
+                    .payload()
+                    .toEntity();
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN,
-                    getStringPropertyFromJson(authResponse, "access_token"));
+                    authResponse.getAccessToken());
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.REFRESH_TOKEN,
-                    getStringPropertyFromJson(authResponse, "refresh_token"));
+                    authResponse.getRefreshToken());
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.TOKEN_TYPE,
-                    getStringPropertyFromJson(authResponse, "token_type"));
+                    authResponse.getTokenType());
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.EXPIRES_IN,
-                    getStringPropertyFromJson(authResponse, "expires_in"));
+                    authResponse.getExpiresIn());
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE,
-                    getStringPropertyFromJson(authResponse, "state"));
-
+                    authResponse.getState());
         } catch (NetworkException networkException) {
             throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE);
         }
     }
 
-    private String getStringPropertyFromJson(JSONObject obj, String property) {
-        String result = null;
-        if (obj != null && property != null && obj.has(property)) {
-            try {
-                result = obj.get(property).toString();
-            } catch (JSONException e) {
-                // TODO log exception
-            }
-        }
-        return result;
-    }
-
-    private void throwAuthenticationError(JsonOutputStream responseBody) {
+    private void throwAuthenticationError(HttpResponse<EntityBasedOutputStream<AuthCodeGrantResponse>> response) {
         String message = "Failed to authenticate.";
-        try {
-            JSONObject json = responseBody.asJson();
-            message = json.optString("error_description");
-        } catch (NetworkException ne) {
-            if (ne.getErrorCode() == NetworkException.UNREADABLE_RESPONSE) {
-                message = "Failed to authenticate, unreadable server response.";
-            }
-        }
+//        try {
+//            JSONObject json = responseBody.asJson();
+//            message = json.optString("error_description");
+//        } catch (NetworkException ne) {
+//            if (ne.getErrorCode() == NetworkException.UNREADABLE_RESPONSE) {
+//                message = "Failed to authenticate, unreadable server response.";
+//            }
+//        }
         throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE, message);
     }
 

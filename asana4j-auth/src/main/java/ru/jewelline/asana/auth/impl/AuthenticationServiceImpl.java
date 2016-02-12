@@ -6,6 +6,8 @@ import ru.jewelline.asana.auth.AuthenticationService;
 import ru.jewelline.asana.auth.AuthenticationType;
 import ru.jewelline.asana.auth.PropertiesStore;
 
+import ru.jewelline.asana.common.Base64;
+import ru.jewelline.asana.common.EntityContext;
 import ru.jewelline.request.http.HttpRequestFactory;
 
 import java.io.UnsupportedEncodingException;
@@ -24,14 +26,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private volatile AuthenticationType authenticationType;
 
-    public AuthenticationServiceImpl(HttpRequestFactory httpRequestFactory, Base64 base64) {
+    public AuthenticationServiceImpl(HttpRequestFactory httpRequestFactory, EntityContext entityContext, Base64 base64) {
         this.httpRequestFactory = httpRequestFactory;
         this.authenticationWorkers = new EnumMap<>(AuthenticationType.class);
         this.properties = new EnumMap<>(AuthenticationProperty.class);
         // TODO Don't pass 'this' out of a constructor
         this.authenticationWorkers.put(AuthenticationType.API_KEY, new ApiKeyWorker(this, base64));
         this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(this, httpRequestFactory));
-        this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(this, httpRequestFactory));
+        this.authenticationWorkers.put(AuthenticationType.GRANT_CODE, new GrantCodeWorker(this, httpRequestFactory, entityContext));
         this.authenticationWorkers.put(AuthenticationType.PERSONAL_ACCESS_TOKEN, new PersonalAccessTokenWorker(this));
     }
 

@@ -1,8 +1,0 @@
--classpath: target/classes
--dsannotations: *
-Export-Package:  \
-	ru.jewelline.asana4j.api, \
-	ru.jewelline.asana4j.api.entity, \
-	ru.jewelline.asana4j.auth, \
-	ru.jewelline.asana4j.http, \
-	ru.jewelline.asana4j.utils
