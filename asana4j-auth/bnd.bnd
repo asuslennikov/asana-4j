@@ -1,0 +1,6 @@
+-classpath: target/classes
+-dsannotations: *
+Private-Package: \
+    ru.jewelline.asana.auth.impl
+Export-Package:  \
+	ru.jewelline.asana.auth
