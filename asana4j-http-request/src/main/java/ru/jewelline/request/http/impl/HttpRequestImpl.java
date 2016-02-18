@@ -1,14 +1,12 @@
 package ru.jewelline.request.http.impl;
 
+import ru.jewelline.HttpRequest;
+import ru.jewelline.HttpResponseReceiver;
+import ru.jewelline.SerializableEntity;
 import ru.jewelline.request.http.HttpMethod;
-import ru.jewelline.request.http.HttpRequest;
-import ru.jewelline.request.http.HttpResponse;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 final class HttpRequestImpl implements HttpRequest {
@@ -17,8 +15,8 @@ final class HttpRequestImpl implements HttpRequest {
     private final HttpRequestFactoryImpl httpRequestFactory;
 
     private String url;
-    private Map<String, String> headers;
-    private InputStream entity;
+    private Map<String, List<String>> headers;
+    private SerializableEntity entity;
 
     HttpRequestImpl(HttpRequestFactoryImpl httpRequestFactory, HttpMethod httpMethod) {
         if (httpMethod == null) {
@@ -37,6 +35,11 @@ final class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
+    public Map<String, List<String>> getQueryParameters() {
+        return null;
+    }
+
+    @Override
     public String getUrl() {
         return this.url;
     }
@@ -46,36 +49,30 @@ final class HttpRequestImpl implements HttpRequest {
     }
 
     @Override
-    public Map<String, String> getHeaders() {
-        return this.headers != null ? Collections.unmodifiableMap(this.headers) : Collections.<String, String>emptyMap();
+    public Map<String, List<String>> getHeaders() {
+        return this.headers == null
+                ? Collections.<String, List<String>>emptyMap()
+                : Collections.unmodifiableMap(this.headers);
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers != null ? new HashMap<>(headers) : null;
+    public void setHeaders(Map<String, List<String>> headers) {
+        this.headers = headers != null ? headers : null;
     }
 
     @Override
-    public InputStream getEntity() {
+    public SerializableEntity getEntity() {
         return this.entity;
     }
 
+    @Override
+    public <T extends HttpResponseReceiver> T execute(T responseReceiver) {
+        return null;
+    }
 
-    public void setEntity(InputStream entityStream) {
+
+    public void setEntity(SerializableEntity entityStream) {
         this.entity = entityStream;
     }
 
-    @Override
-    public void send() {
-        this.execute(null);
-    }
 
-    @Override
-    public HttpResponse<ByteArrayOutputStream> execute() {
-        return execute(new ByteArrayOutputStream(8192));
-    }
-
-    @Override
-    public <T extends OutputStream> HttpResponse<T> execute(T destinationStream) {
-        return this.httpRequestFactory.execute(this, new HttpResponseImpl<>(destinationStream));
-    }
 }

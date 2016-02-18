@@ -36,7 +36,7 @@ public class HttpRequestBuilderImplTest {
         String path = "www.example.com";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
         requestBuilder.path(path);
-        assertThat(requestBuilder.getPath()).isEqualTo("http://" + path);
+        assertThat(requestBuilder.getUrl()).isEqualTo("http://" + path);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class HttpRequestBuilderImplTest {
         String path = "http://www.example.com";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
         requestBuilder.path(path);
-        assertThat(requestBuilder.getPath()).isEqualTo(path);
+        assertThat(requestBuilder.getUrl()).isEqualTo(path);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class HttpRequestBuilderImplTest {
         String path = "https://www.example.com";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
         requestBuilder.path(path);
-        assertThat(requestBuilder.getPath()).isEqualTo(path);
+        assertThat(requestBuilder.getUrl()).isEqualTo(path);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class HttpRequestBuilderImplTest {
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
         requestBuilder.path("non.null");
         requestBuilder.path(null);
-        assertThat(requestBuilder.getPath()).isEqualTo(null);
+        assertThat(requestBuilder.getUrl()).isEqualTo(null);
     }
 
     @Test

@@ -1,96 +1,75 @@
 package ru.jewelline.request.http.impl;
 
+import ru.jewelline.HttpRequest;
+import ru.jewelline.HttpRequestBuilder;
+import ru.jewelline.SerializableEntity;
+import ru.jewelline.StreamBasedEntity;
 import ru.jewelline.request.http.HttpMethod;
-import ru.jewelline.request.http.HttpRequest;
-import ru.jewelline.request.http.HttpRequestBuilder;
 import ru.jewelline.request.http.NetworkException;
-import ru.jewelline.request.http.UrlBuilder;
-import ru.jewelline.request.http.entity.EntitySerializer;
-import ru.jewelline.request.http.entity.SerializableEntity;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-class HttpRequestBuilderImpl implements HttpRequestBuilder {
+class HttpRequestBuilderImpl extends HttpRequestPropertyAccessorImpl implements HttpRequestBuilder {
 
     private static final String HTTP_PREFIX = "http://";
     private static final String HTTPS_PREFIX = "https://";
 
     private final HttpRequestFactoryImpl httpRequestFactory;
-    private final UrlBuilder urlBuilder;
-
-    private String path;
-    private Map<String, String> queryParameters;
-    private Map<String, String> headers;
-    private SerializableEntity entity;
 
     HttpRequestBuilderImpl(HttpRequestFactoryImpl httpRequestFactory) {
         this.httpRequestFactory = httpRequestFactory;
-        this.urlBuilder = this.httpRequestFactory.urlBuilder();
     }
 
     @Override
-    public HttpRequestBuilder path(String url) {
+    public HttpRequestBuilder setUrl(String url) {
         if (url == null || url.startsWith(HTTP_PREFIX) || url.startsWith(HTTPS_PREFIX)) {
-            this.path = url;
+            this.url = url;
         } else {
-            this.path = HTTP_PREFIX + url;
+            this.url = HTTP_PREFIX + url;
         }
         return this;
     }
 
     @Override
-    public String getPath() {
-        return this.path;
-    }
-
-    @Override
-    public HttpRequestBuilder setQueryParameter(String parameterKey, String parameterValue) {
-        if (this.queryParameters == null) {
-            this.queryParameters = new HashMap<>();
+    public HttpRequestBuilder setQueryParameter(String parameterKey, String... parameterValues) {
+        if (parameterKey == null) {
+            throw new IllegalArgumentException("Query parameter key can not be null.");
         }
-        this.queryParameters.put(parameterKey, parameterValue);
+        if (parameterValues == null && this.queryParameters != null) {
+            this.queryParameters.remove(parameterKey);
+        } else {
+            if (this.queryParameters == null) {
+                this.queryParameters = new HashMap<>();
+            }
+            this.queryParameters.put(parameterKey, Collections.unmodifiableList(Arrays.asList(parameterValues.clone())));
+        }
         return this;
     }
 
     @Override
-    public Map<String, String> getQueryParameters() {
-        return this.queryParameters == null
-                ? Collections.<String, String>emptyMap()
-                : Collections.unmodifiableMap(this.queryParameters);
-    }
-
-    @Override
-    public HttpRequestBuilder setHeader(String headerKey, String headerValue) {
-        if (this.headers == null) {
-            this.headers = new HashMap<>();
+    public HttpRequestBuilder setHeader(String headerKey, String... headerValues) {
+        if (headerKey == null) {
+            throw new IllegalArgumentException("Header key can not be null.");
         }
-        this.headers.put(headerKey, headerValue);
+        if (headerValues == null && this.queryParameters != null) {
+            this.queryParameters.remove(headerKey);
+        } else {
+            if (this.headers == null) {
+                this.headers = new HashMap<>();
+            }
+            this.headers.put(headerKey, Collections.unmodifiableList(Arrays.asList(headerValues.clone())));
+        }
         return this;
-    }
-
-    @Override
-    public Map<String, String> getHeaders() {
-        return this.headers == null ? Collections.<String, String>emptyMap() : Collections.unmodifiableMap(this.headers);
-    }
-
-    @Override
-    public HttpRequestBuilder setEntity(byte[] requestBody) {
-        return this.setEntity(requestBody != null ? new ByteArrayInputStream(requestBody) : (InputStream) null);
     }
 
     @Override
     public HttpRequestBuilder setEntity(InputStream entityStream) {
-        this.entity = new SerializedEntityHolder(entityStream);
-        return this;
-    }
-
-    @Override
-    public <T> HttpRequestBuilder setEntity(T entity, EntitySerializer<T> serializer) {
-        this.entity = new SerializableEntityWrapper<>(entity, serializer);
+        this.entity = new StreamBasedEntity(entityStream);
         return this;
     }
 
@@ -101,19 +80,16 @@ class HttpRequestBuilderImpl implements HttpRequestBuilder {
     }
 
     @Override
-    public SerializableEntity getEntity() {
-        return this.entity;
-    }
-
-    @Override
     public HttpRequest buildAs(HttpMethod method) {
         if (method == null) {
             throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify a request method");
         }
-        this.urlBuilder.path(this.path);
+        this.urlBuilder.path(this.url);
         if (this.queryParameters != null && this.queryParameters.size() > 0) {
-            for (Map.Entry<String, String> header : this.queryParameters.entrySet()) {
-                this.urlBuilder.addQueryParameter(header.getKey(), header.getValue());
+            for (Map.Entry<String, List<String>> header : this.queryParameters.entrySet()) {
+                for (String queryParameter : header.getValue()) {
+                    this.urlBuilder.addQueryParameter(header.getKey(), queryParameter);
+                }
             }
         }
         String url = this.urlBuilder.build();
@@ -124,7 +100,7 @@ class HttpRequestBuilderImpl implements HttpRequestBuilder {
         request.setUrl(url);
         request.setHeaders(this.headers);
         if (this.entity != null) {
-            request.setEntity(this.entity.getSerializer().serialize(this.entity));
+            request.setEntity(this.entity);
         }
         return request;
     }
