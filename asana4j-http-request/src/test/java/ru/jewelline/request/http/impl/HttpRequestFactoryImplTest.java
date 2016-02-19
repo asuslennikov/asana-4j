@@ -1,40 +1,12 @@
 package ru.jewelline.request.http.impl;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.request.http.HttpMethod;
-import ru.jewelline.request.http.HttpRequest;
-import ru.jewelline.request.http.NetworkException;
-import ru.jewelline.request.http.config.HttpConfiguration;
-import ru.jewelline.request.http.config.SimpleHttpConfiguration;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpRequestFactoryImplTest {
 
+    /*
     private final HttpConfiguration httpConfig = new SimpleHttpConfiguration();
     @Mock
     private HttpURLConnection connection;
@@ -297,4 +269,6 @@ public class HttpRequestFactoryImplTest {
         // assertions
         verify(response).setHeaders(headers);
     }
+
+    */
 }

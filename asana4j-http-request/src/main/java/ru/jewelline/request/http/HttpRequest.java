@@ -1,8 +1,9 @@
 package ru.jewelline.request.http;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+
+import ru.jewelline.request.http.entity.SerializableEntity;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,44 +11,39 @@ import java.util.Map;
  */
 public interface HttpRequest {
     /**
-     * @return A full target url.
+     * @return A target url.
      */
     String getUrl();
+
+    /**
+     * @return A map with query parameters, these values will be a part of actual url.
+     * It is unmodifiable map.
+     */
+    Map<String, List<String>> getQueryParameters();
 
     /**
      * @return A map with header-value pairs, these values will be set as HTTP request headers.
      * It is unmodifiable map.
      */
-    Map<String, String> getHeaders();
-
-    /**
-     * @return A representation of HTTP method for which this request instance was created.
-     */
-    HttpMethod getMethod();
+    Map<String, List<String>> getHeaders();
 
     /**
      * @return A payload which will be send to server, can be <code>null</code>.
      */
-    InputStream getEntity();
+    SerializableEntity getEntity();
 
     /**
-     * Sends this HTTP request and doesn't read a server response (so no headers, no payload, even a code status
-     * is unknown).
+     * @return An HTTP method for the request.
      */
-    void send();
+    HttpMethod getMethod();
 
     /**
-     * Send this HTTP request and read a server response into {@link ByteArrayOutputStream} instance.
+     * Executes current request and redirect a response to the responseReceiver. In fact it is equivalent for
+     * {@link HttpRequestFactory#execute(HttpRequest, HttpResponseReceiver)}
      *
-     * @return A response object.
+     * @param responseReceiver destination for HTTP response.
+     * @param <T>              exact type for the responseReceiver
+     * @return The same responseReceiver, we need it for call chaining.
      */
-    HttpResponse<ByteArrayOutputStream> execute();
-
-    /**
-     * Send this HTTP request and read a server response.
-     *
-     * @param destinationStream output stream in which a server response will be copied
-     * @return A response object.
-     */
-    <T extends OutputStream> HttpResponse<T> execute(T destinationStream);
+    <T extends HttpResponseReceiver> T execute(T responseReceiver);
 }

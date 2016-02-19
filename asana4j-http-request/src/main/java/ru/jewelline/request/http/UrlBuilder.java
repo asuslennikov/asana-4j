@@ -4,7 +4,7 @@ public interface UrlBuilder {
 
     UrlBuilder path(String path);
 
-    UrlBuilder addQueryParameter(String key, String value);
+    UrlBuilder setQueryParameter(String key, String... values);
 
     String build();
 

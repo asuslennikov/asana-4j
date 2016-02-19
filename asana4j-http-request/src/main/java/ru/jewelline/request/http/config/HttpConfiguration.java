@@ -1,5 +1,6 @@
 package ru.jewelline.request.http.config;
 
+import java.net.Proxy;
 import java.nio.charset.Charset;
 
 /**
@@ -16,6 +17,11 @@ public interface HttpConfiguration {
      * @return A time duration (in milliseconds) of awaiting of server response before another attempt.
      */
     int getConnectionTimeout();
+
+    /**
+     * @return A proxy specification.
+     */
+    Proxy getProxy();
 
     /**
      * @return A charset which should be used for urls.

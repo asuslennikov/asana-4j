@@ -20,27 +20,12 @@ enum HttpMethodSettings {
     },
     POST(HttpMethod.POST),
     PUT(HttpMethod.PUT),
-    DELETE(HttpMethod.DELETE),
-    ;
+    DELETE(HttpMethod.DELETE),;
 
     private final HttpMethod httpMethod;
 
     HttpMethodSettings(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
-    }
-
-    void apply(HttpURLConnection connection, HttpRequest httpRequest) throws IOException {
-        if (connection == null || httpRequest == null) {
-            throw new IllegalArgumentException("Connection and request can not be null.");
-        }
-        InputStream entity = httpRequest.getEntity();
-        if (entity != null) {
-            connection.setDoOutput(true);
-            connection.setRequestMethod(this.httpMethod.method());
-            HttpRequestFactoryImpl.copyStreams(entity, connection.getOutputStream());
-        } else {
-            connection.setRequestMethod(this.httpMethod.method());
-        }
     }
 
     public static HttpMethodSettings getForHttpMethod(HttpMethod httpMethod) {
@@ -56,5 +41,21 @@ enum HttpMethodSettings {
          */
         throw new NetworkException(NetworkException.MALFORMED_URL,
                 "You are trying to send request with unknown request method.");
+    }
+
+    void apply(HttpURLConnection connection, HttpRequest httpRequest) throws IOException {
+        if (connection == null || httpRequest == null) {
+            throw new IllegalArgumentException("Connection and request can not be null.");
+        }
+        InputStream entity = httpRequest.getEntity() != null
+                ? httpRequest.getEntity().getSerialized()
+                : null;
+        if (entity != null) {
+            connection.setDoOutput(true);
+            connection.setRequestMethod(this.httpMethod.method());
+            HttpRequestFactoryImpl.copyStreams(entity, connection.getOutputStream());
+        } else {
+            connection.setRequestMethod(this.httpMethod.method());
+        }
     }
 }

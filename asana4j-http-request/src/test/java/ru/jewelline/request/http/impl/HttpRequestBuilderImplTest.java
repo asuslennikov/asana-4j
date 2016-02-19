@@ -12,6 +12,7 @@ import ru.jewelline.request.http.UrlBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -35,7 +36,7 @@ public class HttpRequestBuilderImplTest {
     public void test_addDefaultTransportPrefix() {
         String path = "www.example.com";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
-        requestBuilder.path(path);
+        requestBuilder.setUrl(path);
         assertThat(requestBuilder.getUrl()).isEqualTo("http://" + path);
     }
 
@@ -43,7 +44,7 @@ public class HttpRequestBuilderImplTest {
     public void test_notAppendDefaultTransportPrefixForHttp() {
         String path = "http://www.example.com";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
-        requestBuilder.path(path);
+        requestBuilder.setUrl(path);
         assertThat(requestBuilder.getUrl()).isEqualTo(path);
     }
 
@@ -51,15 +52,15 @@ public class HttpRequestBuilderImplTest {
     public void test_notAppendDefaultTransportPrefixForHttps() {
         String path = "https://www.example.com";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
-        requestBuilder.path(path);
+        requestBuilder.setUrl(path);
         assertThat(requestBuilder.getUrl()).isEqualTo(path);
     }
 
     @Test
     public void test_allowResetPathByNullValue() {
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
-        requestBuilder.path("non.null");
-        requestBuilder.path(null);
+        requestBuilder.setUrl("non.null");
+        requestBuilder.setUrl(null);
         assertThat(requestBuilder.getUrl()).isEqualTo(null);
     }
 
@@ -69,7 +70,7 @@ public class HttpRequestBuilderImplTest {
         String qpValue = "value";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
         requestBuilder.setQueryParameter(qpKey, qpValue);
-        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, qpValue));
+        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, Collections.singletonList(qpValue)));
     }
 
     @Test
@@ -78,7 +79,7 @@ public class HttpRequestBuilderImplTest {
         String qpValue = "value";
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
         requestBuilder.setQueryParameter(qpKey, qpValue);
-        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, qpValue));
+        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, Collections.singletonList(qpValue)));
     }
 
     @Test
@@ -87,7 +88,7 @@ public class HttpRequestBuilderImplTest {
         String qpValue = null;
         HttpRequestBuilderImpl requestBuilder = getRequestBuilder();
         requestBuilder.setQueryParameter(qpKey, qpValue);
-        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, qpValue));
+        assertThat(requestBuilder.getQueryParameters()).hasSize(1).contains(MapEntry.entry(qpKey, Collections.singletonList(qpValue)));
     }
 
     @Test
@@ -97,30 +98,6 @@ public class HttpRequestBuilderImplTest {
                 .setHeader("key2", "value2");
 
         // assert no exceptions
-    }
-
-    @Test
-    public void test_setNullByteArrayAsPayload() {
-        byte[] payload = null;
-        getRequestBuilder().setEntity(payload);
-
-        // assert no exception
-    }
-
-    @Test
-    public void test_setEmptyByteArrayAsPayload() {
-        byte[] payload = new byte[0];
-        getRequestBuilder().setEntity(payload);
-
-        // assert no exception
-    }
-
-    @Test
-    public void test_setByteArrayAsPayload() {
-        byte[] payload = new byte[]{1, 2, 3};
-        getRequestBuilder().setEntity(payload);
-
-        // assert no exception
     }
 
     @Test
@@ -165,7 +142,7 @@ public class HttpRequestBuilderImplTest {
         when(urlBuilder.build()).thenReturn(path);
         try {
             getRequestBuilder()
-                    .path(path)
+                    .setUrl(path)
                     .buildAs(HttpMethod.GET);
             fail("The NetworkException should be thrown since there is no base url");
         } catch (NetworkException ex) {
@@ -179,7 +156,7 @@ public class HttpRequestBuilderImplTest {
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
         HttpRequest httpRequest = getRequestBuilder()
-                .path(path)
+                .setUrl(path)
                 .buildAs(httpMethod);
 
         assertThat(httpRequest.getUrl()).isEqualTo(path);
@@ -194,7 +171,7 @@ public class HttpRequestBuilderImplTest {
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(pathWithParams);
         HttpRequest httpRequest = getRequestBuilder()
-                .path(path)
+                .setUrl(path)
                 .setQueryParameter("key", "value")
                 .buildAs(httpMethod);
 
@@ -209,7 +186,7 @@ public class HttpRequestBuilderImplTest {
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
         HttpRequest httpRequest = getRequestBuilder()
-                .path(path)
+                .setUrl(path)
                 .setHeader("key", "value")
                 .buildAs(httpMethod);
 
@@ -225,7 +202,7 @@ public class HttpRequestBuilderImplTest {
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
         HttpRequest httpRequest = getRequestBuilder()
-                .path(path)
+                .setUrl(path)
                 .setHeader("key", "value1")
                 .setHeader("key", "value2")
                 .buildAs(httpMethod);
@@ -233,7 +210,7 @@ public class HttpRequestBuilderImplTest {
         assertThat(httpRequest.getUrl()).isEqualTo(path);
         assertThat(httpRequest.getMethod()).isEqualTo(httpMethod);
         assertThat(httpRequest.getHeaders()).hasSize(1);
-        assertThat(httpRequest.getHeaders()).containsValue("value2");
+        assertThat(httpRequest.getHeaders()).containsValue(Collections.singletonList("value2"));
         verify(urlBuilder).build();
     }
 
@@ -243,7 +220,7 @@ public class HttpRequestBuilderImplTest {
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
         HttpRequest httpRequest = getRequestBuilder()
-                .path(path)
+                .setUrl(path)
                 .setHeader("key1", "value")
                 .setHeader("key2", "value")
                 .buildAs(httpMethod);
@@ -262,8 +239,8 @@ public class HttpRequestBuilderImplTest {
         when(urlBuilder.build()).thenReturn(path);
 
         HttpRequest httpRequest = getRequestBuilder()
-                .path(path)
-                .setEntity(payload)
+                .setUrl(path)
+                .setEntity(new ByteArrayInputStream(payload))
                 .buildAs(httpMethod);
 
         assertThat(httpRequest.getUrl()).isEqualTo(path);
@@ -280,7 +257,7 @@ public class HttpRequestBuilderImplTest {
         when(urlBuilder.build()).thenReturn(path);
 
         HttpRequest httpRequest = getRequestBuilder()
-                .path(path)
+                .setUrl(path)
                 .setEntity(payload)
                 .buildAs(httpMethod);
 

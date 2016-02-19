@@ -1,4 +1,4 @@
-package ru.jewelline;
+package ru.jewelline.request.http.entity;
 
 import java.io.InputStream;
 

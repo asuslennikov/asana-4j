@@ -5,14 +5,16 @@ import ru.jewelline.request.http.UrlBuilder;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 final class UrlBuilderImpl implements UrlBuilder {
     private final Charset urlCharset;
+    private Map<String, List<String>> queryParameters = new HashMap<>();
     private String path;
-    private final Map<String, String> queryParameters = new HashMap<>();
 
     UrlBuilderImpl(Charset urlCharset) {
         this.urlCharset = urlCharset;
@@ -25,9 +27,19 @@ final class UrlBuilderImpl implements UrlBuilder {
     }
 
     @Override
-    public UrlBuilder addQueryParameter(String key, String value) {
-        this.queryParameters.put(key, value);
+    public UrlBuilder setQueryParameter(String key, String... values) {
+        if (key != null) {
+            if (values == null) {
+                this.queryParameters.remove(key);
+            } else {
+                this.queryParameters.put(key, Collections.unmodifiableList(Arrays.asList(values.clone())));
+            }
+        }
         return this;
+    }
+
+    void setQueryParameter(Map<String, List<String>> queryParameters) {
+        this.queryParameters = queryParameters;
     }
 
     @Override
@@ -35,15 +47,20 @@ final class UrlBuilderImpl implements UrlBuilder {
         StringBuilder pathBuilder = new StringBuilder(this.path != null ? this.path : "");
         if (!this.queryParameters.isEmpty()) {
             StringBuilder queryStringBuilder = new StringBuilder();
-            Iterator<Map.Entry<String, String>> paramsItr = this.queryParameters.entrySet().iterator();
-            while (paramsItr.hasNext()) {
-                Map.Entry<String, String> param = paramsItr.next();
-                queryStringBuilder.append(encode(param.getKey())).append('=').append(encode(param.getValue()));
-                if (paramsItr.hasNext()) {
-                    queryStringBuilder.append('&');
+            for (Map.Entry<String, List<String>> queryParameter : queryParameters.entrySet()) {
+                String encodedQueryParameterKey = encode(queryParameter.getKey());
+                for (String queryParameterValue : queryParameter.getValue()) {
+                    queryStringBuilder
+                            .append(encodedQueryParameterKey)
+                            .append('=')
+                            .append(encode(queryParameterValue))
+                            .append('&');
                 }
             }
-            pathBuilder.append('?').append(queryStringBuilder.toString());
+            if (queryStringBuilder.length() > 0) {
+                queryStringBuilder.setLength(queryStringBuilder.length() - 1); // Trim the leading '&'
+                pathBuilder.append('?').append(queryStringBuilder);
+            }
         }
         return pathBuilder.toString();
     }

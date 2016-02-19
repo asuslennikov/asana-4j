@@ -5,6 +5,7 @@ import org.mockito.Matchers;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequest;
 import ru.jewelline.request.http.NetworkException;
+import ru.jewelline.request.http.entity.SerializableEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,11 +54,13 @@ public class HttpMethodSettingsTest {
     }
 
     @Test
-    public void test_applySettingsForGetWithEnity() throws IOException {
+    public void test_applySettingsForGetWithEntity() throws IOException {
         HttpURLConnection urlConnection = mock(HttpURLConnection.class);
         HttpRequest httpRequest = mock(HttpRequest.class);
+        SerializableEntity serializableEntity = mock(SerializableEntity.class);
         InputStream entity = mock(InputStream.class);
-        when(httpRequest.getEntity()).thenReturn(entity);
+        when(serializableEntity.getSerialized()).thenReturn(entity);
+        when(httpRequest.getEntity()).thenReturn(serializableEntity);
         HttpMethodSettings.GET.apply(urlConnection, httpRequest);
         verifyZeroInteractions(urlConnection, httpRequest);
     }
@@ -71,11 +74,13 @@ public class HttpMethodSettingsTest {
         verify(urlConnection).setRequestMethod(Matchers.anyString());
     }
 
-    private void applySettingsForSomeWithEnity(HttpMethodSettings some) throws IOException {
+    private void applySettingsForSomeWithEntity(HttpMethodSettings some) throws IOException {
         HttpURLConnection urlConnection = mock(HttpURLConnection.class);
         HttpRequest httpRequest = mock(HttpRequest.class);
+        SerializableEntity serializableEntity = mock(SerializableEntity.class);
         InputStream entity = mock(InputStream.class);
-        when(httpRequest.getEntity()).thenReturn(entity);
+        when(serializableEntity.getSerialized()).thenReturn(entity);
+        when(httpRequest.getEntity()).thenReturn(serializableEntity);
         some.apply(urlConnection, httpRequest);
         verify(urlConnection).setDoOutput(true);
         verify(urlConnection).getOutputStream();
@@ -89,7 +94,7 @@ public class HttpMethodSettingsTest {
 
     @Test
     public void test_applySettingsForPutWithEnity() throws IOException {
-        applySettingsForSomeWithEnity(HttpMethodSettings.PUT);
+        applySettingsForSomeWithEntity(HttpMethodSettings.PUT);
     }
 
     @Test
@@ -99,7 +104,7 @@ public class HttpMethodSettingsTest {
 
     @Test
     public void test_applySettingsForPostWithEnity() throws IOException {
-        applySettingsForSomeWithEnity(HttpMethodSettings.POST);
+        applySettingsForSomeWithEntity(HttpMethodSettings.POST);
     }
 
     @Test
@@ -109,7 +114,7 @@ public class HttpMethodSettingsTest {
 
     @Test
     public void test_applySettingsForDeleteWithEnity() throws IOException {
-        applySettingsForSomeWithEnity(HttpMethodSettings.DELETE);
+        applySettingsForSomeWithEntity(HttpMethodSettings.DELETE);
     }
 
     @Test(expected = IllegalArgumentException.class)

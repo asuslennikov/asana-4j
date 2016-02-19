@@ -3,7 +3,7 @@ package ru.jewelline.request.http.impl;
 import ru.jewelline.request.http.HttpRequest;
 import ru.jewelline.request.http.HttpRequestBuilder;
 import ru.jewelline.request.http.HttpRequestFactory;
-import ru.jewelline.request.http.HttpResponse;
+import ru.jewelline.request.http.HttpResponseReceiver;
 import ru.jewelline.request.http.NetworkException;
 import ru.jewelline.request.http.UrlBuilder;
 import ru.jewelline.request.http.config.HttpConfiguration;
@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 public class HttpRequestFactoryImpl implements HttpRequestFactory {
@@ -66,30 +67,30 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
 
     @Override
     public HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        if (requestModifiers == null || requestModifiers.length == 0){
+        if (requestModifiers == null || requestModifiers.length == 0) {
             return new HttpRequestBuilderImpl(this);
         }
         return new HttpRequestBuilderWithModifiiers(this).withRequestModifiers(requestModifiers);
     }
 
-    <T extends OutputStream> HttpResponse<T> execute(HttpRequest request, HttpResponseImpl<T> response) {
-        if (request == null || response == null) {
+    @Override
+    public void execute(HttpRequest request, HttpResponseReceiver responseReceiver) {
+        if (request == null) {
             throw new NetworkException(NetworkException.YOU_ARE_TRYING_TO_SEND_EMPTY_REQUEST,
                     "You are trying to send an empty request. It is not allowed.");
         }
         int retryCount = this.httpConfig.getRetryCount();
-        for (int current = 0; current < retryCount; current++) {
+        for (int current = 1; current <= retryCount; current++) {
             try {
                 HttpURLConnection connection = configureConnection(createConnection(request), request);
                 HttpMethodSettings.getForHttpMethod(request.getMethod()).apply(connection, request);
-                readServerResponse(response, connection);
-                if (response.code() == NO_SERVER_RESPONSE_CODE) {
+                if (readServerResponse(connection, responseReceiver) == NO_SERVER_RESPONSE_CODE) {
                     continue; // retry the request
                 }
                 break;
             } catch (MalformedURLException badUrlEx) {
-                // do not try again, a client provided a bad url
-                NetworkException netException = new NetworkException(NetworkException.MALFORMED_URL);
+                // do not try again, the client has provided a bad url
+                NetworkException netException = new NetworkException(NetworkException.MALFORMED_URL, badUrlEx.getLocalizedMessage());
                 netException.setRequestUrl(request.getUrl());
                 throw netException;
             } catch (SocketTimeoutException timeoutEx) {
@@ -107,41 +108,51 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
                 }
             }
         }
-        return response;
     }
 
     HttpURLConnection createConnection(HttpRequest request) throws IOException {
-        URL url = new URL(request.getUrl());
-        return (HttpURLConnection) url.openConnection();
+        UrlBuilderImpl urlBuilder = (UrlBuilderImpl) urlBuilder().path(request.getUrl());
+        Map<String, List<String>> queryParameters = request.getQueryParameters();
+        if (queryParameters != null) {
+            urlBuilder.setQueryParameter(queryParameters);
+        }
+        URL url = new URL(urlBuilder.build());
+        return (HttpURLConnection) url.openConnection(this.httpConfig.getProxy());
     }
 
     private HttpURLConnection configureConnection(HttpURLConnection connection, HttpRequest request) {
-        Map<String, String> headers = request.getHeaders();
+        Map<String, List<String>> headers = request.getHeaders();
         if (headers != null && !headers.isEmpty()) {
-            for (Map.Entry<String, String> header : headers.entrySet()) {
-                connection.setRequestProperty(header.getKey(), header.getValue());
+            for (Map.Entry<String, List<String>> header : headers.entrySet()) {
+                for (String headerValue : header.getValue()) {
+                    connection.addRequestProperty(header.getKey(), headerValue);
+                }
             }
         }
         connection.setConnectTimeout(this.httpConfig.getConnectionTimeout());
-        connection.setDoInput(true);
         return connection;
     }
 
-    private void readServerResponse(HttpResponseImpl httpResponse, HttpURLConnection connection) throws IOException {
-        httpResponse.setCode(connection.getResponseCode());
-        if (httpResponse.code() == NO_SERVER_RESPONSE_CODE) {
-            return;
+    private int readServerResponse(HttpURLConnection connection, HttpResponseReceiver responseReceiver) throws IOException {
+        if (responseReceiver == null) {
+            return 200; // do not read anything, just pretend that everything is ok
         }
-        httpResponse.setHeaders(connection.getHeaderFields());
-        if (httpResponse.payload() == null) {
-            return;
+        int responseCode = connection.getResponseCode();
+        responseReceiver.setResponseCode(responseCode);
+        if (responseCode == NO_SERVER_RESPONSE_CODE) {
+            return NO_SERVER_RESPONSE_CODE;
         }
-        InputStream serverResponseStream;
-        if (httpResponse.code() >= 400 && httpResponse.code() < 600) {
-            serverResponseStream = connection.getErrorStream();
-        } else {
-            serverResponseStream = connection.getInputStream();
+        responseReceiver.setResponseHeaders(connection.getHeaderFields());
+        boolean inCorrectResponse = responseCode >= 400 && responseCode < 600;
+        OutputStream destination = !inCorrectResponse
+                ? responseReceiver.getResponseStream()
+                : responseReceiver.getErrorStream();
+        if (destination != null) {
+            InputStream source = !inCorrectResponse
+                    ? connection.getInputStream()
+                    : connection.getErrorStream();
+            copyStreams(source, destination);
         }
-        copyStreams(serverResponseStream, httpResponse.payload());
+        return responseCode;
     }
 }

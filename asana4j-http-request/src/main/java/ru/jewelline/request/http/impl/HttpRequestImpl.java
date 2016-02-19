@@ -1,31 +1,32 @@
 package ru.jewelline.request.http.impl;
 
-import ru.jewelline.HttpRequest;
-import ru.jewelline.HttpResponseReceiver;
-import ru.jewelline.SerializableEntity;
 import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.HttpRequestFactory;
+import ru.jewelline.request.http.HttpResponseReceiver;
+import ru.jewelline.request.http.entity.SerializableEntity;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 final class HttpRequestImpl implements HttpRequest {
 
     private final HttpMethod httpMethod;
-    private final HttpRequestFactoryImpl httpRequestFactory;
+    private final HttpRequestFactory httpRequestFactory;
+    private final HttpRequestPropertyAccessor propertyAccessor;
 
-    private String url;
-    private Map<String, List<String>> headers;
-    private SerializableEntity entity;
-
-    HttpRequestImpl(HttpRequestFactoryImpl httpRequestFactory, HttpMethod httpMethod) {
+    HttpRequestImpl(HttpRequestFactory httpRequestFactory, HttpRequestPropertyAccessor propertyAccessor, HttpMethod httpMethod) {
         if (httpMethod == null) {
             throw new IllegalArgumentException("Http method can not be null");
         }
         if (httpRequestFactory == null) {
             throw new IllegalArgumentException("Http client can not be null");
         }
+        if (propertyAccessor == null) {
+            throw new IllegalArgumentException("Property accessor can not be null");
+        }
         this.httpRequestFactory = httpRequestFactory;
+        this.propertyAccessor = propertyAccessor;
         this.httpMethod = httpMethod;
     }
 
@@ -36,43 +37,27 @@ final class HttpRequestImpl implements HttpRequest {
 
     @Override
     public Map<String, List<String>> getQueryParameters() {
-        return null;
+        return this.propertyAccessor.getQueryParameters();
     }
 
     @Override
     public String getUrl() {
-        return this.url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+        return this.propertyAccessor.getUrl();
     }
 
     @Override
     public Map<String, List<String>> getHeaders() {
-        return this.headers == null
-                ? Collections.<String, List<String>>emptyMap()
-                : Collections.unmodifiableMap(this.headers);
-    }
-
-    public void setHeaders(Map<String, List<String>> headers) {
-        this.headers = headers != null ? headers : null;
+        return this.propertyAccessor.getHeaders();
     }
 
     @Override
     public SerializableEntity getEntity() {
-        return this.entity;
+        return this.propertyAccessor.getEntity();
     }
 
     @Override
     public <T extends HttpResponseReceiver> T execute(T responseReceiver) {
-        return null;
+        this.httpRequestFactory.execute(this, responseReceiver);
+        return responseReceiver;
     }
-
-
-    public void setEntity(SerializableEntity entityStream) {
-        this.entity = entityStream;
-    }
-
-
 }

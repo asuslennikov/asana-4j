@@ -2,6 +2,7 @@ package ru.jewelline.request.http.modifiers;
 
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.NetworkException;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -38,14 +39,14 @@ public final class ModifiersChain {
      * @param requestBuilder never can be <code>null</code>. If RequestModifier implementation passes a <code>null</code>
      *                       object as an argument, the {@link IllegalArgumentException} will be raised.
      * @param httpMethod     never can be <code>null</code>. If RequestModifier implementation passes a <code>null</code>
-     *                       object as an argument, the {@link IllegalArgumentException} will be raised.
+     *                       object as an argument, the {@link NetworkException} will be raised.
      */
     public void next(HttpRequestBuilder requestBuilder, HttpMethod httpMethod) {
         if (requestBuilder == null) {
             throw new IllegalArgumentException("The requestBuilder can not be null.");
         }
         if (httpMethod == null) {
-            throw new IllegalArgumentException("The httpMethod can not be null.");
+            throw new NetworkException(NetworkException.MALFORMED_URL, "You must specify a request method");
         }
         if (this.requestModifiers == null) {
             return;
