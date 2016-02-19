@@ -1,0 +1,5 @@
+-classpath: target/classes
+-dsannotations: *
+Private-Package:
+Export-Package:  \
+	ru.jewelline.asana4j.jackson

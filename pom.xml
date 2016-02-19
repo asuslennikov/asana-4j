@@ -17,6 +17,7 @@
 
     <properties>
         <include.source>true</include.source>
+        <jackson.version>2.7.1</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +38,11 @@
                 <artifactId>auth</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>ru.jewelline.asana4j</groupId>
+                <artifactId>jackson</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
 
             <!-- Third party libraries -->
             <dependency>
@@ -44,7 +50,21 @@
                 <artifactId>json</artifactId>
                 <version>20141113</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
             <!-- Test dependencies -->
             <dependency>
                 <groupId>junit</groupId>
@@ -185,6 +205,7 @@
                 <module>asana4j-http-request</module>
                 <module>asana4j-common</module>
                 <module>asana4j-auth</module>
+                <module>asana4j-jackson</module>
             </modules>
         </profile>
 
