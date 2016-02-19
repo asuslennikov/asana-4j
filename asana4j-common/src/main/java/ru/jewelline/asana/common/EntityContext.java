@@ -2,7 +2,7 @@ package ru.jewelline.asana.common;
 
 public interface EntityContext {
 
-    <T, R extends T> T getEntity(Class<R> entityClass);
+    <T> EntityResponseReceiver<T> getReceiver(Class<T> entityClass);
 
-    <T> EntityBasedOutputStream<T> getReader(Class<? extends T> entityClass);
+    <T, E> EntityWithErrorResponseReceiver<T, E> getReceiver(Class<T> entityClass, Class<E> errorClass);
 }

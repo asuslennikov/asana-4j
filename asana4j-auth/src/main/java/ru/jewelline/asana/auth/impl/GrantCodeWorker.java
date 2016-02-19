@@ -1,17 +1,17 @@
 package ru.jewelline.asana.auth.impl;
 
+import ru.jewelline.asana.auth.AuthCodeGrantErrorResponse;
 import ru.jewelline.asana.auth.AuthCodeGrantResponse;
 import ru.jewelline.asana.auth.AuthenticationException;
 import ru.jewelline.asana.auth.AuthenticationProperty;
-import ru.jewelline.asana.common.EntityBasedOutputStream;
 import ru.jewelline.asana.common.EntityContext;
+import ru.jewelline.asana.common.EntityWithErrorResponseReceiver;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
-import ru.jewelline.request.http.HttpResponse;
 import ru.jewelline.request.http.NetworkException;
 import ru.jewelline.request.http.UrlBuilder;
 
-import java.net.HttpURLConnection;
+import java.io.ByteArrayInputStream;
 
 final class GrantCodeWorker extends AuthenticationWorker {
 
@@ -27,39 +27,39 @@ final class GrantCodeWorker extends AuthenticationWorker {
     @Override
     void authenticate() throws AuthenticationException {
         try {
-            AuthCodeGrantResponse authResponse = this.httpRequestFactory.newRequest()
-                    .path(ACCESS_TOKEN_ENDPOINT)
+            EntityWithErrorResponseReceiver<AuthCodeGrantResponse, AuthCodeGrantErrorResponse> responseReceiver =
+                    this.entityContext.getReceiver(AuthCodeGrantResponse.class, AuthCodeGrantErrorResponse.class);
+            this.httpRequestFactory.newRequest()
+                    .setUrl(ACCESS_TOKEN_ENDPOINT)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .setEntity(getAccessTokenRequestBody())
+                    .setEntity(new ByteArrayInputStream(getAccessTokenRequestBody()))
                     .buildAs(HttpMethod.POST)
-                    .execute(this.entityContext.getReader(AuthCodeGrantResponse.class))
-                    .payload()
-                    .toEntity();
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN,
-                    authResponse.getAccessToken());
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.REFRESH_TOKEN,
-                    authResponse.getRefreshToken());
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.TOKEN_TYPE,
-                    authResponse.getTokenType());
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.EXPIRES_IN,
-                    authResponse.getExpiresIn());
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE,
-                    authResponse.getState());
+                    .execute(responseReceiver);
+            if (!responseReceiver.hasError()) {
+                AuthCodeGrantResponse authResponse = responseReceiver.asEntity();
+                getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN,
+                        authResponse.getAccessToken());
+                getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.REFRESH_TOKEN,
+                        authResponse.getRefreshToken());
+                getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.TOKEN_TYPE,
+                        authResponse.getTokenType());
+                getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.EXPIRES_IN,
+                        authResponse.getExpiresIn());
+                getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE,
+                        authResponse.getState());
+            } else {
+                throwAuthenticationError(responseReceiver.getError());
+            }
         } catch (NetworkException networkException) {
             throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE);
         }
     }
 
-    private void throwAuthenticationError(HttpResponse<EntityBasedOutputStream<AuthCodeGrantResponse>> response) {
+    private void throwAuthenticationError(AuthCodeGrantErrorResponse errorResponse) {
         String message = "Failed to authenticate.";
-//        try {
-//            JSONObject json = responseBody.asJson();
-//            message = json.optString("error_description");
-//        } catch (NetworkException ne) {
-//            if (ne.getErrorCode() == NetworkException.UNREADABLE_RESPONSE) {
-//                message = "Failed to authenticate, unreadable server response.";
-//            }
-//        }
+        if (errorResponse != null && errorResponse.getMessage() != null) {
+            message = errorResponse.getMessage();
+        }
         throw new AuthenticationException(AuthenticationException.UNABLE_TO_AUTHENTICATE, message);
     }
 
@@ -87,12 +87,12 @@ final class GrantCodeWorker extends AuthenticationWorker {
         String redirectUrl = getRedirectUrlOrTrowException();
         UrlBuilder urlBuilder = this.httpRequestFactory.urlBuilder()
                 .path(USER_OAUTH_ENDPOINT)
-                .addQueryParameter("client_id", clientId)
-                .addQueryParameter("redirect_uri", redirectUrl)
-                .addQueryParameter("response_type", "code");
+                .setQueryParameter("client_id", clientId)
+                .setQueryParameter("redirect_uri", redirectUrl)
+                .setQueryParameter("response_type", "code");
         String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE);
         if (appState != null) {
-            urlBuilder.addQueryParameter("state", appState);
+            urlBuilder.setQueryParameter("state", appState);
         }
         return urlBuilder.build();
     }

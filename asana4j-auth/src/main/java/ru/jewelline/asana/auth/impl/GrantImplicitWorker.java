@@ -32,12 +32,12 @@ final class GrantImplicitWorker extends AuthenticationWorker {
         String redirectUrl = getRedirectUrlOrTrowException();
         UrlBuilder urlBuilder = this.httpRequestFactory.urlBuilder()
                 .path(USER_OAUTH_ENDPOINT)
-                .addQueryParameter("client_id", clientId)
-                .addQueryParameter("redirect_uri", redirectUrl)
-                .addQueryParameter("response_type", "token");
+                .setQueryParameter("client_id", clientId)
+                .setQueryParameter("redirect_uri", redirectUrl)
+                .setQueryParameter("response_type", "token");
         String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE);
         if (appState != null) {
-            urlBuilder.addQueryParameter("state", appState);
+            urlBuilder.setQueryParameter("state", appState);
         }
         return urlBuilder.build();
     }

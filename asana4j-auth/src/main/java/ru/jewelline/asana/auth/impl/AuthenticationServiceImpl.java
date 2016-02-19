@@ -70,7 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void setAuthenticationProperty(AuthenticationProperty property, String value) {
         if (property != null) {
-            if (property == null) {
+            if (value == null) {
                 this.properties.remove(property);
             } else {
                 this.properties.put(property, value);
