@@ -1,0 +1,4 @@
+-classpath: target/classes
+-dsannotations: *
+Export-Package:  \
+	ru.jewelline.asana.core

@@ -7,7 +7,7 @@
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Asana 4 Java - Parent</name>
+    <name>Asana4J Parent</name>
 
     <!--
         <scm>
@@ -30,7 +30,7 @@
             </dependency>
             <dependency>
                 <groupId>ru.jewelline.asana4j</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>core</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -40,7 +40,17 @@
             </dependency>
             <dependency>
                 <groupId>ru.jewelline.asana4j</groupId>
-                <artifactId>jackson</artifactId>
+                <artifactId>jackson-context</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.jewelline.asana4j</groupId>
+                <artifactId>json-context</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.jewelline.asana4j</groupId>
+                <artifactId>api</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
 
@@ -202,10 +212,12 @@
         <profile>
             <id>all</id>
             <modules>
-                <module>asana4j-http-request</module>
-                <module>asana4j-common</module>
-                <module>asana4j-auth</module>
-                <module>asana4j-jackson</module>
+                <module>http-request</module>
+                <module>core</module>
+                <module>auth</module>
+                <module>api</module>
+                <module>jackson-context</module>
+                <module>json-context</module>
             </modules>
         </profile>
 
