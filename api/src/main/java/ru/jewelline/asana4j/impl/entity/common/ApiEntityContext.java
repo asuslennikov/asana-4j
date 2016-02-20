@@ -1,16 +1,16 @@
 package ru.jewelline.asana4j.impl.entity.common;
 
+import ru.jewelline.asana4j.api.models.AttachmentModel;
+import ru.jewelline.asana4j.api.models.ProjectImpl;
+import ru.jewelline.asana4j.api.models.ProjectStatusImpl;
+import ru.jewelline.asana4j.api.models.StoryImpl;
+import ru.jewelline.asana4j.api.models.TagImpl;
+import ru.jewelline.asana4j.api.models.TaskImpl;
+import ru.jewelline.asana4j.api.models.TeamImpl;
+import ru.jewelline.asana4j.api.models.UserImpl;
+import ru.jewelline.asana4j.api.models.WorkspaceImpl;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
-import ru.jewelline.asana4j.impl.entity.AttachmentImpl;
-import ru.jewelline.asana4j.impl.entity.ProjectImpl;
-import ru.jewelline.asana4j.impl.entity.ProjectStatusImpl;
-import ru.jewelline.asana4j.impl.entity.StoryImpl;
-import ru.jewelline.asana4j.impl.entity.TagImpl;
-import ru.jewelline.asana4j.impl.entity.TaskImpl;
-import ru.jewelline.asana4j.impl.entity.TeamImpl;
-import ru.jewelline.asana4j.impl.entity.UserImpl;
-import ru.jewelline.asana4j.impl.entity.WorkspaceImpl;
 import ru.jewelline.request.api.ApiException;
 import ru.jewelline.request.api.ApiRequestBuilder;
 import ru.jewelline.request.api.entity.EntityDeserializer;
@@ -41,7 +41,7 @@ public class ApiEntityContext implements RequestFactory {
         registerEntityClass(ProjectImpl.class);
         registerEntityClass(TaskImpl.class);
         registerEntityClass(StoryImpl.class);
-        registerEntityClass(AttachmentImpl.class);
+        registerEntityClass(AttachmentModel.class);
         registerEntityClass(TeamImpl.class);
         registerEntityClass(TagImpl.class);
     }

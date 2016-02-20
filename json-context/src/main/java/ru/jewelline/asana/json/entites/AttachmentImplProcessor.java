@@ -2,7 +2,7 @@ package ru.jewelline.asana.json.entites;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.entity.Attachment;
+import ru.jewelline.asana4j.api.entities.Attachment;
 import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
 
 enum AttachmentImplProcessor implements JsonFieldReader<AttachmentImpl> {

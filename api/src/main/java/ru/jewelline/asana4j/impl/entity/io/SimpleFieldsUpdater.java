@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.impl.entity.io;
 
-import ru.jewelline.asana4j.api.entity.HasId;
+import ru.jewelline.asana4j.api.HasId;
 import ru.jewelline.request.api.entity.SerializableEntity;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.api.modifiers;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.entity.JsonEntity;
+import ru.jewelline.asana4j.api.entities.JsonEntity;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestBuilder;
 import ru.jewelline.request.http.entity.SerializableEntity;

@@ -1,12 +1,12 @@
 package ru.jewelline.asana4j.impl.clients;
 
+import ru.jewelline.asana.core.utils.MultipartFormEntity;
 import ru.jewelline.asana4j.api.clients.AttachmentsClient;
-import ru.jewelline.asana4j.api.entity.Attachment;
+import ru.jewelline.asana4j.api.entities.Attachment;
+import ru.jewelline.asana4j.api.models.AttachmentModel;
 import ru.jewelline.asana4j.api.modifiers.QueryFieldsModifier;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
-import ru.jewelline.asana4j.impl.entity.AttachmentImpl;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
-import ru.jewelline.asana4j.impl.entity.io.MultipartFormEntity;
 import ru.jewelline.request.api.PagedList;
 import ru.jewelline.request.api.entity.EntityDeserializer;
 import ru.jewelline.request.api.modifiers.RequestModifier;
@@ -21,8 +21,8 @@ public class AttachmentsClientImpl extends ApiClientImpl implements AttachmentsC
         super(requestFactory, entityContext);
     }
 
-    private EntityDeserializer<AttachmentImpl> getAttachmentDeserializer() {
-        return getEntityContext().getDeserializer(AttachmentImpl.class);
+    private EntityDeserializer<AttachmentModel> getAttachmentDeserializer() {
+        return getEntityContext().getDeserializer(AttachmentModel.class);
     }
 
     @Override

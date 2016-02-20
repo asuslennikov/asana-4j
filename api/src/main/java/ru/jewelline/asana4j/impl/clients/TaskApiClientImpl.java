@@ -1,11 +1,11 @@
 package ru.jewelline.asana4j.impl.clients;
 
 import ru.jewelline.asana4j.api.clients.TaskApiClient;
-import ru.jewelline.asana4j.api.entity.Tag;
-import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana4j.api.entities.Tag;
+import ru.jewelline.asana4j.api.entities.Task;
+import ru.jewelline.asana4j.api.models.TagImpl;
+import ru.jewelline.asana4j.api.models.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
-import ru.jewelline.asana4j.impl.entity.TagImpl;
-import ru.jewelline.asana4j.impl.entity.TaskImpl;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.impl.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.api.PagedList;

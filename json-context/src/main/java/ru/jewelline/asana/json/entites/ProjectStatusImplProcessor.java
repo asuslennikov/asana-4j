@@ -2,8 +2,8 @@ package ru.jewelline.asana.json.entites;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.entity.ProjectStatus;
-import ru.jewelline.asana4j.api.entity.User;
+import ru.jewelline.asana4j.api.entities.ProjectStatus;
+import ru.jewelline.asana4j.api.entities.User;
 import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.impl.entity.common.JsonFieldWriter;
 import ru.jewelline.request.api.entity.JsonEntity;

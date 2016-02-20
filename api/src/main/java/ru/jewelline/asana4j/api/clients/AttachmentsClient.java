@@ -2,12 +2,15 @@ package ru.jewelline.asana4j.api.clients;
 
 
 import ru.jewelline.asana.core.utils.PagedList;
-import ru.jewelline.asana4j.api.entity.Attachment;
+import ru.jewelline.asana4j.api.entities.Attachment;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Provides functionality for attachment management.
+ */
 public interface AttachmentsClient {
 
     /**
@@ -41,7 +44,7 @@ public interface AttachmentsClient {
      * Downloads the attachment using a result of the {@link Attachment#getDownloadUrl()} method as a source URL.
      * <p><i>Triggers HTTP communication with server</i></p>
      *
-     * @param attachmentId      Globally unique identifier for the attachment.
+     * @param attachmentId      globally unique identifier for the attachment.
      * @param destinationStream A destination stream for that attachment.
      * @return <code>true</code> if attachment was downloaded, <code>false</code> if operation can not be performed
      * (for example if the {@link Attachment#getDownloadUrl()} is empty).
@@ -53,7 +56,7 @@ public interface AttachmentsClient {
      * Downloads the attachment preview using a result of the {@link Attachment#getViewUrl()} method as a source URL.
      * <p><i>Triggers HTTP communication with server</i></p>
      *
-     * @param attachmentId      Globally unique identifier for the attachment.
+     * @param attachmentId      globally unique identifier for the attachment.
      * @param destinationStream A destination stream for that attachment.
      * @return <code>true</code> if attachment was downloaded, <code>false</code> if operation can not be performed
      * (for example if the {@link Attachment#getViewUrl()} is empty).
@@ -66,7 +69,7 @@ public interface AttachmentsClient {
      * The 100MB size limit on attachments in Asana is enforced on this endpoint.
      * <p><i>Triggers HTTP communication with server</i></p>
      *
-     * @param taskId     Globally unique identifier for the task.
+     * @param taskId     globally unique identifier for the task.
      * @param name       A name for attachment.
      * @param attachment Payload which should be added as an attachment for the task.
      * @return Returns a compact record for a single attachment.

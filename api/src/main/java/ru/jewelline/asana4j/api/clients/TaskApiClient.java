@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.api.clients;
 
-import ru.jewelline.asana.core.PagedList;
-import ru.jewelline.asana4j.api.entity.Tag;
-import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana.core.utils.PagedList;
+import ru.jewelline.asana4j.api.entities.Tag;
+import ru.jewelline.asana4j.api.entities.Task;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public interface TaskApiClient {

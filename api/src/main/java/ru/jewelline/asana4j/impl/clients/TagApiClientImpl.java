@@ -1,13 +1,13 @@
 package ru.jewelline.asana4j.impl.clients;
 
-import ru.jewelline.asana4j.api.clients.TagApiClient;
 import ru.jewelline.asana4j.api.clients.TagFilter;
-import ru.jewelline.asana4j.api.entity.Tag;
-import ru.jewelline.asana4j.api.entity.Task;
+import ru.jewelline.asana4j.api.clients.TagsClient;
+import ru.jewelline.asana4j.api.entities.Tag;
+import ru.jewelline.asana4j.api.entities.Task;
+import ru.jewelline.asana4j.api.models.TagImpl;
+import ru.jewelline.asana4j.api.models.TagImplCreator;
+import ru.jewelline.asana4j.api.models.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
-import ru.jewelline.asana4j.impl.entity.TagImpl;
-import ru.jewelline.asana4j.impl.entity.TagImplCreator;
-import ru.jewelline.asana4j.impl.entity.TaskImpl;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.impl.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.api.PagedList;
@@ -16,7 +16,7 @@ import ru.jewelline.request.api.entity.SerializableEntity;
 import ru.jewelline.request.api.modifiers.RequestModifier;
 import ru.jewelline.request.http.HttpMethod;
 
-public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
+public class TagApiClientImpl extends ApiClientImpl implements TagsClient {
 
     public TagApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
         super(requestFactory, entityContext);
