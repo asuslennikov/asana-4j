@@ -1,12 +1,12 @@
 package ru.jewelline.asana4j.impl.clients;
 
+import ru.jewelline.asana4j.api.beans.TagImpl;
+import ru.jewelline.asana4j.api.beans.TagImplCreator;
+import ru.jewelline.asana4j.api.beans.TaskImpl;
 import ru.jewelline.asana4j.api.clients.TagFilter;
 import ru.jewelline.asana4j.api.clients.TagsClient;
 import ru.jewelline.asana4j.api.entities.Tag;
 import ru.jewelline.asana4j.api.entities.Task;
-import ru.jewelline.asana4j.api.models.TagImpl;
-import ru.jewelline.asana4j.api.models.TagImplCreator;
-import ru.jewelline.asana4j.api.models.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.impl.entity.io.SimpleFieldsUpdater;

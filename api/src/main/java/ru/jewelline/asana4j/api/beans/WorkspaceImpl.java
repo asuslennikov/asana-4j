@@ -1,9 +1,13 @@
-package ru.jewelline.asana4j.api.models;
+package ru.jewelline.asana4j.api.beans;
 
 import ru.jewelline.asana4j.api.entities.Project;
+import ru.jewelline.asana4j.api.entities.Tag;
+import ru.jewelline.asana4j.api.entities.Task;
 import ru.jewelline.asana4j.api.entities.Team;
 import ru.jewelline.asana4j.api.entities.User;
+import ru.jewelline.asana4j.api.entities.Workspace;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
+import ru.jewelline.asana4j.impl.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.impl.entity.common.JsonFieldWriter;
@@ -13,25 +17,27 @@ import ru.jewelline.request.api.modifiers.RequestModifier;
 import ru.jewelline.request.http.HttpMethod;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
+public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Workspace {
 
     private long id;
     private String name;
+    private boolean organisation;
 
-    public TeamImpl(ApiEntityContext context) {
-        super(TeamImpl.class, context);
+    public WorkspaceImpl(ApiEntityContext context) {
+        super(WorkspaceImpl.class, context);
     }
 
     @Override
-    protected List<JsonFieldReader<TeamImpl>> getFieldReaders() {
-        return Arrays.<JsonFieldReader<TeamImpl>>asList(TeamImplProcessor.values());
+    protected List<JsonFieldReader<WorkspaceImpl>> getFieldReaders() {
+        return Arrays.<JsonFieldReader<WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
     }
 
     @Override
-    protected List<JsonFieldWriter<TeamImpl>> getFieldWriters() {
-        return Arrays.<JsonFieldWriter<TeamImpl>>asList(TeamImplProcessor.values());
+    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldWriters() {
+        return Collections.<JsonFieldWriter<WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
     }
 
     @Override
@@ -48,19 +54,29 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
         return name;
     }
 
-    void setName(String name) {
+    @Override
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean isOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(boolean organisation) {
+        this.organisation = organisation;
+    }
+
+    @Override
+    public boolean equals(Object candidate) {
+        if (this == candidate) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (candidate == null || getClass() != candidate.getClass()) {
             return false;
         }
-        return id == ((TeamImpl) o).id;
+        return id == ((WorkspaceImpl) candidate).id;
     }
 
     @Override
@@ -70,20 +86,22 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
 
     @Override
     public String toString() {
-        StringBuilder out = new StringBuilder("Team [");
+        StringBuilder out = new StringBuilder("Workspace [");
         out.append("id = ").append(getId());
         out.append(", name = ").append(getName());
+        out.append(", organisation = ").append(isOrganisation());
         out.append(']');
         return out.toString();
     }
 
     @Override
-    public PagedList<User> getUsers(RequestModifier... requestModifiers) {
-        return getContext().apiRequest(requestModifiers)
-                .path("/teams/" + getId() + "/users")
-                .buildAs(HttpMethod.GET)
+    public void update() {
+        getContext().apiRequest()
+                .path("workspaces/" + this.getId())
+                .setEntity(this)
+                .buildAs(HttpMethod.PUT)
                 .execute()
-                .asApiCollection(getContext().getDeserializer(UserImpl.class));
+                .asApiObject(new ApiEntityDeserializer<ApiEntityImpl<? extends JsonEntity>>(this));
     }
 
     @Override
@@ -101,9 +119,9 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
         return addUserInternal("me");
     }
 
-    private User addUserInternal(Object userReference) {
+    private User addUserInternal(java.io.Serializable userReference) {
         return getContext().apiRequest()
-                .path("teams/" + getId() + "/addUser")
+                .path("workspaces/" + this.getId() + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -128,9 +146,9 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
         removeUserInternal("me");
     }
 
-    private void removeUserInternal(Object userReference) {
+    private void removeUserInternal(java.io.Serializable userReference) {
         getContext().apiRequest()
-                .path("teams/" + getId() + "/removeUser")
+                .path("workspaces/" + this.getId() + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -140,14 +158,44 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
     }
 
     @Override
+    public PagedList<Project> getProjects() {
+        // TODO should we update a workspace of project to this instance?
+        return getContext().apiRequest()
+                .path("workspaces/" + this.getId() + "/projects")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(ProjectImpl.class));
+    }
+
+    @Override
     public Project createProject(String name) {
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
+                .setField("workspace", getId())
                 .setField("name", name);
         return getContext().apiRequest()
-                .path("teams/" + getId() + "/projects")
+                .path("projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
                 .asApiObject(getContext().getDeserializer(ProjectImpl.class));
+    }
+
+    @Override
+    public Task.TaskCreator createTask() {
+        return new TaskImplCreator(getContext()).setWorkspace(getId());
+    }
+
+    @Override
+    public PagedList<Team> getTeams(RequestModifier... requestModifiers) {
+        return getContext().apiRequest(requestModifiers)
+                .path("organizations/" + getId() + "/teams")
+                .buildAs(HttpMethod.GET)
+                .execute()
+                .asApiCollection(getContext().getDeserializer(TeamImpl.class));
+    }
+
+    @Override
+    public Tag.TagCreator createTag() {
+        return new TagImplCreator(getContext()).setWorkspace(getId());
     }
 }

@@ -3,13 +3,14 @@ package ru.jewelline.asana.jackson;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import ru.jewelline.asana.auth.AuthCodeGrantErrorResponse;
+import ru.jewelline.asana.auth.AuthCodeGrantErrorBean;
+import ru.jewelline.asana.auth.AuthCodeGrantResponseBean;
 import ru.jewelline.asana.core.EntityContext;
 import ru.jewelline.asana.core.EntityResponseReader;
-import ru.jewelline.asana.core.EntityWithErrorResponseReader;
-import ru.jewelline.asana.jackson.entites.AuthCodeGrantErrorResponseMixIn;
+import ru.jewelline.asana.jackson.entites.AuthCodeGrantErrorBeanMixIn;
+import ru.jewelline.asana.jackson.entites.AuthCodeGrantResponseBeanMixIn;
 
-public abstract class JacksonEntityContext implements EntityContext {
+public class JacksonEntityContext implements EntityContext {
 
     private static class JacksonBindModule extends SimpleModule {
         public JacksonBindModule() {
@@ -19,7 +20,8 @@ public abstract class JacksonEntityContext implements EntityContext {
         @Override
         public void setupModule(SetupContext context) {
             super.setupModule(context);
-            context.setMixInAnnotations(AuthCodeGrantErrorResponse.class, AuthCodeGrantErrorResponseMixIn.class);
+            context.setMixInAnnotations(AuthCodeGrantErrorBean.class, AuthCodeGrantErrorBeanMixIn.class);
+            context.setMixInAnnotations(AuthCodeGrantResponseBean.class, AuthCodeGrantResponseBeanMixIn.class);
         }
     }
 
@@ -31,12 +33,7 @@ public abstract class JacksonEntityContext implements EntityContext {
     }
 
     @Override
-    public <T> EntityResponseReader<T> getReader(Class<T> entityClass) {
-        return null;
-    }
-
-    @Override
-    public <T, E> EntityWithErrorResponseReader<T, E> getReader(Class<T> entityClass, Class<E> errorClass) {
+    public <T, E> EntityResponseReader<T, E> getReader(Class<T> entityClass, Class<E> errorClass) {
         return new JacksonEntityWithErrorReader<>(objectMapper, entityClass, errorClass);
     }
 }

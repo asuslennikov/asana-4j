@@ -1,11 +1,11 @@
 package ru.jewelline.asana.auth.impl;
 
-import ru.jewelline.asana.auth.AuthCodeGrantErrorResponse;
-import ru.jewelline.asana.auth.AuthCodeGrantResponse;
+import ru.jewelline.asana.auth.AuthCodeGrantErrorBean;
+import ru.jewelline.asana.auth.AuthCodeGrantResponseBean;
 import ru.jewelline.asana.auth.AuthenticationException;
 import ru.jewelline.asana.auth.AuthenticationProperty;
 import ru.jewelline.asana.core.EntityContext;
-import ru.jewelline.asana.core.EntityWithErrorResponseReader;
+import ru.jewelline.asana.core.EntityResponseReader;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.NetworkException;
@@ -27,8 +27,8 @@ final class GrantCodeWorker extends AuthenticationWorker {
     @Override
     void authenticate() throws AuthenticationException {
         try {
-            EntityWithErrorResponseReader<AuthCodeGrantResponse, AuthCodeGrantErrorResponse> responseReceiver =
-                    this.entityContext.getReader(AuthCodeGrantResponse.class, AuthCodeGrantErrorResponse.class);
+            EntityResponseReader<AuthCodeGrantResponseBean, AuthCodeGrantErrorBean> responseReceiver =
+                    this.entityContext.getReader(AuthCodeGrantResponseBean.class, AuthCodeGrantErrorBean.class);
             this.httpRequestFactory.newRequest()
                     .setUrl(ACCESS_TOKEN_ENDPOINT)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -36,7 +36,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
                     .buildAs(HttpMethod.POST)
                     .execute(responseReceiver);
             if (!responseReceiver.hasError()) {
-                AuthCodeGrantResponse authResponse = responseReceiver.toEntity();
+                AuthCodeGrantResponseBean authResponse = responseReceiver.toEntity();
                 getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN,
                         authResponse.getAccessToken());
                 getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.REFRESH_TOKEN,
@@ -44,7 +44,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
                 getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.TOKEN_TYPE,
                         authResponse.getTokenType());
                 getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.EXPIRES_IN,
-                        authResponse.getExpiresIn());
+                        String.valueOf(authResponse.getExpiresIn()));
                 getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE,
                         authResponse.getState());
             } else {
@@ -55,7 +55,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
         }
     }
 
-    private void throwAuthenticationError(AuthCodeGrantErrorResponse errorResponse) {
+    private void throwAuthenticationError(AuthCodeGrantErrorBean errorResponse) {
         String message = "Failed to authenticate.";
         if (errorResponse != null && errorResponse.getMessage() != null) {
             message = errorResponse.getMessage();

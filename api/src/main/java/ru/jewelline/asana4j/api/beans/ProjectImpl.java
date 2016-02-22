@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api.models;
+package ru.jewelline.asana4j.api.beans;
 
 import ru.jewelline.asana4j.api.entities.Project;
 import ru.jewelline.asana4j.api.entities.ProjectColor;
@@ -11,7 +11,6 @@ import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.impl.entity.common.JsonFieldWriter;
-import ru.jewelline.request.api.PagedList;
 import ru.jewelline.request.http.HttpMethod;
 
 import java.util.Arrays;

@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.impl.clients;
 
+import ru.jewelline.asana4j.api.beans.WorkspaceImpl;
 import ru.jewelline.asana4j.api.clients.WorkspacesClient;
 import ru.jewelline.asana4j.api.entities.Workspace;
-import ru.jewelline.asana4j.api.models.WorkspaceImpl;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.request.api.PagedList;

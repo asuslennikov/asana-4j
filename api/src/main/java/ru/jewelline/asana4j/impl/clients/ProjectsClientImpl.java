@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.impl.clients;
 
+import ru.jewelline.asana4j.api.beans.ProjectImpl;
 import ru.jewelline.asana4j.api.clients.ProjectsClient;
 import ru.jewelline.asana4j.api.entities.Project;
-import ru.jewelline.asana4j.api.models.ProjectImpl;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.impl.entity.io.SimpleFieldsUpdater;

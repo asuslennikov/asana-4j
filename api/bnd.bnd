@@ -1,7 +1,11 @@
 -classpath: target/classes 
 -dsannotations: *
 Private-Package: \
-    ru.jewelline.asana4j.core.impl, \
-    ru.jewelline.asana4j.core.impl.*
+    ru.jewelline.asana4j.api.impl, \
+    ru.jewelline.asana4j.api.impl.*
 Export-Package:  \
-	ru.jewelline.asana4j.core
+	ru.jewelline.asana4j.api, \
+	ru.jewelline.asana4j.api.beans, \
+	ru.jewelline.asana4j.api.entities, \
+	ru.jewelline.asana4j.api.clients, \
+	ru.jewelline.asana4j.api.modifiers, \

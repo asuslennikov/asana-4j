@@ -3,8 +3,6 @@ package ru.jewelline.asana4j.api.entities;
 import ru.jewelline.asana4j.api.HasId;
 import ru.jewelline.asana4j.api.HasName;
 
-import java.io.OutputStream;
-
 /**
  * An attachment object represents any file attached to a task in Asana, whether it’s an uploaded file or one
  * associated via a third-party service such as Dropbox or Google Drive.
@@ -53,28 +51,28 @@ public interface Attachment extends HasId, HasName {
      * @api.access Read-only
      */
     String getViewUrl();
-
-    /**
-     * Downloads the attachment using a result of the {@link #getDownloadUrl()} method as a source URL.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param destinationStream A destination stream for that attachment.
-     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
-     * (for example if the {@link #getDownloadUrl()} is empty).
-     * @see #getDownloadUrl()
-     */
-    boolean download(OutputStream destinationStream);
-
-    /**
-     * Downloads the attachment preview using a result of the {@link #getViewUrl()} method as a source URL.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param destinationStream A destination stream for that attachment.
-     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
-     * (for example if the {@link #getViewUrl()} is empty).
-     * @see #getViewUrl()
-     */
-    boolean downloadPreview(OutputStream destinationStream);
+//
+//    /**
+//     * Downloads the attachment using a result of the {@link #getDownloadUrl()} method as a source URL.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param destinationStream A destination stream for that attachment.
+//     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
+//     * (for example if the {@link #getDownloadUrl()} is empty).
+//     * @see #getDownloadUrl()
+//     */
+//    boolean download(OutputStream destinationStream);
+//
+//    /**
+//     * Downloads the attachment preview using a result of the {@link #getViewUrl()} method as a source URL.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param destinationStream A destination stream for that attachment.
+//     * @return <code>true</code> if attachment was downloaded, <code>false</code> if it can not
+//     * (for example if the {@link #getViewUrl()} is empty).
+//     * @see #getViewUrl()
+//     */
+//    boolean downloadPreview(OutputStream destinationStream);
 
     /**
      * Enum which holds all available hosts for an attachment.

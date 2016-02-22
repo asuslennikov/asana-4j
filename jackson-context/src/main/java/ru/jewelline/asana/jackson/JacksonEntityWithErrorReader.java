@@ -1,13 +1,14 @@
 package ru.jewelline.asana.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.jewelline.asana.core.EntityWithErrorResponseReader;
+import ru.jewelline.asana.core.AsanaException;
+import ru.jewelline.asana.core.EntityResponseReader;
 import ru.jewelline.asana.core.utils.PagedList;
 import ru.jewelline.request.http.StreamBasedResponseReceiver;
 
 import java.io.ByteArrayOutputStream;
 
-public class JacksonEntityWithErrorReader<T, E> extends StreamBasedResponseReceiver implements EntityWithErrorResponseReader<T, E> {
+public class JacksonEntityWithErrorReader<T, E> extends StreamBasedResponseReceiver implements EntityResponseReader<T, E> {
 
     private static final int DEFAULT_ARRAY_SIZE = 8192;
 
@@ -27,24 +28,25 @@ public class JacksonEntityWithErrorReader<T, E> extends StreamBasedResponseRecei
         return getResponseCode() >= 400 && getResponseCode() < 600;
     }
 
+    private <T> T readObject(byte[] sourceData, Class<T> sourceClass) {
+        try {
+            return this.objectMapper.readValue(sourceData, sourceClass);
+        } catch (Exception e) {
+            throw new AsanaException(AsanaException.DESERIALIZATION_ERROR, e.getLocalizedMessage());
+        }
+    }
+
     @Override
     public E getError() {
-        try {
-            return this.objectMapper.readValue(((ByteArrayOutputStream) getErrorStream()).toByteArray(), this.errorClass);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return readObject(((ByteArrayOutputStream) getErrorStream()).toByteArray(), this.errorClass);
     }
 
     @Override
     public T toEntity() {
-        try {
-            return this.objectMapper.readValue(((ByteArrayOutputStream) getResponseStream()).toByteArray(), this.entityClass);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (hasError()) {
+            throw new AsanaException(getResponseCode(), String.valueOf(getError()));
         }
-        return null;
+        return readObject(((ByteArrayOutputStream) getResponseStream()).toByteArray(), this.entityClass);
     }
 
     @Override

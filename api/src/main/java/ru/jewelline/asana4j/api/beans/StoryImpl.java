@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api.models;
+package ru.jewelline.asana4j.api.beans;
 
 import ru.jewelline.asana4j.api.entities.Story;
 import ru.jewelline.asana4j.api.entities.Task;

@@ -1,9 +1,9 @@
 package ru.jewelline.asana.auth;
 
-public final class AuthCodeGrantErrorResponse {
-    private final String message;
+public final class AuthCodeGrantErrorBean {
+    private String message;
 
-    public AuthCodeGrantErrorResponse(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 

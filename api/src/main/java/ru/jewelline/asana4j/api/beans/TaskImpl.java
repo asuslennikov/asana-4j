@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api.models;
+package ru.jewelline.asana4j.api.beans;
 
 import ru.jewelline.asana.core.utils.MultipartFormEntity;
 import ru.jewelline.asana4j.api.entities.Attachment;
@@ -351,7 +351,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .path("tasks/" + getId() + "/attachments")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiCollection(getContext().getDeserializer(AttachmentModel.class));
+                .asApiCollection(getContext().getDeserializer(AttachmentBean.class));
     }
 
     @Override
@@ -363,7 +363,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .setEntity(entity)
                 .buildAs(HttpMethod.POST)
                 .execute()
-                .asApiObject(getContext().getDeserializer(AttachmentModel.class));
+                .asApiObject(getContext().getDeserializer(AttachmentBean.class));
     }
 
     @Override

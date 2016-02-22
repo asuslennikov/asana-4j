@@ -1,12 +1,12 @@
 package ru.jewelline.asana4j.impl.clients;
 
+import ru.jewelline.asana4j.api.beans.ProjectImpl;
+import ru.jewelline.asana4j.api.beans.TeamImpl;
+import ru.jewelline.asana4j.api.beans.UserImpl;
 import ru.jewelline.asana4j.api.clients.TeamsClient;
 import ru.jewelline.asana4j.api.entities.Project;
 import ru.jewelline.asana4j.api.entities.Team;
 import ru.jewelline.asana4j.api.entities.User;
-import ru.jewelline.asana4j.api.models.ProjectImpl;
-import ru.jewelline.asana4j.api.models.TeamImpl;
-import ru.jewelline.asana4j.api.models.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.impl.entity.io.SimpleFieldsUpdater;

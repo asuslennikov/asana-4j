@@ -1,29 +1,29 @@
-package ru.jewelline.asana4j.api.models;
+package ru.jewelline.asana4j.api.beans;
 
-import ru.jewelline.asana4j.api.entities.Tag;
+import ru.jewelline.asana4j.api.entities.Task;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityDeserializer;
 import ru.jewelline.request.http.HttpMethod;
 
-class TagImplUpdater extends TagBuilderImpl<Tag.TagUpdater> implements Tag.TagUpdater {
+class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implements Task.TaskUpdater {
 
-    private final TagImpl target;
+    private final TaskImpl target;
 
-    public TagImplUpdater(TagImpl target) {
-        super(Tag.TagUpdater.class);
+    public TaskImplUpdater(TaskImpl target) {
+        super(Task.TaskUpdater.class);
         this.target = target;
     }
 
     @Override
-    public Tag abandon() {
+    public Task abandon() {
         this.target.stopUpdate();
         return this.target;
     }
 
     @Override
-    public Tag update() {
+    public Task update() {
         this.target.stopUpdate();
         this.target.getContext().apiRequest()
-                .path("tags/" + this.target.getId())
+                .path("tasks/" + this.target.getId())
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)
                 .execute()
