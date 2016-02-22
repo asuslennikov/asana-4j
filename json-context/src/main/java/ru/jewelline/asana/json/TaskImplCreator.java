@@ -1,7 +1,7 @@
 package ru.jewelline.asana.json;
 
+import ru.jewelline.asana.json.im.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.api.entities.Task;
-import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.request.http.HttpMethod;
 
 class TaskImplCreator extends TaskImplBuilder<Task.TaskCreator> implements Task.TaskCreator {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.jewelline.asana.core.AsanaException;
 import ru.jewelline.asana.core.EntityResponseReader;
 import ru.jewelline.asana.core.utils.PagedList;
+import ru.jewelline.asana.jackson.readers.Reader;
 import ru.jewelline.request.http.StreamBasedResponseReceiver;
 
 import java.io.ByteArrayOutputStream;
@@ -13,14 +14,14 @@ public class JacksonEntityWithErrorReader<T, E> extends StreamBasedResponseRecei
     private static final int DEFAULT_ARRAY_SIZE = 8192;
 
     private final ObjectMapper objectMapper;
-    private final Class<T> entityClass;
-    private final Class<E> errorClass;
+    private final Reader<T> responseReader;
+    private final Reader<E> errorReader;
 
-    public JacksonEntityWithErrorReader(ObjectMapper objectMapper, Class<T> entityClass, Class<E> errorClass) {
+    public JacksonEntityWithErrorReader(ObjectMapper objectMapper, Reader<T> responseReader, Reader<E> errorReader) {
         super(new ByteArrayOutputStream(DEFAULT_ARRAY_SIZE), new ByteArrayOutputStream(DEFAULT_ARRAY_SIZE));
         this.objectMapper = objectMapper;
-        this.entityClass = entityClass;
-        this.errorClass = errorClass;
+        this.responseReader = responseReader;
+        this.errorReader = errorReader;
     }
 
     @Override
@@ -28,9 +29,9 @@ public class JacksonEntityWithErrorReader<T, E> extends StreamBasedResponseRecei
         return getResponseCode() >= 400 && getResponseCode() < 600;
     }
 
-    private <T> T readObject(byte[] sourceData, Class<T> sourceClass) {
+    private <T> T readObject(byte[] sourceData, Reader<T> reader) {
         try {
-            return this.objectMapper.readValue(sourceData, sourceClass);
+            return reader.readValue(this.objectMapper, sourceData);
         } catch (Exception e) {
             throw new AsanaException(AsanaException.DESERIALIZATION_ERROR, e.getLocalizedMessage());
         }
@@ -38,7 +39,7 @@ public class JacksonEntityWithErrorReader<T, E> extends StreamBasedResponseRecei
 
     @Override
     public E getError() {
-        return readObject(((ByteArrayOutputStream) getErrorStream()).toByteArray(), this.errorClass);
+        return readObject(((ByteArrayOutputStream) getErrorStream()).toByteArray(), this.errorReader);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class JacksonEntityWithErrorReader<T, E> extends StreamBasedResponseRecei
         if (hasError()) {
             throw new AsanaException(getResponseCode(), String.valueOf(getError()));
         }
-        return readObject(((ByteArrayOutputStream) getResponseStream()).toByteArray(), this.entityClass);
+        return readObject(((ByteArrayOutputStream) getResponseStream()).toByteArray(), this.responseReader);
     }
 
     @Override

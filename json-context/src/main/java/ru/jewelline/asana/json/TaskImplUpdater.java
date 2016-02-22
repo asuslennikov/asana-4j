@@ -1,7 +1,7 @@
 package ru.jewelline.asana.json;
 
+import ru.jewelline.asana.json.im.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.api.entities.Task;
-import ru.jewelline.asana4j.impl.entity.common.ApiEntityDeserializer;
 import ru.jewelline.request.http.HttpMethod;
 
 class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implements Task.TaskUpdater {

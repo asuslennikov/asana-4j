@@ -3,8 +3,8 @@ package ru.jewelline.asana.json.entites;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.jewelline.asana.json.im.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.api.entities.User;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
 
 import java.util.ArrayList;
 import java.util.List;

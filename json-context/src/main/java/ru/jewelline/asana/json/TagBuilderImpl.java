@@ -1,8 +1,8 @@
 package ru.jewelline.asana.json;
 
+import ru.jewelline.asana.json.im.entity.io.FieldsUpdater;
 import ru.jewelline.asana4j.api.entities.ProjectColor;
 import ru.jewelline.asana4j.api.entities.Tag;
-import ru.jewelline.asana4j.impl.entity.io.FieldsUpdater;
 
 public class TagBuilderImpl<T extends Tag.TagBuilder> extends FieldsUpdater implements Tag.TagBuilder<T> {
     private final Class<T> implClass;

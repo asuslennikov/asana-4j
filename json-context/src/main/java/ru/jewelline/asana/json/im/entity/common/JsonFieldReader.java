@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.impl.entity.common;
+package ru.jewelline.asana.json.im.entity.common;
 
 import org.json.JSONException;
 import org.json.JSONObject;

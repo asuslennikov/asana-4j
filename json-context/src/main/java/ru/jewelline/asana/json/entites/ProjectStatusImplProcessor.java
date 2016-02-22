@@ -2,10 +2,10 @@ package ru.jewelline.asana.json.entites;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.jewelline.asana.json.im.entity.common.JsonFieldReader;
+import ru.jewelline.asana.json.im.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.api.entities.ProjectStatus;
 import ru.jewelline.asana4j.api.entities.User;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldWriter;
 import ru.jewelline.request.api.entity.JsonEntity;
 
 enum ProjectStatusImplProcessor implements JsonFieldReader<ProjectStatusImpl>, JsonFieldWriter<ProjectStatusImpl> {

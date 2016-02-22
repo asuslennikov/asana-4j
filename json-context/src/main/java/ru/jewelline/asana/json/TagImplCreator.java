@@ -1,7 +1,7 @@
 package ru.jewelline.asana.json;
 
+import ru.jewelline.asana.json.im.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.api.entities.Tag;
-import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
 import ru.jewelline.request.http.HttpMethod;
 
 public class TagImplCreator extends TagBuilderImpl<Tag.TagCreator> implements Tag.TagCreator {

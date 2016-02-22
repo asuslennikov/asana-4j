@@ -1,12 +1,12 @@
 package ru.jewelline.asana.json;
 
+import ru.jewelline.asana.json.im.entity.common.ApiEntityDeserializer;
+import ru.jewelline.asana.json.im.entity.io.FieldsUpdater;
+import ru.jewelline.asana.json.im.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.api.entities.Project;
 import ru.jewelline.asana4j.api.entities.ProjectColor;
 import ru.jewelline.asana4j.api.entities.ProjectStatus;
 import ru.jewelline.asana4j.api.entities.User;
-import ru.jewelline.asana4j.impl.entity.common.ApiEntityDeserializer;
-import ru.jewelline.asana4j.impl.entity.io.FieldsUpdater;
-import ru.jewelline.asana4j.impl.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
 
 import java.util.Map;

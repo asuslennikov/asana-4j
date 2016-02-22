@@ -7,7 +7,7 @@ import ru.jewelline.asana4j.api.entities.Workspace;
 
 import java.util.List;
 
-public class TagBean implements Tag {
+public class TagBean extends BaseBean implements Tag {
     private long id;
     private String name;
     private String createdAt;

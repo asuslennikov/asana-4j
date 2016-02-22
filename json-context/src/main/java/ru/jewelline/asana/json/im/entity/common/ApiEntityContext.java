@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.impl.entity.common;
+package ru.jewelline.asana.json.im.entity.common;
 
 import ru.jewelline.asana4j.api.beans.AttachmentBean;
 import ru.jewelline.asana4j.api.beans.ProjectBean;

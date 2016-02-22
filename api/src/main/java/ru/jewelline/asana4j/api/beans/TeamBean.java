@@ -2,7 +2,7 @@ package ru.jewelline.asana4j.api.beans;
 
 import ru.jewelline.asana4j.api.entities.Team;
 
-public class TeamBean implements Team {
+public class TeamBean extends BaseBean implements Team {
 
     private long id;
     private String name;

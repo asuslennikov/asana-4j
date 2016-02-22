@@ -3,7 +3,7 @@ package ru.jewelline.asana4j.api.beans;
 import ru.jewelline.asana4j.api.entities.Attachment;
 import ru.jewelline.asana4j.api.entities.Task;
 
-public class AttachmentBean implements Attachment {
+public class AttachmentBean extends BaseBean implements Attachment {
     private long id;
     private String name;
     private String createdAt;

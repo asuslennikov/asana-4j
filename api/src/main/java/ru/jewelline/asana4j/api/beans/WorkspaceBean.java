@@ -2,7 +2,7 @@ package ru.jewelline.asana4j.api.beans;
 
 import ru.jewelline.asana4j.api.entities.Workspace;
 
-public class WorkspaceBean implements Workspace {
+public class WorkspaceBean extends BaseBean implements Workspace {
 
     private long id;
     private String name;

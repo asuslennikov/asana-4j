@@ -3,13 +3,13 @@ package ru.jewelline.asana.json.entites;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.jewelline.asana.json.im.entity.common.JsonFieldReader;
+import ru.jewelline.asana.json.im.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.api.entities.ProjectColor;
 import ru.jewelline.asana4j.api.entities.ProjectStatus;
 import ru.jewelline.asana4j.api.entities.Team;
 import ru.jewelline.asana4j.api.entities.User;
 import ru.jewelline.asana4j.api.entities.Workspace;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldWriter;
 import ru.jewelline.request.api.entity.JsonEntity;
 
 import java.util.ArrayList;

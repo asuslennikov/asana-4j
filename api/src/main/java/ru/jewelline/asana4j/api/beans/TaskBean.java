@@ -9,7 +9,7 @@ import ru.jewelline.asana4j.api.entities.Workspace;
 
 import java.util.List;
 
-public class TaskBean implements Task {
+public class TaskBean extends BaseBean implements Task {
 
     private long id;
     private String name;

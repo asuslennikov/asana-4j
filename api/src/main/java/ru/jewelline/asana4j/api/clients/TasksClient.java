@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.api.entities.Tag;
 import ru.jewelline.asana4j.api.entities.Task;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public interface TaskApiClient {
+public interface TasksClient {
 
     Task getTaskById(long taskId, RequestModifier... requestModifiers);
 

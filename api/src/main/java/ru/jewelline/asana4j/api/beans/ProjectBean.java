@@ -9,7 +9,7 @@ import ru.jewelline.asana4j.api.entities.Workspace;
 
 import java.util.List;
 
-public class ProjectBean implements Project {
+public class ProjectBean extends BaseBean implements Project {
 
     private long id;
     private String name;

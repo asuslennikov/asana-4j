@@ -1,10 +1,9 @@
-package ru.jewelline.asana4j.impl.clients.modifiers;
+package ru.jewelline.asana.auth;
 
-import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.request.api.ApiRequestBuilder;
-import ru.jewelline.request.api.modifiers.ModifiersChain;
-import ru.jewelline.request.api.modifiers.RequestModifier;
 import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.modifiers.ModifiersChain;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public class AuthenticationRequestModifier implements RequestModifier {
     private final AuthenticationService authenticationService;
@@ -19,7 +18,7 @@ public class AuthenticationRequestModifier implements RequestModifier {
     }
 
     @Override
-    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
+    public void modify(HttpRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         if (this.authenticationService.isAuthenticated()) {
             requestBuilder.setHeader("Authorization", this.authenticationService.getHeader());
         }

@@ -1,8 +1,8 @@
 package ru.jewelline.asana.json;
 
+import ru.jewelline.asana.json.im.entity.io.FieldsUpdater;
 import ru.jewelline.asana4j.api.entities.ExternalData;
 import ru.jewelline.asana4j.api.entities.Task;
-import ru.jewelline.asana4j.impl.entity.io.FieldsUpdater;
 
 import java.util.HashMap;
 import java.util.Map;

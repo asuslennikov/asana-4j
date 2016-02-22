@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.impl.entity.common;
+package ru.jewelline.asana.json.im.entity.common;
 
 import org.json.JSONObject;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;

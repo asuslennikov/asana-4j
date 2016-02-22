@@ -6,7 +6,7 @@ import ru.jewelline.asana4j.api.entities.User;
 
 import java.util.List;
 
-public class StoryBean implements Story {
+public class StoryBean extends BaseBean implements Story {
 
     private long id;
     private String createdAt;

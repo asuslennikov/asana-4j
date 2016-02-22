@@ -6,7 +6,7 @@ import ru.jewelline.asana4j.api.entities.Workspace;
 import java.util.List;
 import java.util.Map;
 
-public class UserBean implements User {
+public class UserBean extends BaseBean implements User {
 
     private long id;
     private String name;

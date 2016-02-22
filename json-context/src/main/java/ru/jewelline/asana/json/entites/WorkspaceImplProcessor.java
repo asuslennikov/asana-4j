@@ -2,8 +2,8 @@ package ru.jewelline.asana.json.entites;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldWriter;
+import ru.jewelline.asana.json.im.entity.common.JsonFieldReader;
+import ru.jewelline.asana.json.im.entity.common.JsonFieldWriter;
 
 enum WorkspaceImplProcessor implements JsonFieldReader<WorkspaceImpl>, JsonFieldWriter<WorkspaceImpl> {
     ID("id") {
