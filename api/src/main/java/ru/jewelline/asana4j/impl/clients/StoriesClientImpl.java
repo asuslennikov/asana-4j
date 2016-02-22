@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.impl.clients;
 
-import ru.jewelline.asana4j.api.beans.StoryImpl;
+import ru.jewelline.asana4j.api.beans.StoryBean;
 import ru.jewelline.asana4j.api.clients.StoriesClient;
 import ru.jewelline.asana4j.api.entities.Story;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
@@ -17,8 +17,8 @@ public class StoriesClientImpl extends ApiClientImpl implements StoriesClient {
         super(requestFactory, entityContext);
     }
 
-    private EntityDeserializer<StoryImpl> getStoryDeserializer() {
-        return getEntityContext().getDeserializer(StoryImpl.class);
+    private EntityDeserializer<StoryBean> getStoryDeserializer() {
+        return getEntityContext().getDeserializer(StoryBean.class);
     }
 
     @Override

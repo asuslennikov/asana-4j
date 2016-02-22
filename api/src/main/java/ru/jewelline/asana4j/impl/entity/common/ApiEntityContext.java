@@ -1,14 +1,14 @@
 package ru.jewelline.asana4j.impl.entity.common;
 
 import ru.jewelline.asana4j.api.beans.AttachmentBean;
-import ru.jewelline.asana4j.api.beans.ProjectImpl;
-import ru.jewelline.asana4j.api.beans.ProjectStatusImpl;
-import ru.jewelline.asana4j.api.beans.StoryImpl;
-import ru.jewelline.asana4j.api.beans.TagImpl;
-import ru.jewelline.asana4j.api.beans.TaskImpl;
-import ru.jewelline.asana4j.api.beans.TeamImpl;
-import ru.jewelline.asana4j.api.beans.UserImpl;
-import ru.jewelline.asana4j.api.beans.WorkspaceImpl;
+import ru.jewelline.asana4j.api.beans.ProjectBean;
+import ru.jewelline.asana4j.api.beans.ProjectStatusBean;
+import ru.jewelline.asana4j.api.beans.StoryBean;
+import ru.jewelline.asana4j.api.beans.TagBean;
+import ru.jewelline.asana4j.api.beans.TaskBean;
+import ru.jewelline.asana4j.api.beans.TeamBean;
+import ru.jewelline.asana4j.api.beans.UserBean;
+import ru.jewelline.asana4j.api.beans.WorkspaceBean;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.request.api.ApiException;
@@ -35,15 +35,15 @@ public class ApiEntityContext implements RequestFactory {
     }
 
     private void registerApiEntities() {
-        registerEntityClass(UserImpl.class);
-        registerEntityClass(WorkspaceImpl.class);
-        registerEntityClass(ProjectStatusImpl.class);
-        registerEntityClass(ProjectImpl.class);
-        registerEntityClass(TaskImpl.class);
-        registerEntityClass(StoryImpl.class);
+        registerEntityClass(UserBean.class);
+        registerEntityClass(WorkspaceBean.class);
+        registerEntityClass(ProjectStatusBean.class);
+        registerEntityClass(ProjectBean.class);
+        registerEntityClass(TaskBean.class);
+        registerEntityClass(StoryBean.class);
         registerEntityClass(AttachmentBean.class);
-        registerEntityClass(TeamImpl.class);
-        registerEntityClass(TagImpl.class);
+        registerEntityClass(TeamBean.class);
+        registerEntityClass(TagBean.class);
     }
 
     private <T extends ApiEntityImpl<T>> void registerEntityClass(final Class<T> entityClass) {

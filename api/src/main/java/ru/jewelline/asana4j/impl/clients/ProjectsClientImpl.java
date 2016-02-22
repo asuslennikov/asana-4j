@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.impl.clients;
 
-import ru.jewelline.asana4j.api.beans.ProjectImpl;
+import ru.jewelline.asana4j.api.beans.ProjectBean;
 import ru.jewelline.asana4j.api.clients.ProjectsClient;
 import ru.jewelline.asana4j.api.entities.Project;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
@@ -16,8 +16,8 @@ public class ProjectsClientImpl extends ApiClientImpl implements ProjectsClient 
         super(requestFactory, entityContext);
     }
 
-    private EntityDeserializer<ProjectImpl> getProjectDeserializer() {
-        return getEntityContext().getDeserializer(ProjectImpl.class);
+    private EntityDeserializer<ProjectBean> getProjectDeserializer() {
+        return getEntityContext().getDeserializer(ProjectBean.class);
     }
 
     @Override

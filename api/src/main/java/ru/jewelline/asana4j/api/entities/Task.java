@@ -2,12 +2,9 @@ package ru.jewelline.asana4j.api.entities;
 
 
 import ru.jewelline.asana.auth.AuthenticationType;
-import ru.jewelline.asana.core.utils.PagedList;
 import ru.jewelline.asana4j.api.HasId;
 import ru.jewelline.asana4j.api.HasName;
-import ru.jewelline.request.http.modifiers.RequestModifier;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -196,149 +193,149 @@ public interface Task extends HasId, HasName {
      * @see #removeTag(long)
      */
     List<Tag> getTags();
-
-    /**
-     * This method removes the task.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#delete">Delete a task</a>
-     */
-    void delete();
-
-    /**
-     * Starts an update process for the task.
-     *
-     * @return A specific builder which allows to update required fields and save these changes (or discard).
-     * @throws IllegalStateException if another update process is in progress
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#update">Update a task</a>
-     * @see Task.TaskUpdater
-     */
-    TaskUpdater startUpdate();
-
-    /**
-     * Returns list of subtasks for that task.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @return Returns a compact representation of all of the subtasks of a task.
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#subtasks">Work with subtasks</a>
-     * @see Task
-     * @see PagedList
-     */
-    PagedList<Task> getSubTasks();
-
-    /**
-     * Starts a new task creation process.
-     *
-     * @return A builder which allows for user to specify parameters for the new task and complete the task creation process
-     * (parent task id is already set, see {@link Task.TaskCreator#setParent(long)} and
-     * {@link #getId()}. You shouldn't set the {@link Task.TaskCreator#setWorkspace(long)} or
-     * {@link Task.TaskCreator#setProjects(long...)}).
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#subtasks">Work with subtasks</a>
-     * @see Task
-     * @see Task.TaskCreator
-     */
-    TaskCreator createSubTask();
-
-    /**
-     * Adds or removes parent for that task.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param parentTaskId id of parent task, can be <code>null</code>
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#subtasks">Work with subtasks</a>
-     */
-    void setParentTask(Long parentTaskId);
-
-    /**
-     * Adds the task to the specified project, in the optional location specified. If no location arguments are given,
-     * the task will be added to the beginning of the project.
-     *
-     * @param projectId id of project for which that task should be attached
-     * @return A builder which allows to specify the exact task position.
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#projects">Task, project, and section associations</a>
-     * @see Task.AddProjectBuilder
-     */
-    AddProjectBuilder addProject(long projectId);
-
-    /**
-     * Removes the task from the specified project. The task will still exist in the system, but it will
-     * not be in the project anymore.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param projectId id of project from which that task should be detached
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#projects">Task, project, and section associations</a>
-     */
-    void removeProject(long projectId);
-
-    /**
-     * Returns list of all stories for that task.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
-     * @return Returns the compact records for all stories on the task.
-     * @api.link <a href="https://asana.com/developers/api-reference/stories#get-all">Get stories on object</a>
-     * @see Story
-     * @see PagedList
-     * @see RequestModifier
-     */
-    PagedList<Story> getStories(RequestModifier... requestModifiers);
-
-    /**
-     * Adds a comment to a task. The comment will be authored by the currently authenticated user, and timestamped
-     * when the server receives the request.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param text             The plain text of the comment to add.
-     * @param requestModifiers Additional request modifiers such as pagination, requested fields and so on.
-     * @return Returns the full record for the new story added to the task.
-     * @api.link <a href="https://asana.com/developers/api-reference/stories#post-comment">Commenting on an object</a>
-     * @see Story
-     * @see RequestModifier
-     */
-    Story addComment(String text, RequestModifier... requestModifiers);
-
-    /**
-     * Returns list of all attachments for that task.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
-     * @return Returns the compact records for all attachments on the task.
-     * @api.link <a href="https://asana.com/developers/api-reference/attachments#get-all-task">Get all attachments</a>
-     * @see Attachment
-     * @see PagedList
-     * @see RequestModifier
-     */
-    PagedList<Attachment> getAttachments(RequestModifier... requestModifiers);
-
-    /**
-     * This method uploads an attachment to a task and returns a compact record for the new attachment.
-     * The 100MB size limit on attachments in Asana is enforced on this endpoint.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param name       A name for attachment.
-     * @param attachment Payload which should be added as an attachment for the task.
-     * @return Returns a compact record for a single attachment.
-     * @api.link <a href="https://asana.com/developers/api-reference/attachments#upload">Upload an attachment</a>
-     * @see Attachment
-     */
-    Attachment uploadAttachment(String name, InputStream attachment);
-
-    /**
-     * Adds a tag to a task.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param tagId The tag to add to the task.
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
-     */
-    void addTag(long tagId);
-
-    /**
-     * Removes a tag from the task.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param tagId The tag to remove from the task.
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
-     */
-    void removeTag(long tagId);
+//
+//    /**
+//     * This method removes the task.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#delete">Delete a task</a>
+//     */
+//    void delete();
+//
+//    /**
+//     * Starts an update process for the task.
+//     *
+//     * @return A specific builder which allows to update required fields and save these changes (or discard).
+//     * @throws IllegalStateException if another update process is in progress
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#update">Update a task</a>
+//     * @see Task.TaskUpdater
+//     */
+//    TaskUpdater startUpdate();
+//
+//    /**
+//     * Returns list of subtasks for that task.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @return Returns a compact representation of all of the subtasks of a task.
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#subtasks">Work with subtasks</a>
+//     * @see Task
+//     * @see PagedList
+//     */
+//    PagedList<Task> getSubTasks();
+//
+//    /**
+//     * Starts a new task creation process.
+//     *
+//     * @return A builder which allows for user to specify parameters for the new task and complete the task creation process
+//     * (parent task id is already set, see {@link Task.TaskCreator#setParent(long)} and
+//     * {@link #getId()}. You shouldn't set the {@link Task.TaskCreator#setWorkspace(long)} or
+//     * {@link Task.TaskCreator#setProjects(long...)}).
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#subtasks">Work with subtasks</a>
+//     * @see Task
+//     * @see Task.TaskCreator
+//     */
+//    TaskCreator createSubTask();
+//
+//    /**
+//     * Adds or removes parent for that task.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param parentTaskId id of parent task, can be <code>null</code>
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#subtasks">Work with subtasks</a>
+//     */
+//    void setParentTask(Long parentTaskId);
+//
+//    /**
+//     * Adds the task to the specified project, in the optional location specified. If no location arguments are given,
+//     * the task will be added to the beginning of the project.
+//     *
+//     * @param projectId id of project for which that task should be attached
+//     * @return A builder which allows to specify the exact task position.
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#projects">Task, project, and section associations</a>
+//     * @see Task.AddProjectBuilder
+//     */
+//    AddProjectBuilder addProject(long projectId);
+//
+//    /**
+//     * Removes the task from the specified project. The task will still exist in the system, but it will
+//     * not be in the project anymore.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param projectId id of project from which that task should be detached
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#projects">Task, project, and section associations</a>
+//     */
+//    void removeProject(long projectId);
+//
+//    /**
+//     * Returns list of all stories for that task.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+//     * @return Returns the compact records for all stories on the task.
+//     * @api.link <a href="https://asana.com/developers/api-reference/stories#get-all">Get stories on object</a>
+//     * @see Story
+//     * @see PagedList
+//     * @see RequestModifier
+//     */
+//    PagedList<Story> getStories(RequestModifier... requestModifiers);
+//
+//    /**
+//     * Adds a comment to a task. The comment will be authored by the currently authenticated user, and timestamped
+//     * when the server receives the request.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param text             The plain text of the comment to add.
+//     * @param requestModifiers Additional request modifiers such as pagination, requested fields and so on.
+//     * @return Returns the full record for the new story added to the task.
+//     * @api.link <a href="https://asana.com/developers/api-reference/stories#post-comment">Commenting on an object</a>
+//     * @see Story
+//     * @see RequestModifier
+//     */
+//    Story addComment(String text, RequestModifier... requestModifiers);
+//
+//    /**
+//     * Returns list of all attachments for that task.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
+//     * @return Returns the compact records for all attachments on the task.
+//     * @api.link <a href="https://asana.com/developers/api-reference/attachments#get-all-task">Get all attachments</a>
+//     * @see Attachment
+//     * @see PagedList
+//     * @see RequestModifier
+//     */
+//    PagedList<Attachment> getAttachments(RequestModifier... requestModifiers);
+//
+//    /**
+//     * This method uploads an attachment to a task and returns a compact record for the new attachment.
+//     * The 100MB size limit on attachments in Asana is enforced on this endpoint.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param name       A name for attachment.
+//     * @param attachment Payload which should be added as an attachment for the task.
+//     * @return Returns a compact record for a single attachment.
+//     * @api.link <a href="https://asana.com/developers/api-reference/attachments#upload">Upload an attachment</a>
+//     * @see Attachment
+//     */
+//    Attachment uploadAttachment(String name, InputStream attachment);
+//
+//    /**
+//     * Adds a tag to a task.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param tagId The tag to add to the task.
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
+//     */
+//    void addTag(long tagId);
+//
+//    /**
+//     * Removes a tag from the task.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param tagId The tag to remove from the task.
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
+//     */
+//    void removeTag(long tagId);
 
     /**
      * Enum which holds all available assignee statuses.

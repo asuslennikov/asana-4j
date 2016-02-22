@@ -1,6 +1,5 @@
 package ru.jewelline.asana4j.api.entities;
 
-import ru.jewelline.asana.core.utils.PagedList;
 import ru.jewelline.asana4j.api.HasId;
 import ru.jewelline.asana4j.api.HasName;
 import ru.jewelline.asana4j.api.clients.ProjectsClient;
@@ -154,46 +153,46 @@ public interface Project extends HasId, HasName {
      * @see Team
      */
     Team getTeam();
-
-    /**
-     * This method removes the project.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @api.link <a href="https://asana.com/developers/api-reference/projects#delete">Delete a project</a>
-     */
-    void delete();
-
-    /**
-     * Starts an update process for the project.
-     *
-     * @return A specific builder which allows to update required fields and save these changes (or discard).
-     * @throws IllegalStateException if another update process is in progress
-     * @api.link <a href="https://asana.com/developers/api-reference/projects#update">Update a project</a>
-     * @see Project.ProjectUpdater
-     */
-    ProjectUpdater startUpdate();
-
-    /**
-     * Returns list of tasks in the project.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @return Returns the compact task records for all tasks within the given project, ordered by their priority
-     * within the project. Tasks can exist in more than one project at a time.
-     * @api.link <a href="https://asana.com/developers/api-reference/projects#get-tasks">Get project tasks</a>
-     * @see Task
-     * @see PagedList
-     */
-    PagedList<Task> getTasks();
-
-    /**
-     * Starts a creation process for the new task in the project.
-     *
-     * @return A specific builder which allows to specify required fields for the new task.
-     * @api.link <a href="https://asana.com/developers/api-reference/tasks#create">Create a task</a>
-     * @see Task
-     * @see Task.TaskCreator
-     */
-    Task.TaskCreator createTask();
+//
+//    /**
+//     * This method removes the project.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @api.link <a href="https://asana.com/developers/api-reference/projects#delete">Delete a project</a>
+//     */
+//    void delete();
+//
+//    /**
+//     * Starts an update process for the project.
+//     *
+//     * @return A specific builder which allows to update required fields and save these changes (or discard).
+//     * @throws IllegalStateException if another update process is in progress
+//     * @api.link <a href="https://asana.com/developers/api-reference/projects#update">Update a project</a>
+//     * @see Project.ProjectUpdater
+//     */
+//    ProjectUpdater startUpdate();
+//
+//    /**
+//     * Returns list of tasks in the project.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @return Returns the compact task records for all tasks within the given project, ordered by their priority
+//     * within the project. Tasks can exist in more than one project at a time.
+//     * @api.link <a href="https://asana.com/developers/api-reference/projects#get-tasks">Get project tasks</a>
+//     * @see Task
+//     * @see PagedList
+//     */
+//    PagedList<Task> getTasks();
+//
+//    /**
+//     * Starts a creation process for the new task in the project.
+//     *
+//     * @return A specific builder which allows to specify required fields for the new task.
+//     * @api.link <a href="https://asana.com/developers/api-reference/tasks#create">Create a task</a>
+//     * @see Task
+//     * @see Task.TaskCreator
+//     */
+//    Task.TaskCreator createTask();
 
     /**
      * A builder class which allows for user to set new values for project fields. Only touched fields will be

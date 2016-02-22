@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.impl.clients;
 
-import ru.jewelline.asana4j.api.beans.TagImpl;
-import ru.jewelline.asana4j.api.beans.TaskImpl;
+import ru.jewelline.asana4j.api.beans.TagBean;
+import ru.jewelline.asana4j.api.beans.TaskBean;
 import ru.jewelline.asana4j.api.clients.TaskApiClient;
 import ru.jewelline.asana4j.api.entities.Tag;
 import ru.jewelline.asana4j.api.entities.Task;
@@ -19,8 +19,8 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
         super(requestFactory, entityContext);
     }
 
-    private EntityDeserializer<TaskImpl> getTaskDeserializer() {
-        return getEntityContext().getDeserializer(TaskImpl.class);
+    private EntityDeserializer<TaskBean> getTaskDeserializer() {
+        return getEntityContext().getDeserializer(TaskBean.class);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
                 .path("tasks/" + taskId + "/tags")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiCollection(getEntityContext().getDeserializer(TagImpl.class));
+                .asApiCollection(getEntityContext().getDeserializer(TagBean.class));
     }
 
     @Override

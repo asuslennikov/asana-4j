@@ -3,7 +3,6 @@ package ru.jewelline.asana4j.api.entities;
 import ru.jewelline.asana4j.api.HasId;
 import ru.jewelline.asana4j.api.HasName;
 
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -34,17 +33,17 @@ public interface User extends HasId, HasName {
      */
     Map<PhotoSize, String> getPhotoUrl();
 
-    /**
-     * Downloads the user photo with given size.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param size        A photo size for download.
-     * @param destination A destination stream for that attachment.
-     * @return <code>true</code> if photo was downloaded, <code>false</code> if it can not
-     * (for example if the {@link #getPhotoUrl()} is empty or doesn't contain an url for photo with given size).
-     * @see #getPhotoUrl()
-     */
-    boolean downloadPhoto(PhotoSize size, OutputStream destination);
+//    /**
+//     * Downloads the user photo with given size.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param size        A photo size for download.
+//     * @param destination A destination stream for that attachment.
+//     * @return <code>true</code> if photo was downloaded, <code>false</code> if it can not
+//     * (for example if the {@link #getPhotoUrl()} is empty or doesn't contain an url for photo with given size).
+//     * @see #getPhotoUrl()
+//     */
+//    boolean downloadPhoto(PhotoSize size, OutputStream destination);
 
     /**
      * @return Workspaces and organizations this user may access.<p>

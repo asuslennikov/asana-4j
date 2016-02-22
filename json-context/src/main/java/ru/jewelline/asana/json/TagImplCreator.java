@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api.beans;
+package ru.jewelline.asana.json;
 
 import ru.jewelline.asana4j.api.entities.Tag;
 import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
@@ -26,6 +26,6 @@ public class TagImplCreator extends TagBuilderImpl<Tag.TagCreator> implements Ta
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
-                .asApiObject(this.context.getDeserializer(TagImpl.class));
+                .asApiObject(this.context.getDeserializer(TagBean.class));
     }
 }

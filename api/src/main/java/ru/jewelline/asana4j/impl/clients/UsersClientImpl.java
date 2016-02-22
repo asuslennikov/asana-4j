@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.impl.clients;
 
-import ru.jewelline.asana4j.api.beans.UserImpl;
+import ru.jewelline.asana4j.api.beans.UserBean;
 import ru.jewelline.asana4j.api.clients.UsersClient;
 import ru.jewelline.asana4j.api.entities.User;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
@@ -16,8 +16,8 @@ public class UsersClientImpl extends ApiClientImpl implements UsersClient {
         super(requestFactory, entityContext);
     }
 
-    private EntityDeserializer<UserImpl> getUserDeserializer() {
-        return getEntityContext().getDeserializer(UserImpl.class);
+    private EntityDeserializer<UserBean> getUserDeserializer() {
+        return getEntityContext().getDeserializer(UserBean.class);
     }
 
     @Override

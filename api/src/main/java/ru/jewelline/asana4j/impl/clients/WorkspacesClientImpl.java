@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.impl.clients;
 
-import ru.jewelline.asana4j.api.beans.WorkspaceImpl;
+import ru.jewelline.asana4j.api.beans.WorkspaceBean;
 import ru.jewelline.asana4j.api.clients.WorkspacesClient;
 import ru.jewelline.asana4j.api.entities.Workspace;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
@@ -16,8 +16,8 @@ public class WorkspacesClientImpl extends ApiClientImpl implements WorkspacesCli
         super(requestFactory, entityContext);
     }
 
-    private EntityDeserializer<WorkspaceImpl> getWorkspaceDeserializer() {
-        return getEntityContext().getDeserializer(WorkspaceImpl.class);
+    private EntityDeserializer<WorkspaceBean> getWorkspaceDeserializer() {
+        return getEntityContext().getDeserializer(WorkspaceBean.class);
     }
 
     @Override

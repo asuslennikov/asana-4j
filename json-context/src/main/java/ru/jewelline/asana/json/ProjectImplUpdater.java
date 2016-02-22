@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api.beans;
+package ru.jewelline.asana.json;
 
 import ru.jewelline.asana4j.api.entities.Project;
 import ru.jewelline.asana4j.api.entities.ProjectColor;
@@ -13,9 +13,9 @@ import java.util.Map;
 
 class ProjectImplUpdater extends FieldsUpdater implements Project.ProjectUpdater {
 
-    private final ProjectImpl target;
+    private final ProjectBean target;
 
-    public ProjectImplUpdater(ProjectImpl target) {
+    public ProjectImplUpdater(ProjectBean target) {
         this.target = target;
     }
 

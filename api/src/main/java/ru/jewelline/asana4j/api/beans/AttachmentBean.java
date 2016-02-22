@@ -4,9 +4,6 @@ import ru.jewelline.asana4j.api.entities.Attachment;
 import ru.jewelline.asana4j.api.entities.Task;
 
 public class AttachmentBean implements Attachment {
-
-//    private static final int RESPONSE_OK_ANSWER_CODE = 200;
-
     private long id;
     private String name;
     private String createdAt;
@@ -14,11 +11,6 @@ public class AttachmentBean implements Attachment {
     private Host host;
     private Task parent;
     private String viewUrl;
-
-    public AttachmentBean() {
-        super();
-    }
-
 
     @Override
     public long getId() {
@@ -82,53 +74,4 @@ public class AttachmentBean implements Attachment {
     public void setViewUrl(String viewUrl) {
         this.viewUrl = viewUrl;
     }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass()) {
-//            return false;
-//        }
-//        return id == ((AttachmentModel) o).id;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return (int) (id ^ (id >>> 32));
-//    }
-//
-//    @Override
-//    public String toString() {
-//        StringBuilder out = new StringBuilder("Attachment [");
-//        out.append("id = ").append(getId());
-//        out.append(", name = ").append(getName());
-//        out.append(']');
-//        return out.toString();
-//    }
-//
-//    @Override
-//    public boolean download(OutputStream destinationStream) {
-//        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
-//            return getContext().httpRequest()
-//                    .path(getDownloadUrl())
-//                    .buildAs(HttpMethod.GET)
-//                    .sendAndReadResponse(destinationStream)
-//                    .code() == RESPONSE_OK_ANSWER_CODE;
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean downloadPreview(OutputStream destinationStream) {
-//        if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
-//            return getContext().httpRequest()
-//                    .path(getViewUrl())
-//                    .buildAs(HttpMethod.GET)
-//                    .sendAndReadResponse(destinationStream)
-//                    .code() == RESPONSE_OK_ANSWER_CODE;
-//        }
-//        return false;
-//    }
 }

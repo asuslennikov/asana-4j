@@ -1,10 +1,8 @@
 package ru.jewelline.asana4j.api.entities;
 
 
-import ru.jewelline.asana.core.utils.PagedList;
 import ru.jewelline.asana4j.api.HasId;
 import ru.jewelline.asana4j.api.HasName;
-import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.util.List;
 
@@ -62,24 +60,24 @@ public interface Tag extends HasId, HasName {
      */
     Workspace getWorkspace();
 
-    /**
-     * Starts an update process for the tag.
-     *
-     * @return A specific builder which allows to update required fields and save these changes (or discard).
-     * @throws IllegalStateException if another update process is in progress
-     * @api.link <a href="https://asana.com/developers/api-reference/tags#update">Update a tag</a>
-     */
-    TagUpdater startUpdate();
-
-    /**
-     * Returns the compact task records for all tasks with the tag. Tasks can have more than one tag at a time.
-     * <p><i>Triggers HTTP communication with server</i></p>
-     *
-     * @param requestModifiers Additional request modifiers such as pagination, requested fields and so on.
-     * @return Returns the compact task records for all tasks with the given tag.
-     * @api.link <a href="https://asana.com/developers/api-reference/tags#get-tasks">Get tasks with tag</a>
-     */
-    PagedList<Task> getTasks(RequestModifier... requestModifiers);
+//    /**
+//     * Starts an update process for the tag.
+//     *
+//     * @return A specific builder which allows to update required fields and save these changes (or discard).
+//     * @throws IllegalStateException if another update process is in progress
+//     * @api.link <a href="https://asana.com/developers/api-reference/tags#update">Update a tag</a>
+//     */
+//    TagUpdater startUpdate();
+//
+//    /**
+//     * Returns the compact task records for all tasks with the tag. Tasks can have more than one tag at a time.
+//     * <p><i>Triggers HTTP communication with server</i></p>
+//     *
+//     * @param requestModifiers Additional request modifiers such as pagination, requested fields and so on.
+//     * @return Returns the compact task records for all tasks with the given tag.
+//     * @api.link <a href="https://asana.com/developers/api-reference/tags#get-tasks">Get tasks with tag</a>
+//     */
+//    PagedList<Task> getTasks(RequestModifier... requestModifiers);
 
     /**
      * A base builder class which allows for user to set values for tag fields during

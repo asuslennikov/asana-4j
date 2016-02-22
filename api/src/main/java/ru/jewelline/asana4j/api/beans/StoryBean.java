@@ -3,14 +3,10 @@ package ru.jewelline.asana4j.api.beans;
 import ru.jewelline.asana4j.api.entities.Story;
 import ru.jewelline.asana4j.api.entities.Task;
 import ru.jewelline.asana4j.api.entities.User;
-import ru.jewelline.asana4j.impl.entity.common.ApiEntityContext;
-import ru.jewelline.asana4j.impl.entity.common.ApiEntityImpl;
-import ru.jewelline.asana4j.impl.entity.common.JsonFieldReader;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
+public class StoryBean implements Story {
 
     private long id;
     private String createdAt;
@@ -24,21 +20,12 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
     private String source;
     private String type;
 
-    public StoryImpl(ApiEntityContext context) {
-        super(StoryImpl.class, context);
-    }
-
-    @Override
-    protected List<JsonFieldReader<StoryImpl>> getFieldReaders() {
-        return Arrays.<JsonFieldReader<StoryImpl>>asList(StoryImplProcessor.values());
-    }
-
     @Override
     public long getId() {
         return id;
     }
 
-    void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -47,7 +34,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return createdAt;
     }
 
-    void setCreatedAt(String createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -56,7 +43,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return createdBy;
     }
 
-    void setCreatedBy(User createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -65,7 +52,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return hearted;
     }
 
-    void setHearted(boolean hearted) {
+    public void setHearted(boolean hearted) {
         this.hearted = hearted;
     }
 
@@ -74,7 +61,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return heartsAuthors;
     }
 
-    void setHeartsAuthors(List<User> heartsAuthors) {
+    public void setHeartsAuthors(List<User> heartsAuthors) {
         this.heartsAuthors = heartsAuthors;
     }
 
@@ -83,7 +70,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return numberOfHearts;
     }
 
-    void setNumberOfHearts(int numberOfHearts) {
+    public void setNumberOfHearts(int numberOfHearts) {
         this.numberOfHearts = numberOfHearts;
     }
 
@@ -92,7 +79,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return text;
     }
 
-    void setText(String text) {
+    public void setText(String text) {
         this.text = text;
     }
 
@@ -101,7 +88,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return htmlText;
     }
 
-    void setHtmlText(String htmlText) {
+    public void setHtmlText(String htmlText) {
         this.htmlText = htmlText;
     }
 
@@ -110,7 +97,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return target;
     }
 
-    void setTarget(Task target) {
+    public void setTarget(Task target) {
         this.target = target;
     }
 
@@ -119,7 +106,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return source;
     }
 
-    void setSource(String source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
@@ -128,33 +115,7 @@ public class StoryImpl extends ApiEntityImpl<StoryImpl> implements Story {
         return type;
     }
 
-    void setType(String type) {
+    public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        return id == ((StoryImpl) o).id;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder out = new StringBuilder("Story [");
-        out.append("id = ").append(getId());
-        out.append(", type = ").append(getType());
-        out.append(", text = ").append(getText());
-        out.append(']');
-        return out.toString();
     }
 }

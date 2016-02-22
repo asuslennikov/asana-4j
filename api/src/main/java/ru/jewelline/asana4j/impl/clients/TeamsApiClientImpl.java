@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.impl.clients;
 
-import ru.jewelline.asana4j.api.beans.ProjectImpl;
-import ru.jewelline.asana4j.api.beans.TeamImpl;
-import ru.jewelline.asana4j.api.beans.UserImpl;
+import ru.jewelline.asana4j.api.beans.ProjectBean;
+import ru.jewelline.asana4j.api.beans.TeamBean;
+import ru.jewelline.asana4j.api.beans.UserBean;
 import ru.jewelline.asana4j.api.clients.TeamsClient;
 import ru.jewelline.asana4j.api.entities.Project;
 import ru.jewelline.asana4j.api.entities.Team;
@@ -21,8 +21,8 @@ public class TeamsApiClientImpl extends ApiClientImpl implements TeamsClient {
         super(requestFactory, entityContext);
     }
 
-    private EntityDeserializer<TeamImpl> getTeamDeserializer() {
-        return getEntityContext().getDeserializer(TeamImpl.class);
+    private EntityDeserializer<TeamBean> getTeamDeserializer() {
+        return getEntityContext().getDeserializer(TeamBean.class);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TeamsApiClientImpl extends ApiClientImpl implements TeamsClient {
                 .path("/teams/" + teamId + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
-                .asApiCollection(getEntityContext().getDeserializer(UserImpl.class));
+                .asApiCollection(getEntityContext().getDeserializer(UserBean.class));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class TeamsApiClientImpl extends ApiClientImpl implements TeamsClient {
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
-                .asApiObject(getEntityContext().getDeserializer(UserImpl.class));
+                .asApiObject(getEntityContext().getDeserializer(UserBean.class));
     }
 
     @Override
@@ -112,6 +112,6 @@ public class TeamsApiClientImpl extends ApiClientImpl implements TeamsClient {
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
-                .asApiObject(getEntityContext().getDeserializer(ProjectImpl.class));
+                .asApiObject(getEntityContext().getDeserializer(ProjectBean.class));
     }
 }

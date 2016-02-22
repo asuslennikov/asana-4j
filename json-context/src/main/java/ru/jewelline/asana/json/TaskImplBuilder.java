@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.api.beans;
+package ru.jewelline.asana.json;
 
 import ru.jewelline.asana4j.api.entities.ExternalData;
 import ru.jewelline.asana4j.api.entities.Task;
