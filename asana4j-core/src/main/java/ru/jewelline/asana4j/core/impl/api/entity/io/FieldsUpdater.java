@@ -28,8 +28,8 @@ public abstract class FieldsUpdater {
         this.fields.put(fieldName, obj);
     }
 
-    protected void putField(String fieldName, HasId[] arr){
-        if (arr != null){
+    protected void putField(String fieldName, HasId[] arr) {
+        if (arr != null) {
             Set<Long> ids = new HashSet<>(arr.length);
             for (HasId objWithId : arr) {
                 if (objWithId != null) {
@@ -42,8 +42,8 @@ public abstract class FieldsUpdater {
         }
     }
 
-    protected void putField(String fieldName, Object[] arr){
-        if (arr != null){
+    protected void putField(String fieldName, Object[] arr) {
+        if (arr != null) {
             this.fields.put(fieldName, arr);
         } else {
             this.fields.put(fieldName, Collections.emptyList());
@@ -54,7 +54,7 @@ public abstract class FieldsUpdater {
         return new CachedJsonEntity(this.fields);
     }
 
-    protected Map<String, Object> wrapAsMap(){
+    protected Map<String, Object> wrapAsMap() {
         return Collections.unmodifiableMap(this.fields);
     }
 }

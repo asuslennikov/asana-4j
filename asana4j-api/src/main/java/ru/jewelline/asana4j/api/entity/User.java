@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * A user object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
- * <p>
+ * <p/>
  * Like other objects in the system, users are referred to by numerical IDs. However, the special string identifier
  * <code>me</code> can be used anywhere a user ID is accepted, to refer to the current authenticated user.
  *

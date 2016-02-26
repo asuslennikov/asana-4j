@@ -21,8 +21,8 @@ public class WorkspaceImplTest {
         json.put(WorkspaceImplProcessor.ORGANISATION.getFieldName(), Boolean.TRUE);
         return json;
     }
-    
-    private WorkspaceImpl testInstance(){
+
+    private WorkspaceImpl testInstance() {
         return new WorkspaceImpl(null);
     }
 

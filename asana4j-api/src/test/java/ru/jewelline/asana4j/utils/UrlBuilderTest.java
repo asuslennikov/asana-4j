@@ -10,19 +10,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class UrlBuilderTest {
 
     @Test
-    public void test_withNullPath(){
+    public void test_withNullPath() {
         assertThat(getUrlBuilder().path(null).build()).isEqualTo("");
     }
 
     protected abstract URLCreator.Builder getUrlBuilder();
 
     @Test
-    public void test_withPathOnly(){
+    public void test_withPathOnly() {
         assertThat(getUrlBuilder().path("http://example.com").build()).isEqualTo("http://example.com");
     }
 
     @Test
-    public void test_withPathAndOneEmptyQueryParam(){
+    public void test_withPathAndOneEmptyQueryParam() {
         assertThat(getUrlBuilder()
                 .path("http://example.com")
                 .addQueryParameter("p1", null)
@@ -30,7 +30,7 @@ public abstract class UrlBuilderTest {
     }
 
     @Test
-    public void test_withPathAndOneQueryParam(){
+    public void test_withPathAndOneQueryParam() {
         assertThat(getUrlBuilder()
                 .path("http://example.com")
                 .addQueryParameter("p1", "v1")
@@ -38,7 +38,7 @@ public abstract class UrlBuilderTest {
     }
 
     @Test
-    public void test_withPathAndTwoQueryParam(){
+    public void test_withPathAndTwoQueryParam() {
         assertThat(getUrlBuilder()
                 .path("http://example.com")
                 .addQueryParameter("p1", "v1")
@@ -47,7 +47,7 @@ public abstract class UrlBuilderTest {
     }
 
     @Test
-    public void test_withPathAndThreeQueryParam(){
+    public void test_withPathAndThreeQueryParam() {
         assertThat(getUrlBuilder()
                 .path("http://example.com")
                 .addQueryParameter("p1", "v1")
@@ -57,7 +57,7 @@ public abstract class UrlBuilderTest {
     }
 
     @Test
-    public void test_withPathAndEncodedQueryParam(){
+    public void test_withPathAndEncodedQueryParam() {
         String url = getUrlBuilder()
                 .path("http://example.com")
                 .addQueryParameter("p!@#$%^&*()_+1", "v1")

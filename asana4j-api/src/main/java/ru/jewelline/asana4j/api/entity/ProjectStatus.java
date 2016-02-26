@@ -12,16 +12,15 @@ public interface ProjectStatus {
      * @see ProjectStatus#getColor()
      */
     enum Color {
-        GREEN ("green"),
-        YELLOW ("yellow"),
-        RED ("red"),
-        NONE (null) {
+        GREEN("green"),
+        YELLOW("yellow"),
+        RED("red"),
+        NONE(null) {
             @Override
             public boolean isColorMatch(String colorCode) {
                 return StringUtils.emptyOrOnlyWhiteSpace(colorCode);
             }
-        },
-        ;
+        },;
 
         private String colorCode;
 
@@ -33,13 +32,14 @@ public interface ProjectStatus {
          * @return A string representation of color code, for example: <code>green</code> for {@link #GREEN}
          * instance.
          */
-        public String getColorCode(){
+        public String getColorCode() {
             return this.colorCode;
         }
 
         /**
          * Checks if the given value matches the color code of the {@link ProjectStatus.Color}
          * instance.
+         *
          * @param colorCode one of color codes or null.
          * @return <code>true</code> if the color code matches the one from the instance.
          * @see #getColorCode()
@@ -55,12 +55,13 @@ public interface ProjectStatus {
 
         /**
          * Matches the <code>colorCode</code> parameter to one of instances from the {@link ProjectStatus.Color} enum
+         *
          * @param colorCode a string representation of project's status color or null
          * @return A {@link ProjectStatus.Color} instance
          */
-        public static Color getColorByCode(String colorCode){
+        public static Color getColorByCode(String colorCode) {
             for (Color color : Color.values()) {
-                if (color.isColorMatch(colorCode)){
+                if (color.isColorMatch(colorCode)) {
                     return color;
                 }
             }

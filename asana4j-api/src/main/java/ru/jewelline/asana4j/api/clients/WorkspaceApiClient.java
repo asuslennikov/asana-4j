@@ -6,6 +6,7 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public interface WorkspaceApiClient {
     Workspace getWorkspaceById(long id, RequestModifier... requestModifiers);
+
     PagedList<Workspace> getWorkspaces(RequestModifier... requestModifiers);
     // TODO typeahead search
 }

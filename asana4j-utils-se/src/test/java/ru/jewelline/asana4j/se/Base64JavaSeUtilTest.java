@@ -6,7 +6,7 @@ import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.Base64Test;
 
 @RunWith(MockitoJUnitRunner.class)
-public class Base64JavaSeUtilTest extends Base64Test{
+public class Base64JavaSeUtilTest extends Base64Test {
 
     @Override
     protected Base64 getBase64Util() {

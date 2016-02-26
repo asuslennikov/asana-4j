@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * A project represents a prioritized list of tasks in Asana. It exists in a single workspace or organization
  * and is accessible to a subset of users in that workspace or organization, depending on its permissions.
- * <p>
+ * <p/>
  * Projects in organizations are shared with a single team. You cannot currently change the team of a project
  * via the API. Non-organization workspaces do not have teams and so you should not specify the team of project
  * in a regular workspace.
- * <p>
+ * <p/>
  * Followers of a project are a subset of the members of that project. Followers of a project will receive all
  * updates including tasks created, added and removed from that project. Members of the project have access to
  * and will receive status updates of the project. Adding followers to a project will add them as members if
@@ -61,9 +61,10 @@ public interface Project extends HasId, HasName {
 
     /**
      * Returns the time at which this project was last modified.
-     * <p />
+     * <p/>
      * This does not currently reflect any changes in associations such as tasks or comments that may have been
      * added or removed from the project.
+     *
      * @return The time at which this project was last modified. Example: <code>2012-02-22T02:06:58.147Z</code>.
      * @api.field <code>created_at</code>
      * @api.access Read-only
@@ -106,6 +107,7 @@ public interface Project extends HasId, HasName {
     /**
      * Returns array of users following this project. Followers are a subset of members who receive all notifications
      * for a project, the default notification setting when adding members to a project in-product.
+     *
      * @return Array of users following this project.
      * @api.field <code>followers</code>
      * @api.access Read-only

@@ -6,7 +6,7 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 
 /**
  * A workspace is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
- * <p>
+ * <p/>
  * An organization is a special kind of workspace that represents a company. In an organization, you can group your
  * projects into teams.
  *

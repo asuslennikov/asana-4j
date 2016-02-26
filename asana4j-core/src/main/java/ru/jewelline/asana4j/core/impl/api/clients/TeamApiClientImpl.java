@@ -6,19 +6,19 @@ import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TeamImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 
-    public TeamApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
-        super(requestFactory, entityContext);
+    public TeamApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+        super(HttpRequestFactory, entityContext);
     }
 
     private EntityDeserializer<TeamImpl> getTeamDeserializer() {

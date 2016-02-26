@@ -70,7 +70,7 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
             for (JsonFieldWriter<T> writer : fieldWriters) {
                 try {
                     writer.write(this.clazz.cast(this), json);
-                } catch (JSONException ex){
+                } catch (JSONException ex) {
                     throw new ApiException(ApiException.API_ENTITY_SERIALIZATION_FAIL,
                             "Unable to serialize field '" + writer.getFieldName() + "', source " + this);
                 }

@@ -91,8 +91,7 @@ enum StoryImplProcessor implements JsonFieldReader<StoryImpl> {
         public void read(JSONObject source, StoryImpl target) throws JSONException {
             target.setType(source.getString(getFieldName()));
         }
-    },
-    ;
+    },;
 
     private String fieldName;
 

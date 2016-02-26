@@ -17,9 +17,9 @@ public class DataRootRequestModifier implements RequestModifier {
     @Override
     public void modify(HttpRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         SerializableEntity entity = requestBuilder.getEntity();
-        if (entity != null && entity instanceof JsonEntity){
+        if (entity != null && entity instanceof JsonEntity) {
             JSONObject json = ((JsonEntity) entity).asJson();
-            if (!json.has("data")){
+            if (!json.has("data")) {
                 JSONObject root = new JSONObject();
                 String[] names = JSONObject.getNames(json);
                 if (names != null && names.length > 0) {

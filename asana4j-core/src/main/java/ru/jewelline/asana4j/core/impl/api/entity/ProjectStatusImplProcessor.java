@@ -45,8 +45,7 @@ enum ProjectStatusImplProcessor implements JsonFieldReader<ProjectStatusImpl>, J
         public void read(JSONObject source, ProjectStatusImpl target) throws JSONException {
             target.setAuthor(target.getContext().getDeserializer(UserImpl.class).deserialize(source.getJSONObject(getFieldName())));
         }
-    },
-    ;
+    },;
 
     private String fieldName;
 

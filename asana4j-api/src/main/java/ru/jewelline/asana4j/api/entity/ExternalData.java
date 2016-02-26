@@ -3,11 +3,11 @@ package ru.jewelline.asana4j.api.entity;
 /**
  * Custom external data allows a client application to add app-specific metadata to Tasks in the API. The custom data
  * includes a string id that can be used to retrieve objects and a data blob that can store character strings.
- * <p>
+ * <p/>
  * The blob may store unicode-safe serialized data such as JSON or YAML. The external id is capped at 1,024 characters,
  * while data blobs are capped at 32,768 characters. Each object supporting external data can have one id and one data
  * blob stored with it. You can also use either or both of those fields.
- * <p>
+ * <p/>
  * The external id field is a good choice to create a reference between a resource in Asana and another database, such
  * as cross-referencing an Asana task with a customer record in a CRM, or a bug in a dedicated bug tracker. Since it is
  * just a unicode string, this field can store numeric IDs as well as URIs, however, when using URIs extra care must be

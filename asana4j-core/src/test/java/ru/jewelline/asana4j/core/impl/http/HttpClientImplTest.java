@@ -266,7 +266,7 @@ public class HttpClientImplTest {
     }
 
     @Test
-    public void test_doAdditionalAttemptsInCaseOfNoResponseCode(){
+    public void test_doAdditionalAttemptsInCaseOfNoResponseCode() {
         HttpResponseImpl response = mock(HttpResponseImpl.class);
         HttpRequestImpl request = mock(HttpRequestImpl.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);

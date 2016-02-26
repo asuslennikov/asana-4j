@@ -93,7 +93,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_setNullByteArrayAsPayload(){
+    public void test_setNullByteArrayAsPayload() {
         byte[] payload = null;
         getRequestBuilder().entity(payload);
 
@@ -101,7 +101,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_setEmptyByteArrayAsPayload(){
+    public void test_setEmptyByteArrayAsPayload() {
         byte[] payload = new byte[0];
         getRequestBuilder().entity(payload);
 
@@ -109,7 +109,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_setByteArrayAsPayload(){
+    public void test_setByteArrayAsPayload() {
         byte[] payload = new byte[]{1, 2, 3};
         getRequestBuilder().entity(payload);
 
@@ -117,7 +117,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_setNullStreamAsPayload(){
+    public void test_setNullStreamAsPayload() {
         InputStream payload = null;
         getRequestBuilder().entity(payload);
 
@@ -125,7 +125,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_setStreamAsPayload(){
+    public void test_setStreamAsPayload() {
         InputStream payload = new ByteArrayInputStream(new byte[]{});
         getRequestBuilder().entity(payload);
 
@@ -167,7 +167,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestJustWithPathAndMethod(){
+    public void test_buildRequestJustWithPathAndMethod() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -181,7 +181,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithPathMethodAndQueryParameters(){
+    public void test_buildRequestWithPathMethodAndQueryParameters() {
         String path = "http://www.example.com";
         String pathWithParams = path + "?key=value";
         HttpMethod httpMethod = HttpMethod.GET;
@@ -197,7 +197,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithPathMethodAndHeaders(){
+    public void test_buildRequestWithPathMethodAndHeaders() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -213,7 +213,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithDublicateHeaders(){
+    public void test_buildRequestWithDublicateHeaders() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -231,7 +231,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithDifferentHeaders(){
+    public void test_buildRequestWithDifferentHeaders() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         when(urlBuilder.build()).thenReturn(path);
@@ -248,7 +248,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithByteEntity(){
+    public void test_buildRequestWithByteEntity() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         byte[] payload = {1, 2, 3};
@@ -266,7 +266,7 @@ public class HttpRequestBuilderImplTest {
     }
 
     @Test
-    public void test_buildRequestWithStreamEntity(){
+    public void test_buildRequestWithStreamEntity() {
         String path = "http://www.example.com";
         HttpMethod httpMethod = HttpMethod.GET;
         InputStream payload = new ByteArrayInputStream(new byte[]{1, 2, 3});

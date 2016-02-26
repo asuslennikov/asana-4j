@@ -10,7 +10,7 @@ import java.util.List;
  * The task is the basic object around which many operations in Asana are centered. In the Asana application,
  * multiple tasks populate the middle pane according to some view parameters, and the set of selected tasks
  * determines the more detailed information presented in the details pane.
- * <p>
+ * <p/>
  * A section, at its core, is a task whose name ends with the colon character :. Sections are unique in that
  * they will be included in the memberships field of task objects returned in the API when the task is within
  * a section. As explained below they can also be used to manipulate the ordering of a task within a project.
@@ -581,6 +581,7 @@ public interface Task extends HasId, HasName {
 
     /**
      * A builder class which allows to specify the exact task position in a project or section.
+     *
      * @see Task#addProject(long)
      */
     interface AddProjectBuilder {
@@ -609,6 +610,7 @@ public interface Task extends HasId, HasName {
         /**
          * Adds the task to the specified project, in the optional location specified. If no location arguments
          * are given, the task will be added to the beginning of the project.
+         *
          * @api.link <a href="https://asana.com/developers/api-reference/tasks#projects">Task, project, and section associations</a>
          */
         void update();

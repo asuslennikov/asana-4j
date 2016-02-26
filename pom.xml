@@ -9,11 +9,11 @@
     <packaging>pom</packaging>
     <name>[Asana API] Asana API 4 Java - Parent</name>
 
-<!--
-    <scm>
-        <connection>scm:git:https://github.com/asuslennikov/</connection>
-    </scm>
--->
+    <!--
+        <scm>
+            <connection>scm:git:https://github.com/asuslennikov/</connection>
+        </scm>
+    -->
 
     <properties>
         <include.source>true</include.source>

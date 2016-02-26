@@ -17,9 +17,9 @@ public class JsonContentTypeModifier implements RequestModifier {
 
     @Override
     public void modify(HttpRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
-        if (EnumSet.of(HttpMethod.POST, HttpMethod.PUT).contains(httpMethod)){
+        if (EnumSet.of(HttpMethod.POST, HttpMethod.PUT).contains(httpMethod)) {
             SerializableEntity entity = requestBuilder.getEntity();
-            if (entity instanceof JsonEntity){
+            if (entity instanceof JsonEntity) {
                 requestBuilder.setHeader("Content-Type", "application/json");
             }
         }

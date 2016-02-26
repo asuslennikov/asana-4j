@@ -32,8 +32,7 @@ public enum ProjectColor {
         public boolean isColorMatch(String colorCode) {
             return StringUtils.emptyOrOnlyWhiteSpace(colorCode);
         }
-    },
-    ;
+    },;
 
     private String colorCode;
 

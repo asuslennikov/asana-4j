@@ -31,7 +31,7 @@ public interface TaskApiClient {
      * <p><i>Triggers HTTP communication with server</i></p>
      *
      * @param taskId The task to add a tag to.
-     * @param tagId The tag to add to the task.
+     * @param tagId  The tag to add to the task.
      * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
      */
     void addTag(long taskId, long tagId);
@@ -41,7 +41,7 @@ public interface TaskApiClient {
      * <p><i>Triggers HTTP communication with server</i></p>
      *
      * @param taskId The task to remove a tag from.
-     * @param tagId The tag to remove from the task.
+     * @param tagId  The tag to remove from the task.
      * @api.link <a href="https://asana.com/developers/api-reference/tasks#tags">Tags on tasks</a>
      */
     void removeTag(long taskId, long tagId);

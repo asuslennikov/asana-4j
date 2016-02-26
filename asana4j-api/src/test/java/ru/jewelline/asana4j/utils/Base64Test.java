@@ -9,43 +9,43 @@ public abstract class Base64Test {
     private static final String BASE64 = "U1RSSU5HIUAjJCVeJiooKV8rMTIzNDU2Nzg5MC09PVx+IC8=";
 
     @Test
-    public void test_encodeNull(){
+    public void test_encodeNull() {
         assertThat(getBase64Util().encode(null)).isNull();
     }
 
     protected abstract Base64 getBase64Util();
 
     @Test
-    public void test_encodeString(){
+    public void test_encodeString() {
         assertThat(getBase64Util().encode(STRING)).isEqualTo(BASE64);
     }
 
     @Test
-    public void test_decodeNull(){
+    public void test_decodeNull() {
         assertThat(getBase64Util().decode(null)).isEqualTo(null);
     }
 
     @Test
-    public void test_decodeString(){
+    public void test_decodeString() {
         assertThat(getBase64Util().decode(BASE64)).isEqualTo(STRING);
     }
 
     @Test
-    public void test_decodeEncode(){
+    public void test_decodeEncode() {
         Base64 b64 = getBase64Util();
         String str = b64.decode(BASE64);
         assertThat(b64.encode(str)).isEqualTo(BASE64);
     }
 
     @Test
-    public void test_encodeDecode(){
+    public void test_encodeDecode() {
         Base64 b64 = getBase64Util();
         String str = b64.encode(STRING);
         assertThat(b64.decode(str)).isEqualTo(STRING);
     }
 
     @Test
-    public void test_doubleEncodeDecode(){
+    public void test_doubleEncodeDecode() {
         Base64 b64 = getBase64Util();
         String str = b64.encode(STRING);
         str = b64.encode(str);

@@ -13,11 +13,11 @@ public class PagedList<T> extends ArrayList<T> {
         this.pagination = pagination;
     }
 
-    public boolean hasNextPage(){
+    public boolean hasNextPage() {
         return this.pagination != null && this.pagination.getOffsetToken() != null;
     }
 
-    public RequestModifier getNextPageModifier(){
+    public RequestModifier getNextPageModifier() {
         if (!hasNextPage()) {
             return null;
         }
@@ -28,7 +28,7 @@ public class PagedList<T> extends ArrayList<T> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getClass().getSimpleName());
-        if (this.pagination != null){
+        if (this.pagination != null) {
             sb.append(", limit = ").append(this.pagination.getLimit());
         }
         if (hasNextPage()) {

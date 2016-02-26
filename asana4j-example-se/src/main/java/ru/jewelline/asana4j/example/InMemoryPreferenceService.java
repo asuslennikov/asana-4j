@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryPreferenceService implements PreferencesService {
     private Map<Object, Object> store = new ConcurrentHashMap<>();
+
     @Override
     public Integer getInteger(String key) {
         return (Integer) store.get(key);
@@ -55,10 +56,10 @@ public class InMemoryPreferenceService implements PreferencesService {
         putWithNullCheck(key, value);
     }
 
-    private void putWithNullCheck(String key, Object value){
+    private void putWithNullCheck(String key, Object value) {
         if (key != null && value != null) {
             store.put(key, value);
-        } else if(key != null){
+        } else if (key != null) {
             store.remove(key);
         }
     }

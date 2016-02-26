@@ -33,9 +33,9 @@ public final class CachedJsonEntity implements JsonEntity {
     }
 
     private void convertToJsonSafeNullObj(List<ConversionEntry> convertAccumulator) {
-        while (!convertAccumulator.isEmpty()){
-            ConversionEntry conversionEntry =  convertAccumulator.remove(0);
-            if (conversionEntry.source != null){
+        while (!convertAccumulator.isEmpty()) {
+            ConversionEntry conversionEntry = convertAccumulator.remove(0);
+            if (conversionEntry.source != null) {
                 for (Map.Entry<?, ?> entry : conversionEntry.source.entrySet()) {
                     if (entry.getKey() != null) {
                         addEntryToJson(conversionEntry.target, entry, convertAccumulator);

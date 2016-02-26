@@ -8,11 +8,11 @@ public class ApiException extends RuntimeException {
 
     private final int errorCode;
 
-    public ApiException(int errorCode){
+    public ApiException(int errorCode) {
         this.errorCode = errorCode;
     }
 
-    public ApiException(int errorCode, String message){
+    public ApiException(int errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }

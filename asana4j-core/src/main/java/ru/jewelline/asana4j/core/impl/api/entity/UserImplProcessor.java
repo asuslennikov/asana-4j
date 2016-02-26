@@ -37,7 +37,7 @@ enum UserImplProcessor implements JsonFieldReader<UserImpl> {
             JSONObject photos = source.getJSONObject(getFieldName());
             Map<User.PhotoSize, String> converted = new EnumMap(User.PhotoSize.class);
             for (User.PhotoSize photoSize : User.PhotoSize.values()) {
-                if (!photos.isNull(photoSize.toString())){
+                if (!photos.isNull(photoSize.toString())) {
                     converted.put(photoSize, photos.getString(photoSize.toString()));
                 }
             }
@@ -63,8 +63,7 @@ enum UserImplProcessor implements JsonFieldReader<UserImpl> {
                 target.setWorkspaces(converted);
             }
         }
-    },
-    ;
+    },;
 
     private String fieldName;
 

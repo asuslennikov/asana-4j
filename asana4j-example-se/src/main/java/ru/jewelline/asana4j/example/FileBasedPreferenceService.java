@@ -13,7 +13,7 @@ public class FileBasedPreferenceService implements PreferencesService {
     private Properties store = new Properties();
     private final String propsFileName;
 
-    public FileBasedPreferenceService(){
+    public FileBasedPreferenceService() {
         this("asana.properties");
     }
 
@@ -25,7 +25,7 @@ public class FileBasedPreferenceService implements PreferencesService {
                 file.createNewFile();
             }
             store.load(new FileInputStream(file));
-        } catch (IOException ioEx){
+        } catch (IOException ioEx) {
             throw new RuntimeException("Unable to instantiate FileBasedPreferenceService. " + ioEx.getLocalizedMessage());
         }
     }
@@ -78,10 +78,10 @@ public class FileBasedPreferenceService implements PreferencesService {
         putWithNullCheck(key, value);
     }
 
-    private void putWithNullCheck(String key, Object value){
+    private void putWithNullCheck(String key, Object value) {
         if (key != null && value != null) {
             store.put(key, value);
-        } else if(key != null){
+        } else if (key != null) {
             store.remove(key);
         }
         try {

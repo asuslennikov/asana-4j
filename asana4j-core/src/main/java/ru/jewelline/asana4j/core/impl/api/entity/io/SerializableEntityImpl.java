@@ -11,7 +11,7 @@ public final class SerializableEntityImpl<T> implements SerializableEntity {
     private final EntitySerializer<T> serializer;
 
     public SerializableEntityImpl(EntitySerializer<T> serializer, T entity) {
-        if (serializer == null){
+        if (serializer == null) {
             throw new IllegalArgumentException("Serializer can not be null");
         }
         this.serializer = serializer;

@@ -10,8 +10,6 @@ import ru.jewelline.asana4j.api.clients.TeamClientApi;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.core.impl.api.RequestFactory;
-import ru.jewelline.asana4j.core.impl.api.RequestFactoryImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.AttachmentApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.ProjectApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.StoryApiClientImpl;
@@ -22,12 +20,10 @@ import ru.jewelline.asana4j.core.impl.api.clients.UserApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.auth.AuthenticationServiceImpl;
-import ru.jewelline.asana4j.core.impl.http.HttpClientImpl;
-import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
-import ru.jewelline.asana4j.http.HttpClient;
 import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpRequestFactory;
 
 public abstract class AsanaImpl implements Asana {
 
@@ -48,16 +44,16 @@ public abstract class AsanaImpl implements Asana {
 
         HttpClient httpClient = new HttpClientImpl(urlCreator, new BaseHttpConfiguration());
         this.authenticationService = new AuthenticationServiceImpl(preferencesService, httpClient, urlCreator, base64);
-        RequestFactory requestFactory = new RequestFactoryImpl(httpClient, this.authenticationService);
-        ApiEntityContext entityContext = new ApiEntityContext(requestFactory);
-        this.userClient = new UserApiClientImpl(requestFactory, entityContext);
-        this.workspaceClient = new WorkspaceApiClientImpl(requestFactory, entityContext);
-        this.projectClient = new ProjectApiClientImpl(requestFactory, entityContext);
-        this.taskClient = new TaskApiClientImpl(requestFactory, entityContext);
-        this.storyClient = new StoryApiClientImpl(requestFactory, entityContext);
-        this.attachmentClient = new AttachmentApiClientImpl(requestFactory, entityContext);
-        this.teamClient = new TeamApiClientImpl(requestFactory, entityContext);
-        this.tagClient = new TagApiClientImpl(requestFactory, entityContext);
+        HttpRequestFactory httpRequestFactory = new HttpRequestFactoryImpl(httpClient, this.authenticationService);
+        ApiEntityContext entityContext = new ApiEntityContext(HttpRequestFactory);
+        this.userClient = new UserApiClientImpl(HttpRequestFactory, entityContext);
+        this.workspaceClient = new WorkspaceApiClientImpl(HttpRequestFactory, entityContext);
+        this.projectClient = new ProjectApiClientImpl(HttpRequestFactory, entityContext);
+        this.taskClient = new TaskApiClientImpl(HttpRequestFactory, entityContext);
+        this.storyClient = new StoryApiClientImpl(HttpRequestFactory, entityContext);
+        this.attachmentClient = new AttachmentApiClientImpl(HttpRequestFactory, entityContext);
+        this.teamClient = new TeamApiClientImpl(HttpRequestFactory, entityContext);
+        this.tagClient = new TagApiClientImpl(HttpRequestFactory, entityContext);
     }
 
     @Override

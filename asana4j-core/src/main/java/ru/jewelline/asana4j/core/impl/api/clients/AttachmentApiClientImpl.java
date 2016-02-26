@@ -5,11 +5,11 @@ import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.QueryFieldsModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
 import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.io.InputStream;
@@ -17,8 +17,8 @@ import java.io.OutputStream;
 
 public class AttachmentApiClientImpl extends ApiClientImpl implements AttachmentApiClient {
 
-    public AttachmentApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
-        super(requestFactory, entityContext);
+    public AttachmentApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+        super(httpRequestFactory, entityContext);
     }
 
     private EntityDeserializer<AttachmentImpl> getAttachmentDeserializer() {

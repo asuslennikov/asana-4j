@@ -224,8 +224,8 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     public void delete() {
         getContext().newRequest()
                 .setUrl("projects/" + getId())
-            .buildAs(HttpMethod.DELETE)
-            .execute();
+                .buildAs(HttpMethod.DELETE)
+                .execute();
     }
 
     @Override
@@ -237,7 +237,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
         return this.updater;
     }
 
-    public void stopUpdate(){
+    public void stopUpdate() {
         this.updater = null;
     }
 

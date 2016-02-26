@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.utils.Base64;
 public class Base64AndroidUtil implements Base64 {
     @Override
     public String encode(String stringToEncode) {
-        if (stringToEncode == null){
+        if (stringToEncode == null) {
             return null;
         }
         return android.util.Base64.encodeToString(stringToEncode.getBytes(),
@@ -14,7 +14,7 @@ public class Base64AndroidUtil implements Base64 {
 
     @Override
     public String decode(String stringToDecode) {
-        if (stringToDecode == null){
+        if (stringToDecode == null) {
             return null;
         }
         return android.util.Base64.encodeToString(stringToDecode.getBytes(),

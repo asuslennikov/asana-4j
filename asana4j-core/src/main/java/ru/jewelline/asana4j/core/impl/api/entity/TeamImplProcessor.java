@@ -27,8 +27,7 @@ enum TeamImplProcessor implements JsonFieldReader<TeamImpl>, JsonFieldWriter<Tea
         public void write(TeamImpl source, JSONObject target) throws JSONException {
             target.put(getFieldName(), source.getName());
         }
-    },
-    ;
+    },;
 
     private final String fieldName;
 

@@ -7,11 +7,11 @@ public class AuthenticationException extends RuntimeException {
 
     private final int errorCode;
 
-    public AuthenticationException(int errorCode){
+    public AuthenticationException(int errorCode) {
         this.errorCode = errorCode;
     }
 
-    public AuthenticationException(int errorCode, String message){
+    public AuthenticationException(int errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }

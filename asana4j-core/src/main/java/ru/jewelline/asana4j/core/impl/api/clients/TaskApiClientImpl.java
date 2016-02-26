@@ -5,18 +5,18 @@ import ru.jewelline.asana4j.api.clients.TaskApiClient;
 import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
-import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.TagImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
-    public TaskApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
-        super(requestFactory, entityContext);
+    public TaskApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+        super(HttpRequestFactory, entityContext);
     }
 
     private EntityDeserializer<TaskImpl> getTaskDeserializer() {

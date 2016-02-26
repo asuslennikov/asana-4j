@@ -69,14 +69,14 @@ enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
             target.setDueAt(source.getString(getFieldName()));
         }
     },
-    EXTERNAL("external"){
+    EXTERNAL("external") {
         @Override
         public void read(JSONObject source, TaskImpl target) throws JSONException {
             JSONObject externalData = source.getJSONObject(getFieldName());
             target.setExternalData(new ExternalData(getOptString(externalData, "id"), getOptString(externalData, "data")));
         }
 
-        private String getOptString(JSONObject obj, String key){
+        private String getOptString(JSONObject obj, String key) {
             return obj.has(key) ? obj.opt(key).toString() : null;
         }
     },
@@ -197,8 +197,7 @@ enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
                 target.setTags(converted);
             }
         }
-    },
-    ;
+    },;
 
     private String fieldName;
 

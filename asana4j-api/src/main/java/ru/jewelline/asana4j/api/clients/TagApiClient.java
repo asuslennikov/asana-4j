@@ -11,7 +11,7 @@ public interface TagApiClient {
      * Returns the complete tag record for a single tag.
      * <p><i>Triggers HTTP communication with server</i></p>
      *
-     * @param tagId     Globally unique identifier for the attachment.
+     * @param tagId            Globally unique identifier for the attachment.
      * @param requestModifiers additional request modifiers such as pagination, requested fields and so on.
      * @return Returns the complete tag record for a single tag.
      * @api.link <a href="https://asana.com/developers/api-reference/tags#get-single">Get a single tag</a>
@@ -46,7 +46,7 @@ public interface TagApiClient {
      * Returns the compact task records for all tasks with the given tag. Tasks can have more than one tag at a time.
      * <p><i>Triggers HTTP communication with server</i></p>
      *
-     * @param tagId           A filter with specified search criterias
+     * @param tagId            A filter with specified search criterias
      * @param requestModifiers Additional request modifiers such as pagination, requested fields and so on.
      * @return Returns the compact task records for all tasks with the given tag.
      * @api.link <a href="https://asana.com/developers/api-reference/tags#get-tasks">Get tasks with tag</a>

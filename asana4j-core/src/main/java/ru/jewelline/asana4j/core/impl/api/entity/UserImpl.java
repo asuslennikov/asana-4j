@@ -55,7 +55,7 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
     public boolean downloadPhoto(PhotoSize size, OutputStream destination) {
         if (size != null
                 && this.getPhotoUrl() != null
-                && this.getPhotoUrl().containsKey(size)){
+                && this.getPhotoUrl().containsKey(size)) {
             return getContext().newRequest()
                     .path(this.getPhotoUrl().get(size))
                     .buildAs(HttpMethod.GET)
@@ -92,10 +92,10 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
 
     @Override
     public boolean equals(Object candidate) {
-        if (this == candidate){
+        if (this == candidate) {
             return true;
         }
-        if (candidate == null || getClass() != candidate.getClass()){
+        if (candidate == null || getClass() != candidate.getClass()) {
             return false;
         }
         return id == ((UserImpl) candidate).id;

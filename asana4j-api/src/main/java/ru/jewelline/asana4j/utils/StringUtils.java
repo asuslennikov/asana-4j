@@ -38,7 +38,7 @@ public final class StringUtils {
         return true;
     }
 
-    public static Charset getCharset(){
+    public static Charset getCharset() {
         return Charset.isSupported("UTF-8") ? Charset.forName("UTF-8") : Charset.defaultCharset();
     }
 }

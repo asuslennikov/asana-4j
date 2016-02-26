@@ -1,26 +1,25 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
-import ru.jewelline.asana4j.core.impl.api.RequestFactory;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-abstract class ApiClientImpl implements RequestFactory {
+abstract class ApiClientImpl {
 
-    private final RequestFactory requestFactory;
+    private final HttpRequestFactory httpRequestFactory;
     private final ApiEntityContext entityContext;
 
-    public ApiClientImpl(RequestFactory requestFactory, ApiEntityContext entityContext) {
-        this.requestFactory = requestFactory;
+    public ApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+        this.HttpRequestFactory = httpRequestFactory;
         this.entityContext = entityContext;
     }
 
-    protected ApiEntityContext getEntityContext(){
+    protected ApiEntityContext getEntityContext() {
         return this.entityContext;
     }
 
-    @Override
     public final HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return this.requestFactory.newRequest(requestModifiers);
+        return this.HttpRequestFactory.newRequest(requestModifiers);
     }
 }
