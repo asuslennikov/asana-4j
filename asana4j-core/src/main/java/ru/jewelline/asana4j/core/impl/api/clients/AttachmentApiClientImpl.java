@@ -7,6 +7,7 @@ import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
@@ -30,7 +31,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
         return newRequest(requestModifiers)
                 .setUrl("tasks/" + taskId + "/attachments")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getAttachmentDeserializer());
     }
 
@@ -39,7 +40,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
         return newRequest(requestModifiers)
                 .setUrl("attachments/" + String.valueOf(attachmentId))
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getAttachmentDeserializer());
     }
 
@@ -63,7 +64,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
                 .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
                 .setEntity(entity)
                 .buildAs(HttpMethod.POST)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getAttachmentDeserializer());
     }
 }

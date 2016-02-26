@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
@@ -13,7 +14,7 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceApiClient {
 
     public WorkspaceApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
-        super(HttpRequestFactory, entityContext);
+        super(httpRequestFactory, entityContext);
     }
 
     private EntityDeserializer<WorkspaceImpl> getWorkspaceDeserializer() {
@@ -25,7 +26,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceAp
         return newRequest(requestModifiers)
                 .setUrl("workspaces/" + id)
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getWorkspaceDeserializer());
     }
 
@@ -34,7 +35,7 @@ public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceAp
         return newRequest(requestModifiers)
                 .setUrl("workspaces")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getWorkspaceDeserializer());
     }
 }

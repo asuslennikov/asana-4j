@@ -2,6 +2,7 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.request.http.HttpMethod;
 
 class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implements Task.TaskUpdater {
@@ -26,7 +27,7 @@ class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implements Task.
                 .setUrl("tasks/" + this.target.getId())
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(new ApiEntityDeserializer<>(this.target));
         return this.target;
     }

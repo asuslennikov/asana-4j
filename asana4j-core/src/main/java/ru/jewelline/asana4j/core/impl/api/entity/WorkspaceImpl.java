@@ -10,6 +10,7 @@ import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
@@ -100,7 +101,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                 .setUrl("workspaces/" + this.getId())
                 .setEntity(this)
                 .buildAs(HttpMethod.PUT)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(new ApiEntityDeserializer<>(this));
     }
 
@@ -126,7 +127,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getContext().getDeserializer(UserImpl.class));
         // TODO reload after operation?
     }
@@ -153,7 +154,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
         // TODO reload after operation?
     }
 
@@ -163,7 +164,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
         return getContext().newRequest()
                 .setUrl("workspaces/" + this.getId() + "/projects")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getContext().getDeserializer(ProjectImpl.class));
     }
 
@@ -176,7 +177,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                 .setUrl("projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getContext().getDeserializer(ProjectImpl.class));
     }
 
@@ -190,7 +191,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
         return getContext().newRequest(requestModifiers)
                 .setUrl("organizations/" + getId() + "/teams")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getContext().getDeserializer(TeamImpl.class));
     }
 

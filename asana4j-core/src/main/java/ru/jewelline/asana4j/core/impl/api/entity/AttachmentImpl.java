@@ -7,6 +7,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.utils.StringUtils;
 import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.StreamBasedResponseReceiver;
 
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -125,10 +126,10 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
     public boolean download(OutputStream destinationStream) {
         if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
             return getContext().newRequest()
-                    .path(getDownloadUrl())
+                    .setUrl(getDownloadUrl())
                     .buildAs(HttpMethod.GET)
-                    .sendAndReadResponse(destinationStream)
-                    .code() == RESPONSE_OK_ANSWER_CODE;
+                    .execute(new StreamBasedResponseReceiver(destinationStream))
+                    .getResponseCode() == RESPONSE_OK_ANSWER_CODE;
         }
         return false;
     }
@@ -137,10 +138,10 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
     public boolean downloadPreview(OutputStream destinationStream) {
         if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
             return getContext().newRequest()
-                    .path(getViewUrl())
+                    .setUrl(getViewUrl())
                     .buildAs(HttpMethod.GET)
-                    .sendAndReadResponse(destinationStream)
-                    .code() == RESPONSE_OK_ANSWER_CODE;
+                    .execute(new StreamBasedResponseReceiver(destinationStream))
+                    .getResponseCode() == RESPONSE_OK_ANSWER_CODE;
         }
         return false;
     }

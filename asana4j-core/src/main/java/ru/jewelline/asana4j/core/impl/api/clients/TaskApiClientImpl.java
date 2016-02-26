@@ -8,6 +8,7 @@ import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.TagImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
@@ -16,7 +17,7 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
 
     public TaskApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
-        super(HttpRequestFactory, entityContext);
+        super(httpRequestFactory, entityContext);
     }
 
     private EntityDeserializer<TaskImpl> getTaskDeserializer() {
@@ -28,7 +29,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
         return newRequest(requestModifiers)
                 .setUrl("tasks/" + taskId)
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getTaskDeserializer());
     }
 
@@ -37,7 +38,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
         return newRequest(requestModifiers)
                 .setUrl("projects/" + projectId + "/tasks")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getTaskDeserializer());
     }
 
@@ -46,7 +47,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
         newRequest()
                 .setUrl("tasks/" + taskId)
                 .buildAs(HttpMethod.GET)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
     }
 
     @Override
@@ -54,7 +55,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
         return newRequest()
                 .setUrl("tasks/" + taskId + "/tags")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getEntityContext().getDeserializer(TagImpl.class));
     }
 
@@ -66,7 +67,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
                         .setField("tag", tagId)
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
     }
 
     @Override
@@ -77,6 +78,6 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
                         .setField("tag", tagId)
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
     }
 }

@@ -8,6 +8,7 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.modifiers.RequestModifier;
@@ -141,7 +142,7 @@ public class TagImpl extends ApiEntityImpl<TagImpl> implements Tag {
         return getContext().newRequest(requestModifiers)
                 .setUrl("tags/" + getId() + "/tasks")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getContext().getDeserializer(TaskImpl.class));
     }
 }

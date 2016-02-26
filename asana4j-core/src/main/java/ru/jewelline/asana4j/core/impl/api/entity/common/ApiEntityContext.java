@@ -81,10 +81,6 @@ public class ApiEntityContext {
         return new ApiEntityDeserializer<>(getEntityProvider(entityClass));
     }
 
-    public <T extends ApiEntityImpl<T>> T getEntity(Class<T> entityClass) {
-        return getEntityProvider(entityClass).getInstance();
-    }
-
     public HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
         return this.httpRequestFactory.newRequest(requestModifiers);
     }

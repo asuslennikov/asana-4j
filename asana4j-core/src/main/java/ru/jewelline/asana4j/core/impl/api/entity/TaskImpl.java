@@ -11,6 +11,7 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
@@ -271,7 +272,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         getContext().newRequest()
                 .setUrl("tasks/" + getId())
                 .buildAs(HttpMethod.DELETE)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
     }
 
     @Override
@@ -297,7 +298,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return getContext().newRequest()
                 .setUrl("tasks/" + getId() + "/subtasks")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(this.getContext().getDeserializer(TaskImpl.class));
     }
 
@@ -307,7 +308,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .setUrl("tasks/" + getId() + "/setParent")
                 .setQueryParameter("parent", String.valueOf(parentTaskId))
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
     }
 
     @Override
@@ -321,7 +322,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .setUrl("/tasks/" + getId() + "/removeProject")
                 .setQueryParameter("project", String.valueOf(projectId))
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
     }
 
     @Override
@@ -329,7 +330,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return getContext().newRequest(requestModifiers)
                 .setUrl("tasks/" + getId() + "/stories")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getContext().getDeserializer(StoryImpl.class));
     }
 
@@ -341,7 +342,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                         .setField("text", text)
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getContext().getDeserializer(StoryImpl.class));
     }
 
@@ -350,7 +351,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
         return getContext().newRequest(requestModifiers)
                 .setUrl("tasks/" + getId() + "/attachments")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getContext().getDeserializer(AttachmentImpl.class));
     }
 
@@ -362,7 +363,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                 .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
                 .setEntity(entity)
                 .buildAs(HttpMethod.POST)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getContext().getDeserializer(AttachmentImpl.class));
     }
 
@@ -374,7 +375,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                         .setField("tag", tagId)
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
         // TODO reload after operation?
     }
 
@@ -386,7 +387,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                         .setField("tag", tagId)
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
         // TODO reload after operation?
     }
 
@@ -414,7 +415,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
                     .setQueryParameter("insertBefore", String.valueOf(this.insertBefore))
                     .setQueryParameter("section", String.valueOf(this.section))
                     .buildAs(HttpMethod.POST)
-                    .execute();
+                    .execute(new ApiEntityResponseReceiver());
         }
 
         @Override

@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
@@ -82,7 +83,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
         return getContext().newRequest(requestModifiers)
                 .setUrl("/teams/" + getId() + "/users")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getContext().getDeserializer(UserImpl.class));
     }
 
@@ -108,7 +109,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getContext().getDeserializer(UserImpl.class));
         // TODO reload after operation?
     }
@@ -135,7 +136,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute();
+                .execute(new ApiEntityResponseReceiver());
         // TODO reload after operation?
     }
 
@@ -147,7 +148,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
                 .setUrl("teams/" + getId() + "/projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getContext().getDeserializer(ProjectImpl.class));
     }
 }

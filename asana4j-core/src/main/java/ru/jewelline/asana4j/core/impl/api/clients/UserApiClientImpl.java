@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
@@ -13,7 +14,7 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
 
     public UserApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
-        super(HttpRequestFactory, entityContext);
+        super(httpRequestFactory, entityContext);
     }
 
     private EntityDeserializer<UserImpl> getUserDeserializer() {
@@ -25,7 +26,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
         return newRequest(requestModifiers)
                 .setUrl("users/me")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getUserDeserializer());
     }
 
@@ -34,7 +35,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
         return newRequest(requestModifiers)
                 .setUrl("users/" + userId)
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getUserDeserializer());
     }
 
@@ -43,7 +44,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
         return newRequest(requestModifiers)
                 .setUrl("users")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getUserDeserializer());
     }
 
@@ -52,7 +53,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
         return newRequest(requestModifiers)
                 .setUrl("workspaces/" + workspaceId + "/users")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getUserDeserializer());
     }
 }

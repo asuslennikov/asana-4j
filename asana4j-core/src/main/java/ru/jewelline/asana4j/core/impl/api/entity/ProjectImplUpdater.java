@@ -5,6 +5,7 @@ import ru.jewelline.asana4j.api.entity.ProjectColor;
 import ru.jewelline.asana4j.api.entity.ProjectStatus;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.io.FieldsUpdater;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
@@ -103,7 +104,7 @@ class ProjectImplUpdater extends FieldsUpdater implements Project.ProjectUpdater
                 .setUrl("projects/" + this.target.getId())
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(new ApiEntityDeserializer<>(this.target));
     }
 

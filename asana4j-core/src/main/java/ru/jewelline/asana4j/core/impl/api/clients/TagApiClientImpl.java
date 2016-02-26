@@ -10,6 +10,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.TagImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TagImplCreator;
 import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
@@ -31,7 +32,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
         return newRequest(requestModifiers)
                 .setUrl("tags/" + tagId)
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiObject(getTagDeserializer());
     }
 
@@ -46,7 +47,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
                 .setUrl("tags")
                 .setEntity(convertFromTagFilter(filter))
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getTagDeserializer());
     }
 
@@ -69,7 +70,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
         return newRequest(requestModifiers)
                 .setUrl("tags/" + tagId + "/tasks")
                 .buildAs(HttpMethod.GET)
-                .execute()
+                .execute(new ApiEntityResponseReceiver())
                 .asApiCollection(getEntityContext().getDeserializer(TaskImpl.class));
     }
 }

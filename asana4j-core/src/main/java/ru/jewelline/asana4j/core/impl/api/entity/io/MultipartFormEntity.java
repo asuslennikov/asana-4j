@@ -1,6 +1,5 @@
 package ru.jewelline.asana4j.core.impl.api.entity.io;
 
-import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.utils.StackedInputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
 import ru.jewelline.request.http.entity.SerializableEntity;
@@ -48,17 +47,5 @@ public class MultipartFormEntity implements SerializableEntity {
     @Override
     public InputStream getSerialized() {
         return this.attachmentBody;
-    }
-
-    @Override
-    public EntitySerializer<?> getSerializer() {
-        return new MultipartFormEntitySerializer();
-    }
-
-    private static class MultipartFormEntitySerializer implements EntitySerializer<MultipartFormEntity> {
-        @Override
-        public InputStream serialize(MultipartFormEntity entity) {
-            return entity.getSerialized();
-        }
     }
 }
