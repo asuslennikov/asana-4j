@@ -26,7 +26,7 @@ public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiCli
                 .setField("workspace", workspaceId)
                 .setField("name", projectName);
         return apiRequest()
-                .path("projects")
+                .setUrl("projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
@@ -36,7 +36,7 @@ public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiCli
     @Override
     public Project getProjectById(long projectId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("projects/" + projectId)
+                .setUrl("projects/" + projectId)
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getProjectDeserializer());
@@ -45,7 +45,7 @@ public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiCli
     @Override
     public void deleteProject(long projectId, RequestModifier... requestModifiers) {
         apiRequest(requestModifiers)
-                .path("projects/" + projectId)
+                .setUrl("projects/" + projectId)
                 .buildAs(HttpMethod.DELETE)
                 .execute();
     }

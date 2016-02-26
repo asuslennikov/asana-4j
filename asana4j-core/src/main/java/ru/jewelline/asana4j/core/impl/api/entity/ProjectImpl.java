@@ -189,7 +189,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     @Override
     public PagedList<Task> getTasks() {
         return getContext().apiRequest()
-                .path("projects/" + getId() + "/tasks")
+                .setUrl("projects/" + getId() + "/tasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(TaskImpl.class));
@@ -223,7 +223,7 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     @Override
     public void delete() {
         getContext().apiRequest()
-            .path("projects/" + getId())
+                .setUrl("projects/" + getId())
             .buildAs(HttpMethod.DELETE)
             .execute();
     }

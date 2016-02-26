@@ -14,6 +14,7 @@ import ru.jewelline.asana4j.utils.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class ApiRequestBuilderImpl implements ApiRequestBuilder {
@@ -30,7 +31,7 @@ class ApiRequestBuilderImpl implements ApiRequestBuilder {
     }
 
     @Override
-    public ApiRequestBuilder path(String apiSuffix) {
+    public ApiRequestBuilder setUrl(String apiSuffix) {
         if (!StringUtils.emptyOrOnlyWhiteSpace(apiSuffix)){
             if (apiSuffix.startsWith("/")){
                 /** skip the first "/" symbol, because we already have it in the {@link BASE_API_URL} */
@@ -43,12 +44,12 @@ class ApiRequestBuilderImpl implements ApiRequestBuilder {
     }
 
     @Override
-    public String getPath() {
+    public String getUrl() {
         return this.apiSuffix;
     }
 
     @Override
-    public ApiRequestBuilder setQueryParameter(String parameterKey, String parameterValue) {
+    public ApiRequestBuilder setQueryParameter(String parameterKey, String... parameterValue) {
         if (this.queryParameters == null) {
             this.queryParameters = new HashMap<>();
         }
@@ -57,12 +58,12 @@ class ApiRequestBuilderImpl implements ApiRequestBuilder {
     }
 
     @Override
-    public Map<String, String> getQueryParameters() {
+    public Map<String, List<String>> getQueryParameters() {
         return this.queryParameters == null ? Collections.<String, String>emptyMap() : Collections.unmodifiableMap(this.queryParameters);
     }
 
     @Override
-    public ApiRequestBuilder setHeader(String headerKey, String headerValue) {
+    public ApiRequestBuilder setHeader(String headerKey, String... headerValue) {
         if (this.headers == null) {
             this.headers = new HashMap<>();
         }
@@ -71,7 +72,7 @@ class ApiRequestBuilderImpl implements ApiRequestBuilder {
     }
 
     @Override
-    public Map<String, String> getHeaders() {
+    public Map<String, List<String>> getHeaders() {
         return this.headers == null ? Collections.<String, String>emptyMap() : Collections.unmodifiableMap(this.headers);
     }
 

@@ -23,7 +23,7 @@ class TaskImplUpdater extends TaskImplBuilder<Task.TaskUpdater> implements Task.
     public Task update() {
         this.target.stopUpdate();
         this.target.getContext().apiRequest()
-                .path("tasks/" + this.target.getId())
+                .setUrl("tasks/" + this.target.getId())
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)
                 .execute()

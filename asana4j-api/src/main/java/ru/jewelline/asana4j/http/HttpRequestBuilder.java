@@ -19,7 +19,7 @@ public interface HttpRequestBuilder {
      *                (<code>http://</code>) will be added.
      * @return The request builder
      */
-    HttpRequestBuilder path(String baseUrl);
+    HttpRequestBuilder setUrl(String baseUrl);
 
     /**
      * Adds query parameter to your request. If you call this method twice for the same parameterKey, the second call
@@ -29,7 +29,7 @@ public interface HttpRequestBuilder {
      * @param parameterValue value for you query parameter, will be encoded
      * @return The request builder
      */
-    HttpRequestBuilder setQueryParameter(String parameterKey, String parameterValue);
+    HttpRequestBuilder setQueryParameter(String parameterKey, String... parameterValue);
 
     /**
      * Adds request headers. If you call this method twice for the same headerKey, the second call
@@ -39,7 +39,7 @@ public interface HttpRequestBuilder {
      * @param headerValue value for HTTP header
      * @return The request builder
      */
-    HttpRequestBuilder setHeader(String headerKey, String headerValue);
+    HttpRequestBuilder setHeader(String headerKey, String... headerValue);
 
     /**
      * Adds body to you request. It has no effect if you execute this request as GET HTTP request
@@ -47,7 +47,7 @@ public interface HttpRequestBuilder {
      * @param requestBody payload for your request
      * @return The request builder
      */
-    HttpRequestBuilder entity(byte[] requestBody);
+    HttpRequestBuilder setEntity(byte[] requestBody);
 
     /**
      * Adds body for you request. Has no effect if you execute this request as GET HTTP request
@@ -55,14 +55,14 @@ public interface HttpRequestBuilder {
      * @param entityStream payload for your request
      * @return The request builder
      */
-    HttpRequestBuilder entity(InputStream entityStream);
+    HttpRequestBuilder setEntity(InputStream entityStream);
 
     /**
      * Creates an instance of HttpRequest
      *
      * @return an instance of HttpRequest with specified headers, query parameters and body
      * @throws NetworkException with {@link NetworkException#MALFORMED_URL} code will be thrown if you didn't specify
-     *                          a base url (see {@link #path(String)})
+     *                          a base url (see {@link #setUrl(String)})
      */
-    HttpRequest buildAs(HttpMethod method) throws NetworkException;
+    HttpRequest buildAs(HttpMethod method);
 }

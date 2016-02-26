@@ -40,7 +40,7 @@ class TaskImplCreator extends TaskImplBuilder<Task.TaskCreator> implements Task.
     @Override
     public Task create() {
         return this.context.apiRequest()
-                .path("tasks")
+                .setUrl("tasks")
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()

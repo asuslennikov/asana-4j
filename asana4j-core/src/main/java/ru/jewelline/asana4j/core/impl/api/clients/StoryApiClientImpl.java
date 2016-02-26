@@ -24,7 +24,7 @@ public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient 
     @Override
     public Story getStoryById(long storyId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("stories/" + String.valueOf(storyId))
+                .setUrl("stories/" + String.valueOf(storyId))
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getStoryDeserializer());
@@ -33,7 +33,7 @@ public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient 
     @Override
     public PagedList<Story> getTaskStories(long taskId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("tasks/" + taskId + "/stories")
+                .setUrl("tasks/" + taskId + "/stories")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getStoryDeserializer());
@@ -42,7 +42,7 @@ public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient 
     @Override
     public Story createTaskComment(long taskId, String text, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("tasks/" + taskId + "/stories")
+                .setUrl("tasks/" + taskId + "/stories")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("text", text)
                         .wrapFieldsAsEntity())

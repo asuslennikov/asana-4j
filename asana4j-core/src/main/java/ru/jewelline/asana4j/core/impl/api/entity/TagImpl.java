@@ -139,7 +139,7 @@ public class TagImpl extends ApiEntityImpl<TagImpl> implements Tag {
     @Override
     public PagedList<Task> getTasks(RequestModifier... requestModifiers) {
         return getContext().apiRequest(requestModifiers)
-                .path("tags/" + getId() + "/tasks")
+                .setUrl("tags/" + getId() + "/tasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(TaskImpl.class));

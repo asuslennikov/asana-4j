@@ -80,7 +80,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
     @Override
     public PagedList<User> getUsers(RequestModifier... requestModifiers) {
         return getContext().apiRequest(requestModifiers)
-                .path("/teams/" + getId() + "/users")
+                .setUrl("/teams/" + getId() + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(UserImpl.class));
@@ -103,7 +103,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
 
     private User addUserInternal(Object userReference) {
         return getContext().apiRequest()
-                .path("teams/" + getId() + "/addUser")
+                .setUrl("teams/" + getId() + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -130,7 +130,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
 
     private void removeUserInternal(Object userReference) {
         getContext().apiRequest()
-                .path("teams/" + getId() + "/removeUser")
+                .setUrl("teams/" + getId() + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -144,7 +144,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
                 .setField("name", name);
         return getContext().apiRequest()
-                .path("teams/" + getId() + "/projects")
+                .setUrl("teams/" + getId() + "/projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()

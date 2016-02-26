@@ -23,7 +23,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
     @Override
     public User getCurrentUser(RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("users/me")
+                .setUrl("users/me")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getUserDeserializer());
@@ -32,7 +32,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
     @Override
     public User getUserById(long userId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("users/" + userId)
+                .setUrl("users/" + userId)
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getUserDeserializer());
@@ -41,7 +41,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
     @Override
     public PagedList<User> getUsers(RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("users")
+                .setUrl("users")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getUserDeserializer());
@@ -50,7 +50,7 @@ public class UserApiClientImpl extends ApiClientImpl implements UserApiClient {
     @Override
     public PagedList<User> getWorkspaceUsers(long workspaceId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("workspaces/" + workspaceId + "/users")
+                .setUrl("workspaces/" + workspaceId + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getUserDeserializer());

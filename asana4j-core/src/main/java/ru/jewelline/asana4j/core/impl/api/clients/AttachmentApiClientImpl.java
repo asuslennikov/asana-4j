@@ -28,7 +28,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
     @Override
     public PagedList<Attachment> getTaskAttachments(long taskId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("tasks/" + taskId + "/attachments")
+                .setUrl("tasks/" + taskId + "/attachments")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getAttachmentDeserializer());
@@ -37,7 +37,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
     @Override
     public Attachment getAttachmentById(long attachmentId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("attachments/" + String.valueOf(attachmentId))
+                .setUrl("attachments/" + String.valueOf(attachmentId))
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getAttachmentDeserializer());
@@ -59,7 +59,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
     public Attachment uploadAttachment(long taskId, String name, InputStream attachment) {
         MultipartFormEntity entity = new MultipartFormEntity(name, attachment);
         return apiRequest()
-                .path("tasks/" + taskId + "/attachments")
+                .setUrl("tasks/" + taskId + "/attachments")
                 .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
                 .setEntity(entity)
                 .buildAs(HttpMethod.POST)

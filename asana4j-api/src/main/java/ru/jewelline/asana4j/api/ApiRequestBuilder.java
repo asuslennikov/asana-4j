@@ -4,21 +4,22 @@ import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 import ru.jewelline.asana4j.http.HttpMethod;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ApiRequestBuilder {
 
-    ApiRequestBuilder path(String apiSuffix);
+    ApiRequestBuilder setUrl(String apiSuffix);
 
-    String getPath();
+    String getUrl();
 
-    ApiRequestBuilder setQueryParameter(String parameterKey, String parameterValue);
+    ApiRequestBuilder setQueryParameter(String parameterKey, String... parameterValue);
 
-    Map<String, String> getQueryParameters();
+    Map<String, List<String>> getQueryParameters();
 
-    ApiRequestBuilder setHeader(String headerKey, String headerValue);
+    ApiRequestBuilder setHeader(String headerKey, String... headerValue);
 
-    Map<String, String> getHeaders();
+    Map<String, List<String>> getHeaders();
 
     <T> ApiRequestBuilder setEntity(T entity, EntitySerializer<T> serializer);
 

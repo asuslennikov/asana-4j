@@ -97,7 +97,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     @Override
     public void update() {
         getContext().apiRequest()
-                .path("workspaces/" + this.getId())
+                .setUrl("workspaces/" + this.getId())
                 .setEntity(this)
                 .buildAs(HttpMethod.PUT)
                 .execute()
@@ -121,7 +121,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     private User addUserInternal(Object userReference) {
         return getContext().apiRequest()
-                .path("workspaces/" + this.getId() + "/addUser")
+                .setUrl("workspaces/" + this.getId() + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -148,7 +148,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     private void removeUserInternal(Object userReference) {
         getContext().apiRequest()
-                .path("workspaces/" + this.getId() + "/removeUser")
+                .setUrl("workspaces/" + this.getId() + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -161,7 +161,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     public PagedList<Project> getProjects() {
         // TODO should we update a workspace of project to this instance?
         return getContext().apiRequest()
-                .path("workspaces/" + this.getId() + "/projects")
+                .setUrl("workspaces/" + this.getId() + "/projects")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(ProjectImpl.class));
@@ -173,7 +173,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
                 .setField("workspace", getId())
                 .setField("name", name);
         return getContext().apiRequest()
-                .path("projects")
+                .setUrl("projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()
@@ -188,7 +188,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     @Override
     public PagedList<Team> getTeams(RequestModifier... requestModifiers) {
         return getContext().apiRequest(requestModifiers)
-                .path("organizations/" + getId() + "/teams")
+                .setUrl("organizations/" + getId() + "/teams")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getContext().getDeserializer(TeamImpl.class));

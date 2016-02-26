@@ -26,7 +26,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
     @Override
     public Task getTaskById(long taskId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("tasks/" + taskId)
+                .setUrl("tasks/" + taskId)
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getTaskDeserializer());
@@ -35,7 +35,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
     @Override
     public PagedList<Task> getTasksForProject(long projectId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("projects/" + projectId + "/tasks")
+                .setUrl("projects/" + projectId + "/tasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getTaskDeserializer());
@@ -44,7 +44,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
     @Override
     public void deleteTask(long taskId) {
         apiRequest()
-                .path("tasks/" + taskId)
+                .setUrl("tasks/" + taskId)
                 .buildAs(HttpMethod.GET)
                 .execute();
     }
@@ -52,7 +52,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
     @Override
     public PagedList<Tag> getTaskTags(long taskId, RequestModifier... requestModifiers) {
         return apiRequest()
-                .path("tasks/" + taskId + "/tags")
+                .setUrl("tasks/" + taskId + "/tags")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getEntityContext().getDeserializer(TagImpl.class));
@@ -61,7 +61,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
     @Override
     public void addTag(long taskId, long tagId) {
         getEntityContext().apiRequest()
-                .path("tasks/" + taskId + "/addTag")
+                .setUrl("tasks/" + taskId + "/addTag")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("tag", tagId)
                         .wrapFieldsAsEntity())
@@ -72,7 +72,7 @@ public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
     @Override
     public void removeTag(long taskId, long tagId) {
         getEntityContext().apiRequest()
-                .path("tasks/" + taskId + "/removeTag")
+                .setUrl("tasks/" + taskId + "/removeTag")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("tag", tagId)
                         .wrapFieldsAsEntity())

@@ -28,7 +28,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
     @Override
     public Team getTeamById(long teamId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("teams/" + String.valueOf(teamId))
+                .setUrl("teams/" + String.valueOf(teamId))
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getTeamDeserializer());
@@ -37,7 +37,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
     @Override
     public PagedList<Team> getTeamsInOrganisation(long organizationId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("organizations/" + organizationId + "/teams")
+                .setUrl("organizations/" + organizationId + "/teams")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getTeamDeserializer());
@@ -46,7 +46,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
     @Override
     public PagedList<User> getTeamUsers(long teamId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("/teams/" + teamId + "/users")
+                .setUrl("/teams/" + teamId + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getEntityContext().getDeserializer(UserImpl.class));
@@ -69,7 +69,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 
     private User addUserInternal(long teamId, Object userReference) {
         return getEntityContext().apiRequest()
-                .path("teams/" + teamId + "/addUser")
+                .setUrl("teams/" + teamId + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -95,7 +95,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 
     private void removeUserInternal(long teamId, Object userReference) {
         getEntityContext().apiRequest()
-                .path("teams/" + teamId + "/removeUser")
+                .setUrl("teams/" + teamId + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
                         .wrapFieldsAsEntity())
@@ -108,7 +108,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
                 .setField("name", name);
         return getEntityContext().apiRequest()
-                .path("teams/" + teamId + "/projects")
+                .setUrl("teams/" + teamId + "/projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
                 .execute()

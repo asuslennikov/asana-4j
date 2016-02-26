@@ -29,7 +29,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
     @Override
     public Tag getTagById(long tagId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("tags/" + tagId)
+                .setUrl("tags/" + tagId)
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiObject(getTagDeserializer());
@@ -43,7 +43,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
     @Override
     public PagedList<Tag> getTags(TagFilter filter, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("tags")
+                .setUrl("tags")
                 .setEntity(convertFromTagFilter(filter))
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -67,7 +67,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
     @Override
     public PagedList<Task> getTasksForTag(long tagId, RequestModifier... requestModifiers) {
         return apiRequest(requestModifiers)
-                .path("tags/" + tagId + "/tasks")
+                .setUrl("tags/" + tagId + "/tasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
                 .asApiCollection(getEntityContext().getDeserializer(TaskImpl.class));
