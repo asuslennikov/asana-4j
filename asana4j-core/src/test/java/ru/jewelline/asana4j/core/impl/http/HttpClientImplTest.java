@@ -6,10 +6,10 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
-import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.NetworkException;
 import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

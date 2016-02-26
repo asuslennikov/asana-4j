@@ -1,9 +1,9 @@
 package ru.jewelline.asana4j.core.impl.api.entity.io;
 
 import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
-import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
 import ru.jewelline.asana4j.utils.StackedInputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
+import ru.jewelline.request.http.entity.SerializableEntity;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

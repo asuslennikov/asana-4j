@@ -199,6 +199,7 @@
                 <module>asana4j-utils-android</module>
                 <module>asana4j-utils-se</module>
                 <module>asana4j-example-se</module>
+                <module>http-request</module>
             </modules>
         </profile>
 

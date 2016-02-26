@@ -2,9 +2,9 @@ package ru.jewelline.asana4j.core.impl.http;
 
 import org.junit.Test;
 import org.mockito.Matchers;
-import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.NetworkException;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.io.IOException;
 import java.io.InputStream;

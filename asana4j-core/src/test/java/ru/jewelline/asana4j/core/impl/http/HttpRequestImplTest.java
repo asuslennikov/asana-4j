@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

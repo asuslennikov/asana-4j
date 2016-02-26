@@ -13,10 +13,10 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
-import ru.jewelline.asana4j.http.HttpMethod;
 import ru.jewelline.asana4j.http.HttpRequest;
 import ru.jewelline.asana4j.http.HttpRequestBuilder;
 import ru.jewelline.asana4j.http.HttpResponse;
+import ru.jewelline.request.http.HttpMethod;
 
 import java.io.OutputStream;
 import java.util.Collections;
