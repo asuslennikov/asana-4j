@@ -1,11 +1,11 @@
 package ru.jewelline.asana4j.core.impl.api.clients.modifiers;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.HttpRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.ModifiersChain;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestBuilder;
 import ru.jewelline.request.http.entity.SerializableEntity;
+import ru.jewelline.request.http.modifiers.ModifiersChain;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public class DataRootRequestModifier implements RequestModifier {

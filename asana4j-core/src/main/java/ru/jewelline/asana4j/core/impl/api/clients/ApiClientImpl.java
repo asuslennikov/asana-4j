@@ -11,7 +11,7 @@ abstract class ApiClientImpl {
     private final ApiEntityContext entityContext;
 
     public ApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
-        this.HttpRequestFactory = httpRequestFactory;
+        this.httpRequestFactory = httpRequestFactory;
         this.entityContext = entityContext;
     }
 
@@ -20,6 +20,6 @@ abstract class ApiClientImpl {
     }
 
     public final HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return this.HttpRequestFactory.newRequest(requestModifiers);
+        return this.httpRequestFactory.newRequest(requestModifiers);
     }
 }

@@ -4,12 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
+import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.URLCreator;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.NetworkException;
 
+import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
 
 final class GrantCodeWorker extends AuthenticationWorker {
@@ -26,17 +28,16 @@ final class GrantCodeWorker extends AuthenticationWorker {
     @Override
     void authenticate() throws AuthenticationException {
         try {
-            JsonOutputStream responseBody = new JsonOutputStream();
-            HttpResponse response = this.httpRequestFactory.newRequest()
-                    .path(ACCESS_TOKEN_ENDPOINT)
+            ApiEntityResponseReceiver responseReceiver = this.httpRequestFactory.newRequest()
+                    .setUrl(ACCESS_TOKEN_ENDPOINT)
                     .setHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .entity(getAccessTokenRequestBody())
+                    .setEntity(new ByteArrayInputStream(getAccessTokenRequestBody()))
                     .buildAs(HttpMethod.POST)
-                    .sendAndReadResponse(responseBody);
-            if (response.code() != HttpURLConnection.HTTP_OK) {
-                throwAuthenticationError(responseBody);
+                    .execute(new ApiEntityResponseReceiver());
+            if (responseReceiver.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                throwAuthenticationError(responseReceiver.getErrorStream());
             }
-            JSONObject authResponse = responseBody.asJson();
+            JSONObject authResponse = responseReceiver.getResponseStream().asJson();
 
             getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN,
                     getStringPropertyFromJson(authResponse, "access_token"));
