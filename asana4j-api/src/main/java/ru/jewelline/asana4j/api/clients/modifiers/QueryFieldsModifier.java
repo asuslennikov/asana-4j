@@ -1,8 +1,9 @@
 package ru.jewelline.asana4j.api.clients.modifiers;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.modifiers.ModifiersChain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +18,7 @@ public class QueryFieldsModifier extends ApiOptionModifier {
     }
 
     @Override
-    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
+    public void modify(HttpRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         if (this.fields != null && this.fields.length > 0) {
             super.modify(requestBuilder, httpMethod, modifiersChain);
         } else {
@@ -26,7 +27,7 @@ public class QueryFieldsModifier extends ApiOptionModifier {
     }
 
     @Override
-    protected void appendToQueryParameters(ApiRequestBuilder requestBuilder) {
+    protected void appendToQueryParameters(HttpRequestBuilder requestBuilder) {
         StringBuilder sb = new StringBuilder();
         for (String field : this.fields) {
             sb.append(field).append(',');

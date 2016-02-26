@@ -23,7 +23,7 @@ class TagImplUpdater extends TagBuilderImpl<TagUpdater> implements TagUpdater {
     @Override
     public Tag update() {
         this.target.stopUpdate();
-        this.target.getContext().apiRequest()
+        this.target.getContext().newRequest()
                 .setUrl("tags/" + this.target.getId())
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)

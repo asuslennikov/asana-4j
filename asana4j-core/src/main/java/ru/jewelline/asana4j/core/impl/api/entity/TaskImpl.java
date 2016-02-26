@@ -1,7 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.ExternalData;
 import ru.jewelline.asana4j.api.entity.Project;
@@ -16,6 +15,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -268,7 +268,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void delete() {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("tasks/" + getId())
                 .buildAs(HttpMethod.DELETE)
                 .execute();
@@ -294,7 +294,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public PagedList<Task> getSubTasks() {
-        return getContext().apiRequest()
+        return getContext().newRequest()
                 .setUrl("tasks/" + getId() + "/subtasks")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -303,7 +303,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void setParentTask(Long parentTaskId) {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("tasks/" + getId() + "/setParent")
                 .setQueryParameter("parent", String.valueOf(parentTaskId))
                 .buildAs(HttpMethod.POST)
@@ -317,7 +317,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void removeProject(long projectId) {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("/tasks/" + getId() + "/removeProject")
                 .setQueryParameter("project", String.valueOf(projectId))
                 .buildAs(HttpMethod.POST)
@@ -326,7 +326,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public PagedList<Story> getStories(RequestModifier... requestModifiers) {
-        return getContext().apiRequest(requestModifiers)
+        return getContext().newRequest(requestModifiers)
                 .setUrl("tasks/" + getId() + "/stories")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -335,7 +335,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public Story addComment(String text, RequestModifier... requestModifiers) {
-        return getContext().apiRequest(requestModifiers)
+        return getContext().newRequest(requestModifiers)
                 .setUrl("tasks/" + getId() + "/stories")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("text", text)
@@ -347,7 +347,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public PagedList<Attachment> getAttachments(RequestModifier... requestModifiers) {
-        return getContext().apiRequest(requestModifiers)
+        return getContext().newRequest(requestModifiers)
                 .setUrl("tasks/" + getId() + "/attachments")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -357,7 +357,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
     @Override
     public Attachment uploadAttachment(String name, InputStream attachment) {
         MultipartFormEntity entity = new MultipartFormEntity(name, attachment);
-        return getContext().apiRequest()
+        return getContext().newRequest()
                 .setUrl("tasks/" + getId() + "/attachments")
                 .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
                 .setEntity(entity)
@@ -368,7 +368,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void addTag(long tagId) {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("tasks/" + getId() + "/addTag")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("tag", tagId)
@@ -380,7 +380,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
     @Override
     public void removeTag(long tagId) {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("tasks/" + getId() + "/removeTag")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("tag", tagId)
@@ -407,7 +407,7 @@ public class TaskImpl extends ApiEntityImpl<TaskImpl> implements Task {
 
         @Override
         public void update() {
-            this.entityContext.apiRequest()
+            this.entityContext.newRequest()
                     .setUrl("tasks/" + this.taskId + "/addProject")
                     .setQueryParameter("project", String.valueOf(projectId))
                     .setQueryParameter("insertAfter", String.valueOf(this.insertAfter))

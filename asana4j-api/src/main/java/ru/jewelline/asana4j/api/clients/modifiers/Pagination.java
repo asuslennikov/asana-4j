@@ -1,7 +1,9 @@
 package ru.jewelline.asana4j.api.clients.modifiers;
 
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.modifiers.ModifiersChain;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.io.Serializable;
 
@@ -40,7 +42,7 @@ public class Pagination implements RequestModifier, Serializable {
     }
 
     @Override
-    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
+    public void modify(HttpRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         requestBuilder.setQueryParameter("limit", String.valueOf(getLimit()));
         if (getOffsetToken() != null) {
             requestBuilder.setQueryParameter("offset", getOffsetToken());

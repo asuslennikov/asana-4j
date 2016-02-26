@@ -12,7 +12,6 @@ import ru.jewelline.asana4j.utils.URLCreator;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

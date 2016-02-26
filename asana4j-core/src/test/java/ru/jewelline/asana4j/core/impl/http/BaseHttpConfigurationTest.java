@@ -3,8 +3,6 @@ package ru.jewelline.asana4j.core.impl.http;
 import org.junit.Test;
 import ru.jewelline.asana4j.core.impl.http.config.BaseHttpConfiguration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class BaseHttpConfigurationTest {
 
     protected BaseHttpConfiguration testInstance() {

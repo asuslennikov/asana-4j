@@ -1,7 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
@@ -11,6 +10,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,7 +79,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
 
     @Override
     public PagedList<User> getUsers(RequestModifier... requestModifiers) {
-        return getContext().apiRequest(requestModifiers)
+        return getContext().newRequest(requestModifiers)
                 .setUrl("/teams/" + getId() + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -102,7 +102,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
     }
 
     private User addUserInternal(Object userReference) {
-        return getContext().apiRequest()
+        return getContext().newRequest()
                 .setUrl("teams/" + getId() + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -129,7 +129,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
     }
 
     private void removeUserInternal(Object userReference) {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("teams/" + getId() + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -143,7 +143,7 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
     public Project createProject(String name) {
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
                 .setField("name", name);
-        return getContext().apiRequest()
+        return getContext().newRequest()
                 .setUrl("teams/" + getId() + "/projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)

@@ -16,6 +16,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>ru.jewelline.asana4j</groupId>
+            <artifactId>http-request</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>

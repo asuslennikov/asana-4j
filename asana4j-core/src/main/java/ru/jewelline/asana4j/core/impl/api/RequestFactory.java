@@ -1,29 +1,22 @@
 package ru.jewelline.asana4j.core.impl.api;
 
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 /**
- * An access point for request builders (for {@link HttpRequestBuilder} and {@link ApiRequestBuilder} instances).
+ * An access point for request builders (for {@link HttpRequestBuilder} and {@link HttpRequestBuilder} instances).
  * @see HttpRequestBuilder
- * @see ApiRequestBuilder
+ * @see HttpRequestBuilder
  */
 public interface RequestFactory {
 
-    /**
-     * Returns a new {@link HttpRequestBuilder} instance, which allows to create and execute a plain HTTP request.
-     * @return A new {@link HttpRequestBuilder} instance.
-     * @see HttpRequestBuilder
-     */
-    HttpRequestBuilder httpRequest();
 
     /**
-     * Returns a new {@link ApiRequestBuilder} instance, which allows to create and execute an API request.
+     * Returns a new {@link HttpRequestBuilder} instance, which allows to create and execute an API request.
      * @param requestModifiers Array of modifiers for the request builder.
-     * @return A new {@link ApiRequestBuilder} instance.
+     * @return A new {@link HttpRequestBuilder} instance.
      * @see RequestModifier
-     * @see ApiRequestBuilder
+     * @see HttpRequestBuilder
      */
-    ApiRequestBuilder apiRequest(RequestModifier... requestModifiers);
+    HttpRequestBuilder newRequest(RequestModifier... requestModifiers);
 }

@@ -3,7 +3,6 @@ package ru.jewelline.asana4j.core.impl.api.clients;
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.TagApiClient;
 import ru.jewelline.asana4j.api.clients.TagFilter;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
@@ -15,6 +14,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
 
@@ -28,7 +28,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
 
     @Override
     public Tag getTagById(long tagId, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("tags/" + tagId)
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -42,7 +42,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
 
     @Override
     public PagedList<Tag> getTags(TagFilter filter, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("tags")
                 .setEntity(convertFromTagFilter(filter))
                 .buildAs(HttpMethod.GET)
@@ -66,7 +66,7 @@ public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
 
     @Override
     public PagedList<Task> getTasksForTag(long tagId, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("tags/" + tagId + "/tasks")
                 .buildAs(HttpMethod.GET)
                 .execute()

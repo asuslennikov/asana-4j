@@ -2,7 +2,6 @@ package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.TeamClientApi;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
@@ -14,6 +13,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 
@@ -27,7 +27,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 
     @Override
     public Team getTeamById(long teamId, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("teams/" + String.valueOf(teamId))
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -36,7 +36,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 
     @Override
     public PagedList<Team> getTeamsInOrganisation(long organizationId, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("organizations/" + organizationId + "/teams")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -45,7 +45,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
 
     @Override
     public PagedList<User> getTeamUsers(long teamId, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("/teams/" + teamId + "/users")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -68,7 +68,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
     }
 
     private User addUserInternal(long teamId, Object userReference) {
-        return getEntityContext().apiRequest()
+        return getEntityContext().newRequest()
                 .setUrl("teams/" + teamId + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -94,7 +94,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
     }
 
     private void removeUserInternal(long teamId, Object userReference) {
-        getEntityContext().apiRequest()
+        getEntityContext().newRequest()
                 .setUrl("teams/" + teamId + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -107,7 +107,7 @@ public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
     public Project createProject(long teamId, String name) {
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
                 .setField("name", name);
-        return getEntityContext().apiRequest()
+        return getEntityContext().newRequest()
                 .setUrl("teams/" + teamId + "/projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)

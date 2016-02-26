@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 /**
  * A team is used to group related projects and people together within an organization. Each project in an

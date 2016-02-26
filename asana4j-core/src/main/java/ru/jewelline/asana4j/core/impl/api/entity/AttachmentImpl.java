@@ -124,7 +124,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
     @Override
     public boolean download(OutputStream destinationStream) {
         if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
-            return getContext().httpRequest()
+            return getContext().newRequest()
                     .path(getDownloadUrl())
                     .buildAs(HttpMethod.GET)
                     .sendAndReadResponse(destinationStream)
@@ -136,7 +136,7 @@ public class AttachmentImpl extends ApiEntityImpl<AttachmentImpl> implements Att
     @Override
     public boolean downloadPreview(OutputStream destinationStream) {
         if (!StringUtils.emptyOrOnlyWhiteSpace(getDownloadUrl())) {
-            return getContext().httpRequest()
+            return getContext().newRequest()
                     .path(getViewUrl())
                     .buildAs(HttpMethod.GET)
                     .sendAndReadResponse(destinationStream)

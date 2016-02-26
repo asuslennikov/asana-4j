@@ -1,10 +1,12 @@
 package ru.jewelline.asana4j.api.clients.modifiers;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
-import ru.jewelline.asana4j.api.entity.io.SerializableEntity;
-import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.entity.SerializableEntity;
+import ru.jewelline.request.http.modifiers.ModifiersChain;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 public abstract class ApiOptionModifier implements RequestModifier {
     protected static final String GET_API_OPTION_PREFIX = "opt_";
@@ -15,7 +17,7 @@ public abstract class ApiOptionModifier implements RequestModifier {
     }
 
     @Override
-    public void modify(ApiRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
+    public void modify(HttpRequestBuilder requestBuilder, HttpMethod httpMethod, ModifiersChain modifiersChain) {
         if (HttpMethod.GET == httpMethod) {
             appendToQueryParameters(requestBuilder);
         } else if (HttpMethod.DELETE != httpMethod) {
@@ -24,9 +26,9 @@ public abstract class ApiOptionModifier implements RequestModifier {
         modifiersChain.next(requestBuilder, httpMethod);
     }
 
-    protected abstract void appendToQueryParameters(ApiRequestBuilder requestBuilder);
+    protected abstract void appendToQueryParameters(HttpRequestBuilder requestBuilder);
 
-    private void tryAppendToJsonOptions(ApiRequestBuilder requestBuilder) {
+    private void tryAppendToJsonOptions(HttpRequestBuilder requestBuilder) {
         SerializableEntity entity = requestBuilder.getEntity();
         if (entity != null && entity instanceof JsonEntity) {
             JSONObject json = ((JsonEntity) entity).asJson();

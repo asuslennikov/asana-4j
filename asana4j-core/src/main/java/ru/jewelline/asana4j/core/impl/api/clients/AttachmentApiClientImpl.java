@@ -3,7 +3,6 @@ package ru.jewelline.asana4j.core.impl.api.clients;
 import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.QueryFieldsModifier;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
@@ -11,6 +10,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.io.MultipartFormEntity;
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,7 +27,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
 
     @Override
     public PagedList<Attachment> getTaskAttachments(long taskId, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("tasks/" + taskId + "/attachments")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -36,7 +36,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
 
     @Override
     public Attachment getAttachmentById(long attachmentId, RequestModifier... requestModifiers) {
-        return apiRequest(requestModifiers)
+        return newRequest(requestModifiers)
                 .setUrl("attachments/" + String.valueOf(attachmentId))
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -58,7 +58,7 @@ public class AttachmentApiClientImpl extends ApiClientImpl implements Attachment
     @Override
     public Attachment uploadAttachment(long taskId, String name, InputStream attachment) {
         MultipartFormEntity entity = new MultipartFormEntity(name, attachment);
-        return apiRequest()
+        return newRequest()
                 .setUrl("tasks/" + taskId + "/attachments")
                 .setHeader("Content-Type", "multipart/form-data; boundary=" + entity.getBoundary())
                 .setEntity(entity)

@@ -56,7 +56,7 @@ public class UserImpl extends ApiEntityImpl<UserImpl> implements User {
         if (size != null
                 && this.getPhotoUrl() != null
                 && this.getPhotoUrl().containsKey(size)){
-            return getContext().httpRequest()
+            return getContext().newRequest()
                     .path(this.getPhotoUrl().get(size))
                     .buildAs(HttpMethod.GET)
                     .sendAndReadResponse(destination)

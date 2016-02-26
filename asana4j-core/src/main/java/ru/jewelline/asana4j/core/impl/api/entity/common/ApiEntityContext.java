@@ -1,8 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity.common;
 
 import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.ApiRequestBuilder;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
 import ru.jewelline.asana4j.core.impl.api.RequestFactory;
@@ -15,7 +13,8 @@ import ru.jewelline.asana4j.core.impl.api.entity.TaskImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.TeamImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.UserImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
-import ru.jewelline.asana4j.http.HttpRequestBuilder;
+import ru.jewelline.request.http.HttpRequestBuilder;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -87,12 +86,7 @@ public class ApiEntityContext implements RequestFactory {
     }
 
     @Override
-    public HttpRequestBuilder httpRequest() {
-        return this.requestFactory.httpRequest();
-    }
-
-    @Override
-    public ApiRequestBuilder apiRequest(RequestModifier... requestModifiers) {
-        return this.requestFactory.apiRequest(requestModifiers);
+    public HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
+        return this.requestFactory.newRequest(requestModifiers);
     }
 }

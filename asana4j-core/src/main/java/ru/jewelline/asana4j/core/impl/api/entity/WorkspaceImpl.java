@@ -1,7 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.modifiers.RequestModifier;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
@@ -15,6 +14,7 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.asana4j.http.HttpMethod;
+import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -96,7 +96,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     @Override
     public void update() {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("workspaces/" + this.getId())
                 .setEntity(this)
                 .buildAs(HttpMethod.PUT)
@@ -120,7 +120,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     private User addUserInternal(Object userReference) {
-        return getContext().apiRequest()
+        return getContext().newRequest()
                 .setUrl("workspaces/" + this.getId() + "/addUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -147,7 +147,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     }
 
     private void removeUserInternal(Object userReference) {
-        getContext().apiRequest()
+        getContext().newRequest()
                 .setUrl("workspaces/" + this.getId() + "/removeUser")
                 .setEntity(new SimpleFieldsUpdater()
                         .setField("user", userReference.toString())
@@ -160,7 +160,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     @Override
     public PagedList<Project> getProjects() {
         // TODO should we update a workspace of project to this instance?
-        return getContext().apiRequest()
+        return getContext().newRequest()
                 .setUrl("workspaces/" + this.getId() + "/projects")
                 .buildAs(HttpMethod.GET)
                 .execute()
@@ -172,7 +172,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
         SimpleFieldsUpdater fieldsUpdater = new SimpleFieldsUpdater()
                 .setField("workspace", getId())
                 .setField("name", name);
-        return getContext().apiRequest()
+        return getContext().newRequest()
                 .setUrl("projects")
                 .setEntity(fieldsUpdater.wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)
@@ -187,7 +187,7 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
 
     @Override
     public PagedList<Team> getTeams(RequestModifier... requestModifiers) {
-        return getContext().apiRequest(requestModifiers)
+        return getContext().newRequest(requestModifiers)
                 .setUrl("organizations/" + getId() + "/teams")
                 .buildAs(HttpMethod.GET)
                 .execute()

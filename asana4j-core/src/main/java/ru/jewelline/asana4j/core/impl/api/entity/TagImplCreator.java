@@ -22,7 +22,7 @@ public class TagImplCreator extends TagBuilderImpl<TagCreator> implements TagCre
 
     @Override
     public Tag create() {
-        return this.context.apiRequest()
+        return this.context.newRequest()
                 .setUrl("tags")
                 .setEntity(wrapFieldsAsEntity())
                 .buildAs(HttpMethod.POST)

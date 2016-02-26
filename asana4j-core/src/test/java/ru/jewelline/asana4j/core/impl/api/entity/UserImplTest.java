@@ -243,7 +243,7 @@ public class UserImplTest {
         HttpRequestBuilder httpBuilder = mock(HttpRequestBuilder.class);
         when(httpBuilder.path(Matchers.anyString())).thenReturn(httpBuilder);
         when(httpBuilder.buildAs(HttpMethod.GET)).thenReturn(httpRequest);
-        when(this.context.httpRequest()).thenReturn(httpBuilder);
+        when(this.context.newRequest()).thenReturn(httpBuilder);
         JSONObject json = getJsonResponse();
         User user = testInstance().fromJson(json);
         assertThat(user.downloadPhoto(User.PhotoSize.SIZE_21, mock(OutputStream.class))).isTrue();
@@ -259,7 +259,7 @@ public class UserImplTest {
         HttpRequestBuilder httpBuilder = mock(HttpRequestBuilder.class);
         when(httpBuilder.path(Matchers.anyString())).thenReturn(httpBuilder);
         when(httpBuilder.buildAs(HttpMethod.GET)).thenReturn(httpRequest);
-        when(this.context.httpRequest()).thenReturn(httpBuilder);
+        when(this.context.newRequest()).thenReturn(httpBuilder);
         JSONObject json = getJsonResponse();
         User user = testInstance().fromJson(json);
         assertThat(user.downloadPhoto(User.PhotoSize.SIZE_21, mock(OutputStream.class))).isFalse();
