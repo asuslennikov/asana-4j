@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.TaskApiClient;
+import ru.jewelline.asana4j.api.clients.TasksClient;
 import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
@@ -14,9 +14,9 @@ import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public class TaskApiClientImpl extends ApiClientImpl implements TaskApiClient {
+public class TasksClientImpl extends ApiClientImpl implements TasksClient {
 
-    public TaskApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+    public TasksClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
         super(httpRequestFactory, entityContext);
     }
 

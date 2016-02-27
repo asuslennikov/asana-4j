@@ -1,13 +1,13 @@
 package ru.jewelline.asana4j;
 
-import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
-import ru.jewelline.asana4j.api.clients.ProjectApiClient;
-import ru.jewelline.asana4j.api.clients.StoryApiClient;
-import ru.jewelline.asana4j.api.clients.TagApiClient;
-import ru.jewelline.asana4j.api.clients.TaskApiClient;
-import ru.jewelline.asana4j.api.clients.TeamClientApi;
-import ru.jewelline.asana4j.api.clients.UserApiClient;
-import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
+import ru.jewelline.asana4j.api.clients.AttachmentsClient;
+import ru.jewelline.asana4j.api.clients.ProjectsClient;
+import ru.jewelline.asana4j.api.clients.StoriesClient;
+import ru.jewelline.asana4j.api.clients.TagsClient;
+import ru.jewelline.asana4j.api.clients.TasksClient;
+import ru.jewelline.asana4j.api.clients.TeamsClient;
+import ru.jewelline.asana4j.api.clients.UsersClient;
+import ru.jewelline.asana4j.api.clients.WorkspacesClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.utils.PropertiesStore;
 
@@ -16,30 +16,30 @@ import ru.jewelline.asana4j.utils.PropertiesStore;
  *
  * @see PropertiesStore
  * @see AuthenticationService
- * @see AttachmentApiClient
- * @see ProjectApiClient
- * @see StoryApiClient
- * @see TaskApiClient
- * @see UserApiClient
- * @see WorkspaceApiClient
+ * @see AttachmentsClient
+ * @see ProjectsClient
+ * @see StoriesClient
+ * @see TasksClient
+ * @see UsersClient
+ * @see WorkspacesClient
  */
 public interface Asana {
 
     AuthenticationService getAuthenticationService();
 
-    UserApiClient getUserClient();
+    UsersClient getUsersClient();
 
-    WorkspaceApiClient getWorkspaceClient();
+    WorkspacesClient getWorkspacesClient();
 
-    ProjectApiClient getProjectClient();
+    ProjectsClient getProjectsClient();
 
-    TaskApiClient getTaskClient();
+    TasksClient getTasksClient();
 
-    StoryApiClient getStoryClient();
+    StoriesClient getStoriesClient();
 
-    AttachmentApiClient getAttachmentClient();
+    AttachmentsClient getAttachmentsClient();
 
-    TeamClientApi getTeamClient();
+    TeamsClient getTeamsClient();
 
-    TagApiClient getTagClient();
+    TagsClient getTagsClient();
 }

@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.TagApiClient;
+import ru.jewelline.asana4j.api.clients.TagsClient;
 import ru.jewelline.asana4j.api.clients.TagFilter;
 import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
@@ -17,9 +17,9 @@ import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.entity.SerializableEntity;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public class TagApiClientImpl extends ApiClientImpl implements TagApiClient {
+public class TagsClientImpl extends ApiClientImpl implements TagsClient {
 
-    public TagApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+    public TagsClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
         super(httpRequestFactory, entityContext);
     }
 

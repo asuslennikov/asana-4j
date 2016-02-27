@@ -1,6 +1,7 @@
 package ru.jewelline.asana4j.api.entity;
 
 import ru.jewelline.asana4j.api.PagedList;
+import ru.jewelline.asana4j.api.clients.ProjectsClient;
 
 import java.util.List;
 
@@ -139,7 +140,7 @@ public interface Project extends HasId, HasName {
      * @api.field <code>workspace</code>
      * @api.access Create-only
      * @see Workspace#createProject(String)
-     * @see ru.jewelline.asana4j.api.clients.ProjectApiClient#create(long, String)
+     * @see ProjectsClient#create(long, String)
      * @see Workspace
      */
     Workspace getWorkspace();

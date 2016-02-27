@@ -4,7 +4,7 @@ import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public interface StoryApiClient {
+public interface StoriesClient {
 
     /**
      * Returns a specific existing story.

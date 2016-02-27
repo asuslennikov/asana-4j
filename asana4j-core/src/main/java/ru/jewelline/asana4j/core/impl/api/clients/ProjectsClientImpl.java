@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
-import ru.jewelline.asana4j.api.clients.ProjectApiClient;
+import ru.jewelline.asana4j.api.clients.ProjectsClient;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
@@ -11,9 +11,9 @@ import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public class ProjectApiClientImpl extends ApiClientImpl implements ProjectApiClient {
+public class ProjectsClientImpl extends ApiClientImpl implements ProjectsClient {
 
-    public ProjectApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+    public ProjectsClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
         super(httpRequestFactory, entityContext);
     }
 

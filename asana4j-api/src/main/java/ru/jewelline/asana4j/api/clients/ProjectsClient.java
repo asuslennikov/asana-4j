@@ -3,7 +3,7 @@ package ru.jewelline.asana4j.api.clients;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public interface ProjectApiClient {
+public interface ProjectsClient {
 
     Project create(long workspaceId, String projectName);
 

@@ -5,7 +5,7 @@ import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public interface TagApiClient {
+public interface TagsClient {
 
     /**
      * Returns the complete tag record for a single tag.

@@ -1,23 +1,23 @@
 package ru.jewelline.asana4j.core.impl;
 
 import ru.jewelline.asana4j.Asana;
-import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
-import ru.jewelline.asana4j.api.clients.ProjectApiClient;
-import ru.jewelline.asana4j.api.clients.StoryApiClient;
-import ru.jewelline.asana4j.api.clients.TagApiClient;
-import ru.jewelline.asana4j.api.clients.TaskApiClient;
-import ru.jewelline.asana4j.api.clients.TeamClientApi;
-import ru.jewelline.asana4j.api.clients.UserApiClient;
-import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
+import ru.jewelline.asana4j.api.clients.AttachmentsClient;
+import ru.jewelline.asana4j.api.clients.ProjectsClient;
+import ru.jewelline.asana4j.api.clients.StoriesClient;
+import ru.jewelline.asana4j.api.clients.TagsClient;
+import ru.jewelline.asana4j.api.clients.TasksClient;
+import ru.jewelline.asana4j.api.clients.TeamsClient;
+import ru.jewelline.asana4j.api.clients.UsersClient;
+import ru.jewelline.asana4j.api.clients.WorkspacesClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.core.impl.api.clients.AttachmentApiClientImpl;
-import ru.jewelline.asana4j.core.impl.api.clients.ProjectApiClientImpl;
-import ru.jewelline.asana4j.core.impl.api.clients.StoryApiClientImpl;
-import ru.jewelline.asana4j.core.impl.api.clients.TagApiClientImpl;
-import ru.jewelline.asana4j.core.impl.api.clients.TaskApiClientImpl;
-import ru.jewelline.asana4j.core.impl.api.clients.TeamApiClientImpl;
-import ru.jewelline.asana4j.core.impl.api.clients.UserApiClientImpl;
-import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.AttachmentsClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.ProjectsClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.StoriesClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.TagsClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.TasksClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.TeamsApiClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.UsersClientImpl;
+import ru.jewelline.asana4j.core.impl.api.clients.WorkspacesClientImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.auth.AuthenticationServiceImpl;
 import ru.jewelline.asana4j.utils.Base64;
@@ -27,28 +27,28 @@ import ru.jewelline.request.http.HttpRequestFactory;
 public abstract class AsanaImpl implements Asana {
 
     private AuthenticationService authenticationService;
-    private UserApiClient userClient;
-    private WorkspaceApiClient workspaceClient;
-    private ProjectApiClient projectClient;
-    private TaskApiClient taskClient;
-    private StoryApiClient storyClient;
-    private AttachmentApiClient attachmentClient;
-    private TeamClientApi teamClient;
-    private TagApiClient tagClient;
+    private UsersClient usersClient;
+    private WorkspacesClient workspacesClient;
+    private ProjectsClient projectsClient;
+    private TasksClient tasksClient;
+    private StoriesClient storiesClient;
+    private AttachmentsClient attachmentsClient;
+    private TeamsClient teamsClient;
+    private TagsClient tagsClient;
 
     public AsanaImpl() {
         HttpRequestFactory httpRequestFactory = HttpRequestFactories.standard();
         this.authenticationService = new AuthenticationServiceImpl(httpRequestFactory, getBase64Tool());
         ApiEntityContext entityContext = new ApiEntityContext(httpRequestFactory, this.authenticationService);
 
-        this.userClient = new UserApiClientImpl(httpRequestFactory, entityContext);
-        this.workspaceClient = new WorkspaceApiClientImpl(httpRequestFactory, entityContext);
-        this.projectClient = new ProjectApiClientImpl(httpRequestFactory, entityContext);
-        this.taskClient = new TaskApiClientImpl(httpRequestFactory, entityContext);
-        this.storyClient = new StoryApiClientImpl(httpRequestFactory, entityContext);
-        this.attachmentClient = new AttachmentApiClientImpl(httpRequestFactory, entityContext);
-        this.teamClient = new TeamApiClientImpl(httpRequestFactory, entityContext);
-        this.tagClient = new TagApiClientImpl(httpRequestFactory, entityContext);
+        this.usersClient = new UsersClientImpl(httpRequestFactory, entityContext);
+        this.workspacesClient = new WorkspacesClientImpl(httpRequestFactory, entityContext);
+        this.projectsClient = new ProjectsClientImpl(httpRequestFactory, entityContext);
+        this.tasksClient = new TasksClientImpl(httpRequestFactory, entityContext);
+        this.storiesClient = new StoriesClientImpl(httpRequestFactory, entityContext);
+        this.attachmentsClient = new AttachmentsClientImpl(httpRequestFactory, entityContext);
+        this.teamsClient = new TeamsApiClientImpl(httpRequestFactory, entityContext);
+        this.tagsClient = new TagsClientImpl(httpRequestFactory, entityContext);
     }
 
     public abstract Base64 getBase64Tool();
@@ -59,42 +59,42 @@ public abstract class AsanaImpl implements Asana {
     }
 
     @Override
-    public UserApiClient getUserClient() {
-        return this.userClient;
+    public UsersClient getUsersClient() {
+        return this.usersClient;
     }
 
     @Override
-    public WorkspaceApiClient getWorkspaceClient() {
-        return this.workspaceClient;
+    public WorkspacesClient getWorkspacesClient() {
+        return this.workspacesClient;
     }
 
     @Override
-    public ProjectApiClient getProjectClient() {
-        return this.projectClient;
+    public ProjectsClient getProjectsClient() {
+        return this.projectsClient;
     }
 
     @Override
-    public TaskApiClient getTaskClient() {
-        return this.taskClient;
+    public TasksClient getTasksClient() {
+        return this.tasksClient;
     }
 
     @Override
-    public StoryApiClient getStoryClient() {
-        return this.storyClient;
+    public StoriesClient getStoriesClient() {
+        return this.storiesClient;
     }
 
     @Override
-    public AttachmentApiClient getAttachmentClient() {
-        return this.attachmentClient;
+    public AttachmentsClient getAttachmentsClient() {
+        return this.attachmentsClient;
     }
 
     @Override
-    public TeamClientApi getTeamClient() {
-        return this.teamClient;
+    public TeamsClient getTeamsClient() {
+        return this.teamsClient;
     }
 
     @Override
-    public TagApiClient getTagClient() {
-        return this.tagClient;
+    public TagsClient getTagsClient() {
+        return this.tagsClient;
     }
 }

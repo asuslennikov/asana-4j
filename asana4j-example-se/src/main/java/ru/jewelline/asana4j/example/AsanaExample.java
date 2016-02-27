@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.example;
 
 import ru.jewelline.asana4j.Asana;
-import ru.jewelline.asana4j.api.clients.UserApiClient;
-import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
+import ru.jewelline.asana4j.api.clients.UsersClient;
+import ru.jewelline.asana4j.api.clients.WorkspacesClient;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Task;
@@ -26,11 +26,11 @@ public class AsanaExample {
         asana.getAuthenticationService()
                 .setAuthenticationProperty(AuthenticationProperty.API_KEY, "aHlJ25hc.9HdyPs3sDkQ31WSui95vWtE"); // Insert your API key here
 
-        UserApiClient userClient = asana.getUserClient();
+        UsersClient userClient = asana.getUsersClient();
         User currentUser = userClient.getCurrentUser();
         System.out.println(currentUser);
 
-        WorkspaceApiClient workspaceClient = asana.getWorkspaceClient();
+        WorkspacesClient workspaceClient = asana.getWorkspacesClient();
         for (Workspace workspace : workspaceClient.getWorkspaces(Pagination.FIRST_PAGE)) {
             System.out.println(workspace);
             for (Project project : workspace.getProjects()) {

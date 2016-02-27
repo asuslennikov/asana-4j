@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.StoryApiClient;
+import ru.jewelline.asana4j.api.clients.StoriesClient;
 import ru.jewelline.asana4j.api.entity.Story;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.StoryImpl;
@@ -12,9 +12,9 @@ import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public class StoryApiClientImpl extends ApiClientImpl implements StoryApiClient {
+public class StoriesClientImpl extends ApiClientImpl implements StoriesClient {
 
-    public StoryApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+    public StoriesClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
         super(httpRequestFactory, entityContext);
     }
 

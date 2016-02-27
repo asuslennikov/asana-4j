@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.TeamClientApi;
+import ru.jewelline.asana4j.api.clients.TeamsClient;
 import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Team;
 import ru.jewelline.asana4j.api.entity.User;
@@ -16,9 +16,9 @@ import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public class TeamApiClientImpl extends ApiClientImpl implements TeamClientApi {
+public class TeamsApiClientImpl extends ApiClientImpl implements TeamsClient {
 
-    public TeamApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+    public TeamsApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
         super(httpRequestFactory, entityContext);
     }
 

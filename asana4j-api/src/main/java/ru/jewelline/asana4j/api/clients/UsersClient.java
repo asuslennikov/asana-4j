@@ -4,7 +4,7 @@ import ru.jewelline.asana4j.api.PagedList;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public interface UserApiClient {
+public interface UsersClient {
     User getCurrentUser(RequestModifier... requestModifiers);
 
     User getUserById(long userId, RequestModifier... requestModifiers);

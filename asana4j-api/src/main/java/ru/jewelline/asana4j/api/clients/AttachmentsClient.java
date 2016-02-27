@@ -7,7 +7,7 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public interface AttachmentApiClient {
+public interface AttachmentsClient {
 
     /**
      * Returns list of all attachments for that task.

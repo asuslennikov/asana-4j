@@ -8,7 +8,7 @@ import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public interface TeamClientApi {
+public interface TeamsClient {
 
     /**
      * Returns a specific existing team.

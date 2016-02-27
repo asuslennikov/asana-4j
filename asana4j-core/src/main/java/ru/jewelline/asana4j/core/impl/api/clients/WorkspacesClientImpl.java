@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
+import ru.jewelline.asana4j.api.clients.WorkspacesClient;
 import ru.jewelline.asana4j.api.entity.Workspace;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.WorkspaceImpl;
@@ -11,9 +11,9 @@ import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-public class WorkspaceApiClientImpl extends ApiClientImpl implements WorkspaceApiClient {
+public class WorkspacesClientImpl extends ApiClientImpl implements WorkspacesClient {
 
-    public WorkspaceApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+    public WorkspacesClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
         super(httpRequestFactory, entityContext);
     }
 

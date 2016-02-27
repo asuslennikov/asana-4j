@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.AttachmentApiClient;
+import ru.jewelline.asana4j.api.clients.AttachmentsClient;
 import ru.jewelline.asana4j.api.clients.modifiers.QueryFieldsModifier;
 import ru.jewelline.asana4j.api.entity.Attachment;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
@@ -16,9 +16,9 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class AttachmentApiClientImpl extends ApiClientImpl implements AttachmentApiClient {
+public class AttachmentsClientImpl extends ApiClientImpl implements AttachmentsClient {
 
-    public AttachmentApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
+    public AttachmentsClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
         super(httpRequestFactory, entityContext);
     }
 
