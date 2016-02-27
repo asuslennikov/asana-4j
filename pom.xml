@@ -7,7 +7,7 @@
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>[Asana API] Asana API 4 Java - Parent</name>
+    <name>Asana4J - Parent</name>
 
     <!--
         <scm>
@@ -42,11 +42,6 @@
             <dependency>
                 <groupId>ru.jewelline.asana4j</groupId>
                 <artifactId>core</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>ru.jewelline.asana4j</groupId>
-                <artifactId>utils-se</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
 
@@ -197,11 +192,9 @@
                 <module>asana4j-api</module>
                 <module>asana4j-core</module>
                 <module>asana4j-utils-android</module>
-                <module>asana4j-utils-se</module>
-                <module>asana4j-example-se</module>
+                <module>examples</module>
                 <module>http-request</module>
             </modules>
         </profile>
-
     </profiles>
 </project>

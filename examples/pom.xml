@@ -9,10 +9,10 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>example-se</artifactId>
+    <artifactId>example-api-key</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>[Asana API] Java SE example of lib usage</name>
+    <name>Authentication by API key</name>
 
     <dependencies>
         <dependency>
@@ -22,10 +22,6 @@
         <dependency>
             <groupId>ru.jewelline.asana4j</groupId>
             <artifactId>core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ru.jewelline.asana4j</groupId>
-            <artifactId>utils-se</artifactId>
         </dependency>
     </dependencies>
 </project>

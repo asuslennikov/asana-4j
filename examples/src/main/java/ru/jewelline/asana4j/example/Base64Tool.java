@@ -1,10 +1,10 @@
-package ru.jewelline.asana4j.se;
+package ru.jewelline.asana4j.example;
 
 import ru.jewelline.asana4j.utils.Base64;
 
 import javax.xml.bind.DatatypeConverter;
 
-public class Base64JavaSeUtil implements Base64 {
+public class Base64Tool implements Base64 {
     @Override
     public String encode(String stringToEncode) {
         if (stringToEncode != null) {

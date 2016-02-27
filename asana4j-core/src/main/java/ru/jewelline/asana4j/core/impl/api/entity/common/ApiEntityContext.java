@@ -41,9 +41,9 @@ public class ApiEntityContext {
                 new AuthenticationRequestModifier(authenticationService),
                 new BaseApiUrlAppenderModifier(),
                 new DataRootRequestModifier(),
-                new JsonContentTypeModifier(),
+                new JsonContentTypeModifier()/*,
                 new LoggingRequestModifier(),
-                new PrettyJsonResponseModifier()
+                new PrettyJsonResponseModifier()*/
         };
         this.instanceProviders = new HashMap<>();
         // TODO Don't pass 'this' out of a constructor (through anonymous inner class)
