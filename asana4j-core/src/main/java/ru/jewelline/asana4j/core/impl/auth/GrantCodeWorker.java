@@ -6,6 +6,7 @@ import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
+import ru.jewelline.asana4j.utils.StringUtils;
 import ru.jewelline.asana4j.utils.URLCreator;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
@@ -95,7 +96,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
         tokenRequestBody.append("&client_id=").append(clientId)
                 .append("&client_secret=").append(clientSecret)
                 .append("&redirect_uri=").append(redirectUrl);
-        return tokenRequestBody.toString().getBytes();
+        return tokenRequestBody.toString().getBytes(StringUtils.getCharset());
     }
 
     @Override
