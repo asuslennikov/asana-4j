@@ -22,5 +22,6 @@ public class BaseApiUrlAppenderModifier implements RequestModifier {
         if (!firstUrlSegment.contains("app.asana.com") && !firstUrlSegment.contains(".")) {
             requestBuilder.setUrl(BASE_API_URL + url.substring(url.indexOf(TRANSPORT_MARKER) + TRANSPORT_MARKER.length()));
         }
+        modifiersChain.next(requestBuilder, httpMethod);
     }
 }
