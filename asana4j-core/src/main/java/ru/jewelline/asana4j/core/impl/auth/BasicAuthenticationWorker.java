@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
-import ru.jewelline.asana4j.auth.AuthenticationProperties;
+import ru.jewelline.asana4j.auth.AuthenticationProperty;
 import ru.jewelline.asana4j.utils.Base64;
 
 final class BasicAuthenticationWorker extends AuthenticationWorker {
@@ -15,12 +15,12 @@ final class BasicAuthenticationWorker extends AuthenticationWorker {
 
     @Override
     boolean isAuthenticated() {
-        return getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.API_KEY) != null;
+        return getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.API_KEY) != null;
     }
 
     @Override
     public String getHeader() {
-        String apiKey = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.API_KEY);
+        String apiKey = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.API_KEY);
         if (apiKey != null) {
             return "Basic " + this.base64.encode(apiKey + ':');
         }
@@ -51,6 +51,6 @@ final class BasicAuthenticationWorker extends AuthenticationWorker {
 
     @Override
     protected void logout() {
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.API_KEY, null);
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.API_KEY, null);
     }
 }

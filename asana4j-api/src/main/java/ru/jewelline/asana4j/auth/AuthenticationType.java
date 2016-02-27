@@ -9,15 +9,15 @@ public enum AuthenticationType {
     /**
      * To authenticate a client, we need just an API key.
      * <ul> List of required authentication parameters:
-     * <li>{@link AuthenticationProperties#API_KEY}</li>
+     * <li>{@link AuthenticationProperty#API_KEY}</li>
      * </ul>
      */
     BASIC,
 
     /**
      * <ul> List of required authentication parameters:
-     * <li>{@link AuthenticationProperties#CLIENT_ID}</li>
-     * <li>{@link AuthenticationProperties#AUTHORIZATION_ENDPOINT_REDIRECT_URL}</li>
+     * <li>{@link AuthenticationProperty#CLIENT_ID}</li>
+     * <li>{@link AuthenticationProperty#AUTHORIZATION_ENDPOINT_REDIRECT_URL}</li>
      * </ul>
      */
     GRANT_IMPLICIT,
@@ -25,10 +25,10 @@ public enum AuthenticationType {
     /**
      * To authenticate a client, we need somehow to obtain an <code>code</code> value
      * <ul> List of required authentication parameters:
-     * <li>{@link AuthenticationProperties#CLIENT_ID}</li>
-     * <li>{@link AuthenticationProperties#CLIENT_SECRET}</li>
-     * <li>{@link AuthenticationProperties#AUTHORIZATION_ENDPOINT_REDIRECT_URL}</li>
-     * <li>{@link AuthenticationProperties#ACCESS_CODE}</li>
+     * <li>{@link AuthenticationProperty#CLIENT_ID}</li>
+     * <li>{@link AuthenticationProperty#CLIENT_SECRET}</li>
+     * <li>{@link AuthenticationProperty#AUTHORIZATION_ENDPOINT_REDIRECT_URL}</li>
+     * <li>{@link AuthenticationProperty#ACCESS_CODE}</li>
      * </ul>
      */
     GRANT_CODE,
@@ -39,7 +39,7 @@ public enum AuthenticationType {
      * not unlimited, personal access tokens. When creating a token you must give it a description to help you remember
      * what you created the token for.
      * <ul> List of required authentication parameters:
-     * <li>{@link AuthenticationProperties#ACCESS_TOKEN}</li>
+     * <li>{@link AuthenticationProperty#ACCESS_TOKEN}</li>
      * </ul>
      *
      * @api.link <a href="https://asana.com/developers/documentation/getting-started/auth#personal-access-token">Personal Access Token</a>

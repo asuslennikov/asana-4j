@@ -80,7 +80,7 @@ public interface AuthenticationService {
      * Several authentication types require a client's user to enter his credentials. According to OAuth2 specification
      * user should be redirected to the specific page. If user grants permissions for the client on this page, he will be redirected
      * back to our client (page which was specified via
-     * {@link ru.jewelline.asana4j.auth.AuthenticationProperties#AUTHORIZATION_ENDPOINT_REDIRECT_URL} property).
+     * {@link AuthenticationProperty#AUTHORIZATION_ENDPOINT_REDIRECT_URL} property).
      *
      * @return page url on which user should be redirected. Can be <code>null</code> (for example, if chosen authentication type
      * {@link #getAuthenticationType()} doesn't require that)

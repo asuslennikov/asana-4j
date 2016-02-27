@@ -3,7 +3,7 @@ package ru.jewelline.asana4j.core.impl.auth;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.auth.AuthenticationException;
-import ru.jewelline.asana4j.auth.AuthenticationProperties;
+import ru.jewelline.asana4j.auth.AuthenticationProperty;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
@@ -38,15 +38,15 @@ final class GrantCodeWorker extends AuthenticationWorker {
             }
             JSONObject authResponse = responseReceiver.getResponseStream().asJson();
 
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN,
+            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN,
                     getStringPropertyFromJson(authResponse, "access_token"));
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.REFRESH_TOKEN,
+            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.REFRESH_TOKEN,
                     getStringPropertyFromJson(authResponse, "refresh_token"));
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.TOKEN_TYPE,
+            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.TOKEN_TYPE,
                     getStringPropertyFromJson(authResponse, "token_type"));
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.EXPIRES_IN,
+            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.EXPIRES_IN,
                     getStringPropertyFromJson(authResponse, "expires_in"));
-            getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE,
+            getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE,
                     getStringPropertyFromJson(authResponse, "state"));
 
         } catch (NetworkException networkException) {
@@ -84,7 +84,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
         String redirectUrl = getRedirectUrlOrTrowException();
         String clientId = getClientIdOrThrowException();
         String clientSecret = getClientSecretOrThrowException();
-        String refreshToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.REFRESH_TOKEN);
+        String refreshToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.REFRESH_TOKEN);
         if (refreshToken != null) {
             tokenRequestBody.append("grant_type=refresh_token&refresh_token=").append(refreshToken);
         } else {
@@ -106,7 +106,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
                 .setQueryParameter("client_id", clientId)
                 .setQueryParameter("redirect_uri", redirectUrl)
                 .setQueryParameter("response_type", "code");
-        String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE);
+        String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE);
         if (appState != null) {
             urlBuilder.setQueryParameter("state", appState);
         }
@@ -115,7 +115,7 @@ final class GrantCodeWorker extends AuthenticationWorker {
 
     @Override
     void parseOAuthResponse(String data) {
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_CODE,
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_CODE,
                 getProperty(data, "code="));
     }
 }

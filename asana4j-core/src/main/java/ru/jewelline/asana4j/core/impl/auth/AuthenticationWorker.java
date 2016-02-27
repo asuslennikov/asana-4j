@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
-import ru.jewelline.asana4j.auth.AuthenticationProperties;
+import ru.jewelline.asana4j.auth.AuthenticationProperty;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.utils.StringUtils;
 
@@ -20,11 +20,11 @@ abstract class AuthenticationWorker {
     }
 
     boolean isAuthenticated() {
-        return getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN) != null;
+        return getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN) != null;
     }
 
     String getHeader() {
-        String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN);
+        String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN);
         if (accessToken != null) {
             return "Bearer " + accessToken;
         }
@@ -42,7 +42,7 @@ abstract class AuthenticationWorker {
     }
 
     protected String getClientIdOrThrowException() {
-        String clientId = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.CLIENT_ID);
+        String clientId = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.CLIENT_ID);
         if (clientId == null) {
             throw new AuthenticationException(AuthenticationException.NOT_ENOUGH_INFO_FOR_AUTHENTICATION,
                     "The property 'AuthenticationType.Properties.CLIENT_ID' must be specified, see Java doc for " +
@@ -52,7 +52,7 @@ abstract class AuthenticationWorker {
     }
 
     protected String getClientSecretOrThrowException() {
-        String clientSecret = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.CLIENT_SECRET);
+        String clientSecret = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.CLIENT_SECRET);
         if (clientSecret == null) {
             throw new AuthenticationException(AuthenticationException.NOT_ENOUGH_INFO_FOR_AUTHENTICATION,
                     "The property 'AuthenticationType.Properties.CLIENT_SECRET' must be specified, see Java doc for " +
@@ -62,7 +62,7 @@ abstract class AuthenticationWorker {
     }
 
     protected String getRedirectUrlOrTrowException() {
-        String redirectUrl = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_REDIRECT_URL);
+        String redirectUrl = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_REDIRECT_URL);
         if (redirectUrl == null) {
             throw new AuthenticationException(AuthenticationException.NOT_ENOUGH_INFO_FOR_AUTHENTICATION,
                     "The property 'AuthenticationService.AUTHORIZATION_ENDPOINT_REDIRECT_URL' must be specified, see Java doc for " +
@@ -72,7 +72,7 @@ abstract class AuthenticationWorker {
     }
 
     protected String getAccessCodeOrThrowException() {
-        String accessCode = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.ACCESS_CODE);
+        String accessCode = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_CODE);
         if (accessCode == null) {
             throw new AuthenticationException(AuthenticationException.NOT_ENOUGH_INFO_FOR_AUTHENTICATION,
                     "The property 'AuthenticationType.Properties.ACCESS_CODE' must be specified, see Java doc for " +
@@ -84,8 +84,8 @@ abstract class AuthenticationWorker {
     }
 
     protected void logout() {
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_CODE, null);
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN, null);
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.REFRESH_TOKEN, null);
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_CODE, null);
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN, null);
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.REFRESH_TOKEN, null);
     }
 }

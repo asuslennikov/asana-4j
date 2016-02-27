@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
-import ru.jewelline.asana4j.auth.AuthenticationProperties;
+import ru.jewelline.asana4j.auth.AuthenticationProperty;
 
 final class PersonalAccessTokenWorker extends AuthenticationWorker {
 
@@ -11,12 +11,12 @@ final class PersonalAccessTokenWorker extends AuthenticationWorker {
 
     @Override
     boolean isAuthenticated() {
-        return getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN) != null;
+        return getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN) != null;
     }
 
     @Override
     public String getHeader() {
-        String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN);
+        String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN);
         if (accessToken != null) {
             return "Bearer " + accessToken;
         }

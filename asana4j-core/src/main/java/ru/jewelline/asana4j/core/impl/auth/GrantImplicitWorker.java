@@ -1,7 +1,7 @@
 package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
-import ru.jewelline.asana4j.auth.AuthenticationProperties;
+import ru.jewelline.asana4j.auth.AuthenticationProperty;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.UrlBuilder;
 
@@ -16,7 +16,7 @@ final class GrantImplicitWorker extends AuthenticationWorker {
 
     void authenticate() throws AuthenticationException {
         // do nothing, just check that we have all required properties and throw exception if not
-        String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN);
+        String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN);
         if (accessToken == null) {
             throw new AuthenticationException(AuthenticationException.NOT_ENOUGH_INFO_FOR_AUTHENTICATION,
                     "The property 'AuthenticationType.Properties.ACCESS_TOKEN' must be specified, see Java doc for " +
@@ -35,7 +35,7 @@ final class GrantImplicitWorker extends AuthenticationWorker {
                 .setQueryParameter("client_id", clientId)
                 .setQueryParameter("redirect_uri", redirectUrl)
                 .setQueryParameter("response_type", "token");
-        String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE);
+        String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE);
         if (appState != null) {
             urlBuilder.setQueryParameter("state", appState);
         }
@@ -44,13 +44,13 @@ final class GrantImplicitWorker extends AuthenticationWorker {
 
     @Override
     void parseOAuthResponse(String data) {
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN,
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN,
                 getProperty(data, "access_token="));
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.TOKEN_TYPE,
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.TOKEN_TYPE,
                 getProperty(data, "token_type="));
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.EXPIRES_IN,
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.EXPIRES_IN,
                 getProperty(data, "expires_in="));
-        getAuthenticationService().setAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE,
+        getAuthenticationService().setAuthenticationProperty(AuthenticationProperty.AUTHORIZATION_ENDPOINT_STATE,
                 getProperty(data, "state="));
         /*
         getAuthenticationService().setAuthenticationProperty(AuthenticationType.Properties.ACCESS_TOKEN,
