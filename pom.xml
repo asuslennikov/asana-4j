@@ -190,7 +190,7 @@
             <id>all</id>
             <modules>
                 <module>http-request</module>
-                <module>asana4j-api</module>
+                <module>api</module>
                 <module>asana4j-core</module>
                 <module>asana4j-utils-android</module>
                 <module>examples</module>
