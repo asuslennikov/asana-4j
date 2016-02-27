@@ -55,6 +55,7 @@ public class AuthByOAuthExample {
             if (ae.getErrorCode() == 401) {
                 System.out.println("Access token has expired, refreshing...");
                 authServ.authenticate();
+                authServ.save(store);
                 currentUser = usersClient.getCurrentUser();
             }
         }
