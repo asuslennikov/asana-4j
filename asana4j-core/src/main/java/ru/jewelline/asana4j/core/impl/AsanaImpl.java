@@ -22,7 +22,6 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.auth.AuthenticationServiceImpl;
 import ru.jewelline.asana4j.utils.Base64;
 import ru.jewelline.asana4j.utils.PreferencesService;
-import ru.jewelline.asana4j.utils.URLCreator;
 import ru.jewelline.request.http.HttpRequestFactories;
 import ru.jewelline.request.http.HttpRequestFactory;
 
@@ -40,11 +39,11 @@ public abstract class AsanaImpl implements Asana {
     private TeamClientApi teamClient;
     private TagApiClient tagClient;
 
-    public AsanaImpl(PreferencesService preferencesService, URLCreator urlCreator, Base64 base64) {
+    public AsanaImpl(PreferencesService preferencesService, Base64 base64) {
         this.preferencesService = preferencesService;
 
         HttpRequestFactory httpRequestFactory = HttpRequestFactories.standard();
-        this.authenticationService = new AuthenticationServiceImpl(preferencesService, httpRequestFactory, urlCreator, base64);
+        this.authenticationService = new AuthenticationServiceImpl(preferencesService, httpRequestFactory, base64);
         ApiEntityContext entityContext = new ApiEntityContext(httpRequestFactory, this.authenticationService);
         this.userClient = new UserApiClientImpl(httpRequestFactory, entityContext);
         this.workspaceClient = new WorkspaceApiClientImpl(httpRequestFactory, entityContext);

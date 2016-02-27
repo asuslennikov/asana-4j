@@ -2,15 +2,16 @@ package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
 import ru.jewelline.asana4j.auth.AuthenticationProperties;
-import ru.jewelline.asana4j.utils.URLCreator;
+import ru.jewelline.request.http.HttpRequestFactory;
+import ru.jewelline.request.http.UrlBuilder;
 
 final class GrantImplicitWorker extends AuthenticationWorker {
 
-    private final URLCreator urlCreator;
+    private final HttpRequestFactory httpRequestFactory;
 
-    public GrantImplicitWorker(AuthenticationServiceImpl authenticationService, URLCreator urlCreator) {
+    public GrantImplicitWorker(AuthenticationServiceImpl authenticationService, HttpRequestFactory httpRequestFactory) {
         super(authenticationService);
-        this.urlCreator = urlCreator;
+        this.httpRequestFactory = httpRequestFactory;
     }
 
     void authenticate() throws AuthenticationException {
@@ -29,14 +30,14 @@ final class GrantImplicitWorker extends AuthenticationWorker {
     String getOAuthUrl() {
         String clientId = getClientIdOrThrowException();
         String redirectUrl = getRedirectUrlOrTrowException();
-        URLCreator.Builder urlBuilder = this.urlCreator.builder()
+        UrlBuilder urlBuilder = this.httpRequestFactory.urlBuilder()
                 .path(USER_OAUTH_ENDPOINT)
-                .addQueryParameter("client_id", clientId)
-                .addQueryParameter("redirect_uri", redirectUrl)
-                .addQueryParameter("response_type", "token");
+                .setQueryParameter("client_id", clientId)
+                .setQueryParameter("redirect_uri", redirectUrl)
+                .setQueryParameter("response_type", "token");
         String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE);
         if (appState != null) {
-            urlBuilder.addQueryParameter("state", appState);
+            urlBuilder.setQueryParameter("state", appState);
         }
         return urlBuilder.build();
     }

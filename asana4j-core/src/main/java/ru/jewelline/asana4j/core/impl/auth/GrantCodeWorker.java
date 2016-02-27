@@ -7,10 +7,10 @@ import ru.jewelline.asana4j.auth.AuthenticationProperties;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.utils.JsonOutputStream;
 import ru.jewelline.asana4j.utils.StringUtils;
-import ru.jewelline.asana4j.utils.URLCreator;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.HttpRequestFactory;
 import ru.jewelline.request.http.NetworkException;
+import ru.jewelline.request.http.UrlBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
@@ -18,12 +18,10 @@ import java.net.HttpURLConnection;
 final class GrantCodeWorker extends AuthenticationWorker {
 
     private final HttpRequestFactory httpRequestFactory;
-    private final URLCreator urlCreator;
 
-    public GrantCodeWorker(AuthenticationServiceImpl authenticationService, HttpRequestFactory httpRequestFactory, URLCreator urlCreator) {
+    public GrantCodeWorker(AuthenticationServiceImpl authenticationService, HttpRequestFactory httpRequestFactory) {
         super(authenticationService);
         this.httpRequestFactory = httpRequestFactory;
-        this.urlCreator = urlCreator;
     }
 
     @Override
@@ -103,14 +101,14 @@ final class GrantCodeWorker extends AuthenticationWorker {
     String getOAuthUrl() {
         String clientId = getClientIdOrThrowException();
         String redirectUrl = getRedirectUrlOrTrowException();
-        URLCreator.Builder urlBuilder = this.urlCreator.builder()
+        UrlBuilder urlBuilder = this.httpRequestFactory.urlBuilder()
                 .path(USER_OAUTH_ENDPOINT)
-                .addQueryParameter("client_id", clientId)
-                .addQueryParameter("redirect_uri", redirectUrl)
-                .addQueryParameter("response_type", "code");
+                .setQueryParameter("client_id", clientId)
+                .setQueryParameter("redirect_uri", redirectUrl)
+                .setQueryParameter("response_type", "code");
         String appState = getAuthenticationService().getAuthenticationProperty(AuthenticationProperties.AUTHORIZATION_ENDPOINT_STATE);
         if (appState != null) {
-            urlBuilder.addQueryParameter("state", appState);
+            urlBuilder.setQueryParameter("state", appState);
         }
         return urlBuilder.build();
     }
