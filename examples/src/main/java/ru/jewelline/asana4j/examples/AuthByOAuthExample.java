@@ -51,8 +51,9 @@ public class AuthByOAuthExample {
         try {
             currentUser = usersClient.getCurrentUser();
         } catch (ApiException ae) {
-            // Access token expired
+            // Access token has expired
             if (ae.getErrorCode() == 401) {
+                System.out.println("Access token has expired, refreshing...");
                 authServ.authenticate();
                 currentUser = usersClient.getCurrentUser();
             }

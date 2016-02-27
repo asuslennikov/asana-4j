@@ -12,7 +12,7 @@
     <artifactId>core</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>[Asana API] Core realization</name>
+    <name>Asana4J - Core</name>
 
     <dependencies>
         <dependency>
