@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
 
-import java.util.Collections;
 import java.util.List;
 
 public abstract class ApiEntityImpl<T> implements ApiEntityInstanceProvider<T> {
@@ -27,10 +26,6 @@ public abstract class ApiEntityImpl<T> implements ApiEntityInstanceProvider<T> {
     }
 
     protected abstract List<JsonFieldReader<T>> getFieldReaders();
-
-    protected List<JsonFieldWriter<T>> getFieldWriters() {
-        return Collections.emptyList();
-    }
 
     public T fromJson(JSONObject object) {
         if (object != null) {

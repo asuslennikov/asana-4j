@@ -12,7 +12,6 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.request.http.HttpMethod;
 
 import java.util.Arrays;
@@ -45,11 +44,6 @@ public class ProjectImpl extends ApiEntityImpl<ProjectImpl> implements Project {
     @Override
     protected List<JsonFieldReader<ProjectImpl>> getFieldReaders() {
         return Arrays.<JsonFieldReader<ProjectImpl>>asList(ProjectImplProcessor.values());
-    }
-
-    @Override
-    protected List<JsonFieldWriter<ProjectImpl>> getFieldWriters() {
-        return Arrays.<JsonFieldWriter<ProjectImpl>>asList(ProjectImplProcessor.values());
     }
 
     @Override

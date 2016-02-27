@@ -12,7 +12,6 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityDeserializer;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.modifiers.RequestModifier;
@@ -34,11 +33,6 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     @Override
     protected List<JsonFieldReader<WorkspaceImpl>> getFieldReaders() {
         return Arrays.<JsonFieldReader<WorkspaceImpl>>asList(WorkspaceImplProcessor.values());
-    }
-
-    @Override
-    protected List<JsonFieldWriter<WorkspaceImpl>> getFieldWriters() {
-        return Collections.<JsonFieldWriter<WorkspaceImpl>>singletonList(WorkspaceImplProcessor.NAME);
     }
 
     @Override

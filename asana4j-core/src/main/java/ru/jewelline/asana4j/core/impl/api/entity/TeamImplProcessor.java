@@ -3,18 +3,12 @@ package ru.jewelline.asana4j.core.impl.api.entity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 
-enum TeamImplProcessor implements JsonFieldReader<TeamImpl>, JsonFieldWriter<TeamImpl> {
+enum TeamImplProcessor implements JsonFieldReader<TeamImpl> {
     ID("id") {
         @Override
         public void read(JSONObject source, TeamImpl target) throws JSONException {
             target.setId(source.getLong(getFieldName()));
-        }
-
-        @Override
-        public void write(TeamImpl source, JSONObject target) throws JSONException {
-            target.put(getFieldName(), source.getId());
         }
     },
     NAME("name") {
@@ -22,12 +16,8 @@ enum TeamImplProcessor implements JsonFieldReader<TeamImpl>, JsonFieldWriter<Tea
         public void read(JSONObject source, TeamImpl target) throws JSONException {
             target.setName(source.getString(getFieldName()));
         }
-
-        @Override
-        public void write(TeamImpl source, JSONObject target) throws JSONException {
-            target.put(getFieldName(), source.getName());
-        }
-    },;
+    },
+    ;
 
     private final String fieldName;
 

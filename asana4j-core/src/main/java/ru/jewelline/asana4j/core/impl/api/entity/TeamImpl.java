@@ -8,7 +8,6 @@ import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityResponseReceiver;
 import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldReader;
-import ru.jewelline.asana4j.core.impl.api.entity.common.JsonFieldWriter;
 import ru.jewelline.asana4j.core.impl.api.entity.io.SimpleFieldsUpdater;
 import ru.jewelline.request.http.HttpMethod;
 import ru.jewelline.request.http.modifiers.RequestModifier;
@@ -28,11 +27,6 @@ public class TeamImpl extends ApiEntityImpl<TeamImpl> implements Team {
     @Override
     protected List<JsonFieldReader<TeamImpl>> getFieldReaders() {
         return Arrays.<JsonFieldReader<TeamImpl>>asList(TeamImplProcessor.values());
-    }
-
-    @Override
-    protected List<JsonFieldWriter<TeamImpl>> getFieldWriters() {
-        return Arrays.<JsonFieldWriter<TeamImpl>>asList(TeamImplProcessor.values());
     }
 
     @Override
