@@ -1,8 +1,15 @@
 package ru.jewelline.asana4j.core.impl.api.entity.common;
 
 import ru.jewelline.asana4j.api.ApiException;
+import ru.jewelline.asana4j.api.clients.modifiers.PrettyJsonResponseModifier;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;
+import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.AuthenticationRequestModifier;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.BaseApiUrlAppenderModifier;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.DataRootRequestModifier;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.JsonContentTypeModifier;
+import ru.jewelline.asana4j.core.impl.api.clients.modifiers.LoggingRequestModifier;
 import ru.jewelline.asana4j.core.impl.api.entity.AttachmentImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.ProjectStatusImpl;
@@ -18,16 +25,26 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ApiEntityContext {
 
     private final HttpRequestFactory httpRequestFactory;
+    private final RequestModifier[] mandatoryRequestModifiers;
     private final Map<Class<? extends ApiEntityImpl<?>>, ApiEntityInstanceProvider<? extends ApiEntityImpl<?>>> instanceProviders;
 
-    public ApiEntityContext(HttpRequestFactory httpRequestFactory) {
+    public ApiEntityContext(HttpRequestFactory httpRequestFactory, AuthenticationService authenticationService) {
         this.httpRequestFactory = httpRequestFactory;
+        this.mandatoryRequestModifiers = new RequestModifier[]{
+                new AuthenticationRequestModifier(authenticationService),
+                new BaseApiUrlAppenderModifier(),
+                new DataRootRequestModifier(),
+                new JsonContentTypeModifier(),
+                new LoggingRequestModifier(),
+                new PrettyJsonResponseModifier()
+        };
         this.instanceProviders = new HashMap<>();
         // TODO Don't pass 'this' out of a constructor (through anonymous inner class)
         registerApiEntities();
@@ -81,7 +98,16 @@ public class ApiEntityContext {
         return new ApiEntityDeserializer<>(getEntityProvider(entityClass));
     }
 
+    private RequestModifier[] getRequestModifiers(RequestModifier[] requestModifiers) {
+        if (requestModifiers == null || requestModifiers.length == 0) {
+            return mandatoryRequestModifiers;
+        }
+        RequestModifier[] modifiers = Arrays.copyOf(requestModifiers, requestModifiers.length + mandatoryRequestModifiers.length);
+        System.arraycopy(mandatoryRequestModifiers, 0, modifiers, requestModifiers.length, mandatoryRequestModifiers.length);
+        return modifiers;
+    }
+
     public HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return this.httpRequestFactory.newRequest(requestModifiers);
+        return this.httpRequestFactory.newRequest(getRequestModifiers(requestModifiers));
     }
 }

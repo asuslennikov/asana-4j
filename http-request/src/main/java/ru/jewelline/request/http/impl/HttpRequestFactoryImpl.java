@@ -70,7 +70,7 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
         if (requestModifiers == null || requestModifiers.length == 0) {
             return new HttpRequestBuilderImpl(this);
         }
-        return new HttpRequestBuilderWithModifiiers(this).withRequestModifiers(requestModifiers);
+        return new HttpRequestBuilderWithModifiers(this).withRequestModifiers(requestModifiers);
     }
 
     @Override

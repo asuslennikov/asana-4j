@@ -13,9 +13,9 @@ import ru.jewelline.asana4j.auth.AuthenticationType;
 public class AsanaExample {
     public static void main(String[] args) {
         AsanaSE asana = new AsanaSE();
-        asana.getAuthenticationService().setAuthenticationType(AuthenticationType.BASIC);
+        asana.getAuthenticationService().setAuthenticationType(AuthenticationType.PERSONAL_ACCESS_TOKEN);
         asana.getAuthenticationService()
-                .setAuthenticationProperty(AuthenticationProperties.API_KEY, "aHlJ25hc.9HdyPs3sDkQ31WSui95vWtE"); // Insert your API key here
+                .setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN, "0/e085aec8935735ebfe43a654286f46e5"); // Insert your API key here
 
         UserApiClient userClient = asana.getUserClient();
         User currentUser = userClient.getCurrentUser();

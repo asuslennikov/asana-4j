@@ -7,11 +7,9 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 
 abstract class ApiClientImpl {
 
-    private final HttpRequestFactory httpRequestFactory;
     private final ApiEntityContext entityContext;
 
     public ApiClientImpl(HttpRequestFactory httpRequestFactory, ApiEntityContext entityContext) {
-        this.httpRequestFactory = httpRequestFactory;
         this.entityContext = entityContext;
     }
 
@@ -20,6 +18,6 @@ abstract class ApiClientImpl {
     }
 
     public final HttpRequestBuilder newRequest(RequestModifier... requestModifiers) {
-        return this.httpRequestFactory.newRequest(requestModifiers);
+        return getEntityContext().newRequest(requestModifiers);
     }
 }

@@ -7,10 +7,10 @@ import ru.jewelline.request.http.NetworkException;
 import ru.jewelline.request.http.modifiers.ModifiersChain;
 import ru.jewelline.request.http.modifiers.RequestModifier;
 
-final class HttpRequestBuilderWithModifiiers extends HttpRequestBuilderImpl {
+final class HttpRequestBuilderWithModifiers extends HttpRequestBuilderImpl {
     private RequestModifier[] requestModifiers;
 
-    HttpRequestBuilderWithModifiiers(HttpRequestFactoryImpl httpRequestFactory) {
+    HttpRequestBuilderWithModifiers(HttpRequestFactoryImpl httpRequestFactory) {
         super(httpRequestFactory);
     }
 
