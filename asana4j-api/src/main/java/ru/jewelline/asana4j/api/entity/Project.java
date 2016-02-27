@@ -8,11 +8,11 @@ import java.util.List;
 /**
  * A project represents a prioritized list of tasks in Asana. It exists in a single workspace or organization
  * and is accessible to a subset of users in that workspace or organization, depending on its permissions.
- * <p/>
+ * <p>
  * Projects in organizations are shared with a single team. You cannot currently change the team of a project
  * via the API. Non-organization workspaces do not have teams and so you should not specify the team of project
  * in a regular workspace.
- * <p/>
+ * <p>
  * Followers of a project are a subset of the members of that project. Followers of a project will receive all
  * updates including tasks created, added and removed from that project. Members of the project have access to
  * and will receive status updates of the project. Adding followers to a project will add them as members if
@@ -23,6 +23,26 @@ import java.util.List;
  * @see ru.jewelline.asana4j.api.entity.HasName
  */
 public interface Project extends HasId, HasName {
+    final class Fields {
+        private Fields() {
+        }
+
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String OWNER = "owner";
+        public static final String CURRENT_STATUS = "current_status";
+        public static final String DUE_DATE = "due_date";
+        public static final String CREATED_AT = "created_at";
+        public static final String MODIFIED_AT = "modified_at";
+        public static final String ARCHIVED = "archived";
+        public static final String PUBLIC = "public";
+        public static final String MEMBERS = "members";
+        public static final String FOLLOWERS = "followers";
+        public static final String COLOR = "color";
+        public static final String NOTES = "notes";
+        public static final String WORKSPACE = "workspace";
+        public static final String TEAM = "team";
+    }
 
     /**
      * @return Name of the project. This is generally a short sentence fragment that fits on a line in the UI
@@ -62,7 +82,7 @@ public interface Project extends HasId, HasName {
 
     /**
      * Returns the time at which this project was last modified.
-     * <p/>
+     * <p>
      * This does not currently reflect any changes in associations such as tasks or comments that may have been
      * added or removed from the project.
      *

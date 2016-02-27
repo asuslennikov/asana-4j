@@ -63,7 +63,8 @@ enum UserImplProcessor implements JsonFieldReader<UserImpl> {
                 target.setWorkspaces(converted);
             }
         }
-    },;
+    },
+    ;
 
     private String fieldName;
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * A tag is a label that can be attached to any task in Asana. It exists in a single workspace or organization.
- * <p/>
+ * <p>
  * Tags have some metadata associated with them, but it is possible that we will simplify them in the future so it is
  * not encouraged to rely too heavily on it. Unlike projects, tags do not provide any ordering on the tasks they are
  * associated with.
@@ -17,6 +17,19 @@ import java.util.List;
  * @see HasName
  */
 public interface Tag extends HasId, HasName {
+    final class Fields {
+        private Fields() {
+        }
+
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String CREATED_AT = "created_at";
+        public static final String FOLLOWERS = "followers";
+        public static final String COLOR = "color";
+        public static final String NOTES = "notes";
+        public static final String WORKSPACE = "workspace";
+    }
+
     /**
      * @return The time at which this tag was created.
      * @api.field <code>created_at</code>

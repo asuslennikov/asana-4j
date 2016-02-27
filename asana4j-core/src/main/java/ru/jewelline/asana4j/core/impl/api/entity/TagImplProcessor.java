@@ -67,7 +67,8 @@ enum TagImplProcessor implements JsonFieldReader<TagImpl> {
             target.setWorkspace(target.getContext().getDeserializer(WorkspaceImpl.class)
                     .deserialize(source.getJSONObject(getFieldName())));
         }
-    },;
+    },
+    ;
 
     private String fieldName;
 

@@ -11,6 +11,19 @@ import java.io.OutputStream;
  * @see HasName
  */
 public interface Attachment extends HasId, HasName {
+    final class Fields {
+        private Fields() {
+        }
+
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String CREATED_AT = "created_at";
+        public static final String DOWNLOAD_URL = "download_url";
+        public static final String HOST = "host";
+        public static final String PARENT = "parent";
+        public static final String VIEW_URL = "view_url";
+    }
+
     /**
      * @return The time at which this story was created.
      * @api.field <code>created_at</code>
@@ -82,7 +95,8 @@ public interface Attachment extends HasId, HasName {
         ASANA("asana"),
         DROPBOX("dropbox"),
         GDRIVE("gdrive"),
-        BOX("box"),;
+        BOX("box"),
+        ;
 
         private String hostType;
 

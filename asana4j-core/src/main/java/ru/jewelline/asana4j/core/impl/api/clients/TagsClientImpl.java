@@ -1,8 +1,8 @@
 package ru.jewelline.asana4j.core.impl.api.clients;
 
 import ru.jewelline.asana4j.api.PagedList;
-import ru.jewelline.asana4j.api.clients.TagsClient;
 import ru.jewelline.asana4j.api.clients.TagFilter;
+import ru.jewelline.asana4j.api.clients.TagsClient;
 import ru.jewelline.asana4j.api.entity.Tag;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.io.EntityDeserializer;

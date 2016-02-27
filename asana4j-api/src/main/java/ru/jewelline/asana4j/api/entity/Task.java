@@ -10,7 +10,7 @@ import java.util.List;
  * The task is the basic object around which many operations in Asana are centered. In the Asana application,
  * multiple tasks populate the middle pane according to some view parameters, and the set of selected tasks
  * determines the more detailed information presented in the details pane.
- * <p/>
+ * <p>
  * A section, at its core, is a task whose name ends with the colon character :. Sections are unique in that
  * they will be included in the memberships field of task objects returned in the API when the task is within
  * a section. As explained below they can also be used to manipulate the ordering of a task within a project.
@@ -20,6 +20,31 @@ import java.util.List;
  * @see HasName
  */
 public interface Task extends HasId, HasName {
+    final class Fields {
+        private Fields() {
+        }
+
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String ASSIGNEE = "assignee";
+        public static final String ASSIGNEE_STATUS = "assignee_status";
+        public static final String CREATED_AT = "created_at";
+        public static final String COMPLETED = "completed";
+        public static final String COMPLETED_AT = "completed_at";
+        public static final String DUE_ON = "due_on";
+        public static final String DUE_AT = "due_at";
+        public static final String EXTERNAL = "external";
+        public static final String FOLLOWERS = "followers";
+        public static final String HEARTED = "hearted";
+        public static final String HEARTS = "hearts";
+        public static final String MODIFIED_AT = "modified_at";
+        public static final String NOTES = "notes";
+        public static final String NUM_HEARTS = "num_hearts";
+        public static final String PROJECTS = "projects";
+        public static final String PARENT = "parent";
+        public static final String WORKSPACE = "workspace";
+        public static final String TAGS = "tags";
+    }
 
     /**
      * @return User to which this task is assigned, or null if the task is unassigned.
@@ -122,7 +147,7 @@ public interface Task extends HasId, HasName {
     /**
      * @return The time at which this task was last modified. This does not currently reflect any changes in
      * associations such as projects or comments that may have been added or removed from the task.
-     * @api.field <code>hearts</code>
+     * @api.field <code>modified_at</code>
      * @api.access Read-only
      */
     String getModifiedAt();
@@ -345,7 +370,8 @@ public interface Task extends HasId, HasName {
         INBOX("inbox"),
         LATER("later"),
         TODAY("today"),
-        UPCOMING("upcoming"),;
+        UPCOMING("upcoming"),
+        ;
 
         private String status;
 

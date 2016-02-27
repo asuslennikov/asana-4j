@@ -6,7 +6,7 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
 
 /**
  * A workspace is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
- * <p/>
+ * <p>
  * An organization is a special kind of workspace that represents a company. In an organization, you can group your
  * projects into teams.
  *
@@ -15,6 +15,14 @@ import ru.jewelline.request.http.modifiers.RequestModifier;
  * @see ru.jewelline.asana4j.api.entity.HasName
  */
 public interface Workspace extends HasId, HasName {
+    final class Fields {
+        private Fields() {
+        }
+
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String IS_ORGANIZATION = "is_organization";
+    }
 
     /**
      * @return Whether the workspace is an organization.
@@ -25,7 +33,7 @@ public interface Workspace extends HasId, HasName {
 
     /**
      * @return The name of the workspace.
-     * @api.field <code>is_organization</code>
+     * @api.field <code>name</code>
      * @api.access Read-write
      * @see #setName(String)
      */

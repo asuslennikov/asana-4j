@@ -48,7 +48,8 @@ enum AttachmentImplProcessor implements JsonFieldReader<AttachmentImpl> {
         public void read(JSONObject source, AttachmentImpl target) throws JSONException {
             target.setViewUrl(source.getString(getFieldName()));
         }
-    },;
+    },
+    ;
 
     private String fieldName;
 

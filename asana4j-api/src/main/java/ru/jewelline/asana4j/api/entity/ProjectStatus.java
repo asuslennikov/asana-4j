@@ -6,6 +6,15 @@ import ru.jewelline.asana4j.utils.StringUtils;
  * Represents a current state of project. It holds a current status color, a short text description and an author.
  */
 public interface ProjectStatus {
+    final class Fields {
+        private Fields() {
+        }
+
+        public static final String COLOR = "color";
+        public static final String TEXT = "text";
+        public static final String AUTHOR = "author";
+    }
+
     /**
      * Enum which holds all available colors for the project's status
      *
@@ -20,7 +29,8 @@ public interface ProjectStatus {
             public boolean isColorMatch(String colorCode) {
                 return StringUtils.emptyOrOnlyWhiteSpace(colorCode);
             }
-        },;
+        },
+        ;
 
         private String colorCode;
 

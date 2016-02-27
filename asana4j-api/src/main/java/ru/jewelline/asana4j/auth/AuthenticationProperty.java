@@ -22,7 +22,8 @@ public enum AuthenticationProperty {
      * Optional property. It represents state of the app, which will be returned verbatim in the response and can be used
      * to match the response up to a given request.
      */
-    AUTHORIZATION_ENDPOINT_STATE("state"),;
+    AUTHORIZATION_ENDPOINT_STATE("state"),
+    ;
 
     private final String propertyName;
 

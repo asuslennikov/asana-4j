@@ -197,7 +197,8 @@ enum TaskImplProcessor implements JsonFieldReader<TaskImpl> {
                 target.setTags(converted);
             }
         }
-    },;
+    },
+    ;
 
     private String fieldName;
 

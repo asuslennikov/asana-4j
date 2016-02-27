@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * A user object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
- * <p/>
+ * <p>
  * Like other objects in the system, users are referred to by numerical IDs. However, the special string identifier
  * <code>me</code> can be used anywhere a user ID is accepted, to refer to the current authenticated user.
  *
@@ -15,6 +15,16 @@ import java.util.Map;
  * @see ru.jewelline.asana4j.api.entity.HasName
  */
 public interface User extends HasId, HasName {
+    final class Fields {
+        private Fields() {
+        }
+
+        public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String EMAIL = "email";
+        public static final String PHOTO = "photo";
+        public static final String WORKSPACES = "workspaces";
+    }
 
     /**
      * @return The user’s email address
@@ -61,7 +71,8 @@ public interface User extends HasId, HasName {
         SIZE_27("image_27x27"),
         SIZE_26("image_36x36"),
         SIZE_60("image_60x60"),
-        SIZE_128("image_128x128"),;
+        SIZE_128("image_128x128"),
+        ;
 
         private String size;
 
