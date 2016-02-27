@@ -36,11 +36,11 @@ public abstract class AsanaImpl implements Asana {
     private TeamClientApi teamClient;
     private TagApiClient tagClient;
 
-    public AsanaImpl(Base64 base64) {
-
+    public AsanaImpl() {
         HttpRequestFactory httpRequestFactory = HttpRequestFactories.standard();
-        this.authenticationService = new AuthenticationServiceImpl(httpRequestFactory, base64);
+        this.authenticationService = new AuthenticationServiceImpl(httpRequestFactory, getBase64Tool());
         ApiEntityContext entityContext = new ApiEntityContext(httpRequestFactory, this.authenticationService);
+
         this.userClient = new UserApiClientImpl(httpRequestFactory, entityContext);
         this.workspaceClient = new WorkspaceApiClientImpl(httpRequestFactory, entityContext);
         this.projectClient = new ProjectApiClientImpl(httpRequestFactory, entityContext);
@@ -50,6 +50,8 @@ public abstract class AsanaImpl implements Asana {
         this.teamClient = new TeamApiClientImpl(httpRequestFactory, entityContext);
         this.tagClient = new TagApiClientImpl(httpRequestFactory, entityContext);
     }
+
+    public abstract Base64 getBase64Tool();
 
     @Override
     public AuthenticationService getAuthenticationService() {

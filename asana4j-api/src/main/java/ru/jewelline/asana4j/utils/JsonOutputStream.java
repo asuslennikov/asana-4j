@@ -52,7 +52,7 @@ public class JsonOutputStream extends OutputStream {
     public JSONObject asJson() {
         JSONObject result = null;
         String responseAsString = asString();
-        System.out.println("=======================\nResponse: # " + responseAsString + " #");
+        System.out.println("=======================\nResponse: " + responseAsString);
         if (responseAsString != null) {
             try {
                 result = new JSONObject(responseAsString);

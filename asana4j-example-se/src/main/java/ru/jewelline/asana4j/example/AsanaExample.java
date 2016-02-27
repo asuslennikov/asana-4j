@@ -1,5 +1,6 @@
 package ru.jewelline.asana4j.example;
 
+import ru.jewelline.asana4j.Asana;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.api.clients.modifiers.Pagination;
@@ -7,15 +8,23 @@ import ru.jewelline.asana4j.api.entity.Project;
 import ru.jewelline.asana4j.api.entity.Task;
 import ru.jewelline.asana4j.api.entity.User;
 import ru.jewelline.asana4j.api.entity.Workspace;
-import ru.jewelline.asana4j.auth.AuthenticationProperties;
+import ru.jewelline.asana4j.auth.AuthenticationProperty;
 import ru.jewelline.asana4j.auth.AuthenticationType;
+import ru.jewelline.asana4j.core.impl.AsanaImpl;
+import ru.jewelline.asana4j.se.Base64JavaSeUtil;
+import ru.jewelline.asana4j.utils.Base64;
 
 public class AsanaExample {
     public static void main(String[] args) {
-        AsanaSE asana = new AsanaSE();
-        asana.getAuthenticationService().setAuthenticationType(AuthenticationType.PERSONAL_ACCESS_TOKEN);
+        Asana asana = new AsanaImpl() {
+            @Override
+            public Base64 getBase64Tool() {
+                return new Base64JavaSeUtil();
+            }
+        };
+        asana.getAuthenticationService().setAuthenticationType(AuthenticationType.BASIC);
         asana.getAuthenticationService()
-                .setAuthenticationProperty(AuthenticationProperties.ACCESS_TOKEN, "0/e085aec8935735ebfe43a654286f46e5"); // Insert your API key here
+                .setAuthenticationProperty(AuthenticationProperty.API_KEY, "aHlJ25hc.9HdyPs3sDkQ31WSui95vWtE"); // Insert your API key here
 
         UserApiClient userClient = asana.getUserClient();
         User currentUser = userClient.getCurrentUser();
