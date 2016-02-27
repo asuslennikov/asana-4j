@@ -1,4 +1,4 @@
-package ru.jewelline.asana4j.example;
+package ru.jewelline.asana4j.examples;
 
 import ru.jewelline.asana4j.Asana;
 import ru.jewelline.asana4j.api.entity.User;
