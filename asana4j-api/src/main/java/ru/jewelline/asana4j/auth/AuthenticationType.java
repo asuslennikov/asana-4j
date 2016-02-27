@@ -44,5 +44,7 @@ public enum AuthenticationType {
      *
      * @api.link <a href="https://asana.com/developers/documentation/getting-started/auth#personal-access-token">Personal Access Token</a>
      */
-    PERSONAL_ACCESS_TOKEN,;
+    PERSONAL_ACCESS_TOKEN,
+
+    ;
 }

@@ -1,6 +1,6 @@
 package ru.jewelline.asana4j.example;
 
-import ru.jewelline.asana4j.utils.PreferencesService;
+import ru.jewelline.asana4j.utils.PropertiesStore;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class FileBasedPreferenceService implements PreferencesService {
+public class FileBasedPreferenceService implements PropertiesStore {
     private Properties store = new Properties();
     private final String propsFileName;
 
@@ -31,46 +31,8 @@ public class FileBasedPreferenceService implements PreferencesService {
     }
 
     @Override
-    public Integer getInteger(String key) {
-        return Integer.parseInt(store.getProperty(key));
-    }
-
-    @Override
-    public Long getLong(String key) {
-        return Long.parseLong(store.getProperty(key));
-    }
-
-    @Override
     public String getString(String key) {
         return store.getProperty(key);
-    }
-
-    @Override
-    public Integer getInteger(String key, Integer defaultValue) {
-        Integer value = getInteger(key);
-        return value != null ? value : defaultValue;
-    }
-
-    @Override
-    public Long getLong(String key, Long defaultValue) {
-        Long value = getLong(key);
-        return value != null ? value : defaultValue;
-    }
-
-    @Override
-    public String getString(String key, String defaultValue) {
-        String value = getString(key);
-        return value != null ? value : defaultValue;
-    }
-
-    @Override
-    public void setInteger(String key, Integer value) {
-        putWithNullCheck(key, value);
-    }
-
-    @Override
-    public void setLong(String key, Long value) {
-        putWithNullCheck(key, value);
     }
 
     @Override

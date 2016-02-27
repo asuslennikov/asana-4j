@@ -9,12 +9,12 @@ import ru.jewelline.asana4j.api.clients.TeamClientApi;
 import ru.jewelline.asana4j.api.clients.UserApiClient;
 import ru.jewelline.asana4j.api.clients.WorkspaceApiClient;
 import ru.jewelline.asana4j.auth.AuthenticationService;
-import ru.jewelline.asana4j.utils.PreferencesService;
+import ru.jewelline.asana4j.utils.PropertiesStore;
 
 /**
  * The entry point for Asana API, provides access for API clients and services.
  *
- * @see PreferencesService
+ * @see PropertiesStore
  * @see AuthenticationService
  * @see AttachmentApiClient
  * @see ProjectApiClient
@@ -24,8 +24,6 @@ import ru.jewelline.asana4j.utils.PreferencesService;
  * @see WorkspaceApiClient
  */
 public interface Asana {
-
-    PreferencesService getPreferencesService();
 
     AuthenticationService getAuthenticationService();
 

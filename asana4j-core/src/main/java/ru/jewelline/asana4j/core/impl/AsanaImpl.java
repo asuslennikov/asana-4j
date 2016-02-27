@@ -21,13 +21,10 @@ import ru.jewelline.asana4j.core.impl.api.clients.WorkspaceApiClientImpl;
 import ru.jewelline.asana4j.core.impl.api.entity.common.ApiEntityContext;
 import ru.jewelline.asana4j.core.impl.auth.AuthenticationServiceImpl;
 import ru.jewelline.asana4j.utils.Base64;
-import ru.jewelline.asana4j.utils.PreferencesService;
 import ru.jewelline.request.http.HttpRequestFactories;
 import ru.jewelline.request.http.HttpRequestFactory;
 
 public abstract class AsanaImpl implements Asana {
-
-    private final PreferencesService preferencesService;
 
     private AuthenticationService authenticationService;
     private UserApiClient userClient;
@@ -39,11 +36,10 @@ public abstract class AsanaImpl implements Asana {
     private TeamClientApi teamClient;
     private TagApiClient tagClient;
 
-    public AsanaImpl(PreferencesService preferencesService, Base64 base64) {
-        this.preferencesService = preferencesService;
+    public AsanaImpl(Base64 base64) {
 
         HttpRequestFactory httpRequestFactory = HttpRequestFactories.standard();
-        this.authenticationService = new AuthenticationServiceImpl(preferencesService, httpRequestFactory, base64);
+        this.authenticationService = new AuthenticationServiceImpl(httpRequestFactory, base64);
         ApiEntityContext entityContext = new ApiEntityContext(httpRequestFactory, this.authenticationService);
         this.userClient = new UserApiClientImpl(httpRequestFactory, entityContext);
         this.workspaceClient = new WorkspaceApiClientImpl(httpRequestFactory, entityContext);
@@ -53,11 +49,6 @@ public abstract class AsanaImpl implements Asana {
         this.attachmentClient = new AttachmentApiClientImpl(httpRequestFactory, entityContext);
         this.teamClient = new TeamApiClientImpl(httpRequestFactory, entityContext);
         this.tagClient = new TagApiClientImpl(httpRequestFactory, entityContext);
-    }
-
-    @Override
-    public PreferencesService getPreferencesService() {
-        return preferencesService;
     }
 
     @Override

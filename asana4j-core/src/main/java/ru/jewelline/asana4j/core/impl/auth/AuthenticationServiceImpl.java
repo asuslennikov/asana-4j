@@ -1,11 +1,11 @@
 package ru.jewelline.asana4j.core.impl.auth;
 
 import ru.jewelline.asana4j.auth.AuthenticationException;
+import ru.jewelline.asana4j.auth.AuthenticationProperty;
 import ru.jewelline.asana4j.auth.AuthenticationService;
 import ru.jewelline.asana4j.auth.AuthenticationType;
 import ru.jewelline.asana4j.utils.Base64;
-import ru.jewelline.asana4j.utils.PreferencesService;
-import ru.jewelline.asana4j.utils.StringUtils;
+import ru.jewelline.asana4j.utils.PropertiesStore;
 import ru.jewelline.request.http.HttpRequestFactory;
 
 import java.io.UnsupportedEncodingException;
@@ -18,14 +18,16 @@ import java.util.Map;
  */
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    private final HttpRequestFactory httpRequestFactory;
     private final Map<AuthenticationType, AuthenticationWorker> authenticationWorkers;
-    private final PreferencesService preferencesService;
+    private final Map<AuthenticationProperty, String> properties;
 
     private volatile AuthenticationType authenticationType;
 
-    public AuthenticationServiceImpl(PreferencesService preferencesService, HttpRequestFactory httpRequestFactory, Base64 base64) {
-        this.preferencesService = preferencesService;
+    public AuthenticationServiceImpl(HttpRequestFactory httpRequestFactory, Base64 base64) {
+        this.httpRequestFactory = httpRequestFactory;
         this.authenticationWorkers = new EnumMap<>(AuthenticationType.class);
+        this.properties = new EnumMap<>(AuthenticationProperty.class);
         // TODO Don't pass 'this' out of a constructor
         this.authenticationWorkers.put(AuthenticationType.BASIC, new BasicAuthenticationWorker(this, base64));
         this.authenticationWorkers.put(AuthenticationType.GRANT_IMPLICIT, new GrantImplicitWorker(this, httpRequestFactory));
@@ -64,13 +66,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void setAuthenticationProperty(String name, String value) {
-        this.preferencesService.setString(name, value);
+    public void setAuthenticationProperty(AuthenticationProperty property, String value) {
+        if (property != null) {
+            if (value == null) {
+                this.properties.remove(property);
+            } else {
+                this.properties.put(property, value);
+            }
+        }
     }
 
     @Override
-    public String getAuthenticationProperty(String name) {
-        return this.preferencesService.getString(name);
+    public String getAuthenticationProperty(AuthenticationProperty property) {
+        return this.properties.get(property);
     }
 
     @Override
@@ -82,7 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void parseOAuthResponse(String data) {
         if (data != null && getAuthenticationType() != null) {
             try {
-                data = URLDecoder.decode(data, StringUtils.getCharset().displayName());
+                data = URLDecoder.decode(data, this.httpRequestFactory.getHttpConfiguration().getUrlCharset().displayName());
             } catch (UnsupportedEncodingException ex) {
                 /* can happen only if charset doesn't exist for the given name,
                    but we use the charset instance, so it always exists */
@@ -95,6 +103,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void logout() {
         if (getAuthenticationType() != null) {
             getWorker().logout();
+        }
+    }
+
+    @Override
+    public void save(PropertiesStore propertiesStore) {
+        if (propertiesStore != null) {
+            for (AuthenticationProperty property : AuthenticationProperty.values()) {
+                propertiesStore.setString(property.getPropertyName(), getAuthenticationProperty(property));
+            }
+        }
+    }
+
+    @Override
+    public void load(PropertiesStore propertiesStore) {
+        if (propertiesStore != null) {
+            for (AuthenticationProperty property : AuthenticationProperty.values()) {
+                setAuthenticationProperty(property, propertiesStore.getString(property.getPropertyName()));
+            }
         }
     }
 

@@ -6,6 +6,6 @@ import ru.jewelline.asana4j.se.Base64JavaSeUtil;
 public class AsanaSE extends AsanaImpl {
 
     public AsanaSE() {
-        super(new InMemoryPreferenceService(), new Base64JavaSeUtil());
+        super(new Base64JavaSeUtil());
     }
 }
