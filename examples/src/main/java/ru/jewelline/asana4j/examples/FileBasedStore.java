@@ -9,15 +9,15 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class FileBasedPreferenceService implements PropertiesStore {
+public class FileBasedStore implements PropertiesStore {
     private Properties store = new Properties();
     private final String propsFileName;
 
-    public FileBasedPreferenceService() {
+    public FileBasedStore() {
         this("asana.properties");
     }
 
-    public FileBasedPreferenceService(String propertiesFileName) {
+    public FileBasedStore(String propertiesFileName) {
         this.propsFileName = propertiesFileName;
         File file = new File(this.propsFileName);
         try {
@@ -26,7 +26,7 @@ public class FileBasedPreferenceService implements PropertiesStore {
             }
             store.load(new FileInputStream(file));
         } catch (IOException ioEx) {
-            throw new RuntimeException("Unable to instantiate FileBasedPreferenceService. " + ioEx.getLocalizedMessage());
+            throw new RuntimeException("Unable to instantiate FileBasedStore. " + ioEx.getLocalizedMessage());
         }
     }
 

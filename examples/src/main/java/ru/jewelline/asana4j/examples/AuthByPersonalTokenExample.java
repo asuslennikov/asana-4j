@@ -18,7 +18,7 @@ public class AuthByPersonalTokenExample {
         asana.getAuthenticationService().setAuthenticationType(AuthenticationType.PERSONAL_ACCESS_TOKEN);
         // Change to correct personal token
         asana.getAuthenticationService()
-                .setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN, "0/e085aec8935735ebfe43a654286f46e5");
+                .setAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN, "Your personal access token");
 
         User currentUser = asana.getUsersClient().getCurrentUser();
         System.out.println("You are logged as: " + currentUser.getName()

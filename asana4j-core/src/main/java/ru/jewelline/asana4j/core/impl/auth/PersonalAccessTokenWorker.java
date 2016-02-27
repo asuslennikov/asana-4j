@@ -10,11 +10,6 @@ final class PersonalAccessTokenWorker extends AuthenticationWorker {
     }
 
     @Override
-    boolean isAuthenticated() {
-        return getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN) != null;
-    }
-
-    @Override
     public String getHeader() {
         String accessToken = getAuthenticationService().getAuthenticationProperty(AuthenticationProperty.ACCESS_TOKEN);
         if (accessToken != null) {
