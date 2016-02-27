@@ -48,10 +48,5 @@ You can add this library to your project via maven dependencies:
   <artifactId>core</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
-<dependency>
-  <groupId>ru.jewelline.asana4j</groupId>
-  <artifactId>utils-se</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-</dependency>
 ```
-Java SE example can be found in the /asana4j-example-se
+See examples in the /examples sub-directory
