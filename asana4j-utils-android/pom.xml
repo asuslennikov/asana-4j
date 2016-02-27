@@ -12,7 +12,7 @@
     <artifactId>utils-android</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>[Asana API] Android implementation for utils package</name>
+    <name>Asana4J - Android specific</name>
 
     <dependencies>
         <dependency>
