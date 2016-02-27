@@ -1,16 +1,16 @@
 package ru.jewelline.asana4j.core.impl.api.entity.io;
 
 import org.json.JSONObject;
-import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
 import ru.jewelline.asana4j.api.entity.io.JsonEntity;
+import ru.jewelline.asana4j.utils.StringUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public final class CachedJsonEntity implements JsonEntity {
-    private final EntitySerializer<JsonEntity> serializer;
     private final JSONObject json;
 
     public CachedJsonEntity(JsonEntity entity) {
@@ -18,7 +18,6 @@ public final class CachedJsonEntity implements JsonEntity {
             throw new IllegalArgumentException("Entity can not be null.");
         }
         this.json = entity.asJson();
-        this.serializer = entity.getSerializer();
     }
 
     public CachedJsonEntity(Map<?, ?> source) {
@@ -29,7 +28,6 @@ public final class CachedJsonEntity implements JsonEntity {
         LinkedList<ConversionEntry> accumulator = new LinkedList<>();
         accumulator.add(new ConversionEntry(this.json, source));
         convertToJsonSafeNullObj(accumulator);
-        this.serializer = JsonEntitySerializer.INSTANCE;
     }
 
     private void convertToJsonSafeNullObj(List<ConversionEntry> convertAccumulator) {
@@ -64,12 +62,7 @@ public final class CachedJsonEntity implements JsonEntity {
 
     @Override
     public InputStream getSerialized() {
-        return this.getSerializer().serialize(this);
-    }
-
-    @Override
-    public EntitySerializer<JsonEntity> getSerializer() {
-        return this.serializer;
+        return new ByteArrayInputStream(asJson().toString().getBytes(StringUtils.getCharset()));
     }
 
     // Utility class

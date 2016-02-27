@@ -20,6 +20,4 @@ public interface JsonEntity extends SerializableEntity {
      * @return a json representation of entity.
      */
     JSONObject asJson();
-
-    EntitySerializer<JsonEntity> getSerializer();
 }

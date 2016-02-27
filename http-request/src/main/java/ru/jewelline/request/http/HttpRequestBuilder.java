@@ -62,8 +62,6 @@ public interface HttpRequestBuilder {
      */
     HttpRequestBuilder setEntity(SerializableEntity entity);
 
-    SerializableEntity getEntity();
-
     /**
      * Adds body for you request. Has no effect if you execute this request as HTTP GET request.
      *
@@ -71,6 +69,8 @@ public interface HttpRequestBuilder {
      * @return The request builder.
      */
     HttpRequestBuilder setEntity(InputStream stream);
+
+    SerializableEntity getEntity();
 
     /**
      * Finalize the creation process of HTTP request.

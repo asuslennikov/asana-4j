@@ -3,16 +3,12 @@ package ru.jewelline.asana4j.core.impl.api.entity.common;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.jewelline.asana4j.api.ApiException;
-import ru.jewelline.asana4j.api.entity.io.EntitySerializer;
-import ru.jewelline.asana4j.api.entity.io.JsonEntity;
 import ru.jewelline.asana4j.core.impl.api.ApiEntityInstanceProvider;
-import ru.jewelline.asana4j.core.impl.api.entity.io.JsonEntitySerializer;
 
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity, ApiEntityInstanceProvider<T> {
+public abstract class ApiEntityImpl<T> implements ApiEntityInstanceProvider<T> {
     private final Class<T> clazz;
     private final ApiEntityContext context;
 
@@ -60,33 +56,5 @@ public abstract class ApiEntityImpl<T extends JsonEntity> implements JsonEntity,
             }
         }
         return null;
-    }
-
-    @Override
-    public JSONObject asJson() {
-        List<JsonFieldWriter<T>> fieldWriters = getFieldWriters();
-        if (fieldWriters != null && fieldWriters.size() > 0) {
-            JSONObject json = new JSONObject();
-            for (JsonFieldWriter<T> writer : fieldWriters) {
-                try {
-                    writer.write(this.clazz.cast(this), json);
-                } catch (JSONException ex) {
-                    throw new ApiException(ApiException.API_ENTITY_SERIALIZATION_FAIL,
-                            "Unable to serialize field '" + writer.getFieldName() + "', source " + this);
-                }
-            }
-            return json;
-        }
-        return new JSONObject();
-    }
-
-    @Override
-    public EntitySerializer<JsonEntity> getSerializer() {
-        return JsonEntitySerializer.INSTANCE;
-    }
-
-    @Override
-    public InputStream getSerialized() {
-        return getSerializer().serialize(this);
     }
 }

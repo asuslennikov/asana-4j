@@ -99,7 +99,9 @@ public class WorkspaceImpl extends ApiEntityImpl<WorkspaceImpl> implements Works
     public void update() {
         getContext().newRequest()
                 .setUrl("workspaces/" + this.getId())
-                .setEntity(this)
+                .setEntity(new SimpleFieldsUpdater()
+                        .setField(WorkspaceImplProcessor.NAME.getFieldName(), getName())
+                        .wrapFieldsAsEntity())
                 .buildAs(HttpMethod.PUT)
                 .execute(new ApiEntityResponseReceiver())
                 .asApiObject(new ApiEntityDeserializer<>(this));
