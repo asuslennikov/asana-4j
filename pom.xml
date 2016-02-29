@@ -7,13 +7,13 @@
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>[Asana API] Asana API 4 Java - Parent</name>
+    <name>Asana4J - Parent</name>
 
-<!--
-    <scm>
-        <connection>scm:git:https://github.com/asuslennikov/</connection>
-    </scm>
--->
+    <!--
+        <scm>
+            <connection>scm:git:https://github.com/asuslennikov/</connection>
+        </scm>
+    -->
 
     <properties>
         <include.source>true</include.source>
@@ -22,6 +22,11 @@
     <dependencyManagement>
         <dependencies>
             <!-- Project dependencies -->
+            <dependency>
+                <groupId>ru.jewelline.asana4j</groupId>
+                <artifactId>http-request</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>ru.jewelline.asana4j</groupId>
                 <artifactId>api</artifactId>
@@ -37,11 +42,6 @@
             <dependency>
                 <groupId>ru.jewelline.asana4j</groupId>
                 <artifactId>core</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>ru.jewelline.asana4j</groupId>
-                <artifactId>utils-se</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
 
@@ -189,13 +189,12 @@
         <profile>
             <id>all</id>
             <modules>
-                <module>asana4j-api</module>
-                <module>asana4j-core</module>
+                <module>http-request</module>
+                <module>api</module>
+                <module>core</module>
                 <module>asana4j-utils-android</module>
-                <module>asana4j-utils-se</module>
-                <module>asana4j-example-se</module>
+                <module>examples</module>
             </modules>
         </profile>
-
     </profiles>
 </project>

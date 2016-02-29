@@ -8,7 +8,7 @@ import ru.jewelline.asana4j.utils.Base64Test;
 
 @RunWith(MockitoJUnitRunner.class)
 @Ignore(value = "Incorrect test initialization")
-public class Base64AndroidUtilTest extends Base64Test{
+public class Base64AndroidUtilTest extends Base64Test {
 
     @Override
     protected Base64 getBase64Util() {

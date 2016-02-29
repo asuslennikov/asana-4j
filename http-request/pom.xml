@@ -9,23 +9,12 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>utils-android</artifactId>
+    <artifactId>http-request</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>Asana4J - Android specific</name>
+    <name>Simple HTTP request library</name>
 
     <dependencies>
-        <dependency>
-            <groupId>ru.jewelline.asana4j</groupId>
-            <artifactId>api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ru.jewelline.asana4j</groupId>
-            <artifactId>api</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -37,12 +26,6 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <version>4.1.1.4</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
