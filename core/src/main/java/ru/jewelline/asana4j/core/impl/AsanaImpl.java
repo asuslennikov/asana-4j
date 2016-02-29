@@ -37,7 +37,10 @@ public abstract class AsanaImpl implements Asana {
     private TagsClient tagsClient;
 
     public AsanaImpl() {
-        HttpRequestFactory httpRequestFactory = HttpRequestFactories.standard();
+       this(HttpRequestFactories.standard());
+    }
+
+    public AsanaImpl(HttpRequestFactory httpRequestFactory) {
         this.authenticationService = new AuthenticationServiceImpl(httpRequestFactory, getBase64Tool());
         ApiEntityContext entityContext = new ApiEntityContext(httpRequestFactory, this.authenticationService);
 

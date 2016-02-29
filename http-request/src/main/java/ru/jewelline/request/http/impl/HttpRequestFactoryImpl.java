@@ -143,12 +143,12 @@ public class HttpRequestFactoryImpl implements HttpRequestFactory {
             return NO_SERVER_RESPONSE_CODE;
         }
         responseReceiver.setResponseHeaders(connection.getHeaderFields());
-        boolean inCorrectResponse = responseCode >= 400 && responseCode < 600;
-        OutputStream destination = !inCorrectResponse
+        boolean isCorrectResponse = responseCode >= 400 && responseCode < 600;
+        OutputStream destination = !isCorrectResponse
                 ? responseReceiver.getResponseStream()
                 : responseReceiver.getErrorStream();
         if (destination != null) {
-            InputStream source = !inCorrectResponse
+            InputStream source = !isCorrectResponse
                     ? connection.getInputStream()
                     : connection.getErrorStream();
             copyStreams(source, destination);

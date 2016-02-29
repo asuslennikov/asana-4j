@@ -1,12 +1,42 @@
 package ru.jewelline.request.http.impl;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import ru.jewelline.request.http.HttpMethod;
+import ru.jewelline.request.http.HttpRequest;
+import ru.jewelline.request.http.HttpResponseReceiver;
+import ru.jewelline.request.http.NetworkException;
+import ru.jewelline.request.http.NullResponseReceiver;
+import ru.jewelline.request.http.config.HttpConfiguration;
+import ru.jewelline.request.http.config.SimpleHttpConfiguration;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpRequestFactoryImplTest {
 
-    /*
     private final HttpConfiguration httpConfig = new SimpleHttpConfiguration();
     @Mock
     private HttpURLConnection connection;
@@ -57,51 +87,39 @@ public class HttpRequestFactoryImplTest {
 
     @Test
     public void test_clientCanReturnNewBuilderInstance() {
-        HttpRequestFactoryImpl httpClient = testInstance();
-        assertThat(httpClient.newRequest() != httpClient.newRequest()).isTrue();
-    }
-
-    @Test(expected = NetworkException.class)
-    public void test_executeWithNullResponse() {
-        testInstance().execute(mock(HttpRequest.class), null);
+        HttpRequestFactoryImpl requestFactory = testInstance();
+        assertThat(requestFactory.newRequest() != requestFactory.newRequest()).isTrue();
     }
 
     @Test(expected = NetworkException.class)
     public void test_executeWithNullRequest() {
-        testInstance().execute(null, mock(HttpResponseImpl.class));
-    }
-
-    @Test
-    public void test_returnsTheSameResponse() {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
-        HttpRequest request = mock(HttpRequest.class);
-        when(request.getMethod()).thenReturn(HttpMethod.GET);
-        assertThat(response == testInstance().execute(request, response)).isTrue();
+        testInstance().execute(null, NullResponseReceiver.getInstance());
     }
 
     @Test
     public void test_configureConnectionWithoutHeaders() {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
-        when(request.getHeaders()).thenReturn(Collections.<String, String>emptyMap());
+        when(request.getHeaders()).thenReturn(Collections.<String, List<String>>emptyMap());
 
         // business method
         testInstance().execute(request, response);
 
         // assertions
         verify(connection).setConnectTimeout(Matchers.anyInt());
+        verify(connection, never()).addRequestProperty(anyString(), anyString());
         verify(connection, never()).setRequestProperty(anyString(), anyString());
     }
 
     @Test
     public void test_configureConnectionWithHeaders() {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
-        Map<String, String> headers = new HashMap<>();
-        headers.put("key1", "value1");
-        headers.put("key2", "value2");
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("key1", Collections.singletonList("value1"));
+        headers.put("key2", Collections.singletonList("value2"));
         when(request.getHeaders()).thenReturn(headers);
 
         // business method
@@ -109,46 +127,15 @@ public class HttpRequestFactoryImplTest {
 
         // assertions
         verify(connection).setConnectTimeout(Matchers.anyInt());
-        verify(connection).setRequestProperty("key1", "value1");
-        verify(connection).setRequestProperty("key2", "value2");
-    }
-
-    @Test
-    public void test_configureConnectionNoInput() {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
-        when(response.payload()).thenReturn(null);
-        HttpRequest request = mock(HttpRequest.class);
-        when(request.getMethod()).thenReturn(HttpMethod.GET);
-
-        // business method
-        testInstance().execute(request, response);
-
-        // assertions
-        verify(connection).setDoInput(true);
-        verify(connection).setConnectTimeout(Matchers.anyInt());
-    }
-
-    @Test
-    public void test_configureConnectionWithInput() {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
-        OutputStream outputStream = mock(OutputStream.class);
-        when(response.payload()).thenReturn(outputStream);
-        HttpRequest request = mock(HttpRequest.class);
-        when(request.getMethod()).thenReturn(HttpMethod.GET);
-
-        // business method
-        testInstance().execute(request, response);
-
-        // assertions
-        verify(connection).setDoInput(true);
-        verify(connection).setConnectTimeout(Matchers.anyInt());
+        verify(connection).addRequestProperty("key1", "value1");
+        verify(connection).addRequestProperty("key2", "value2");
     }
 
     @Test
     public void test_verifySetResponseCode() throws IOException {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         OutputStream outputStream = mock(OutputStream.class);
-        when(response.payload()).thenReturn(outputStream);
+        when(response.getResponseStream()).thenReturn(outputStream);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.GET);
         int responseCode = 200;
@@ -159,21 +146,20 @@ public class HttpRequestFactoryImplTest {
 
         // assertions
         verify(connection).getResponseCode();
-        verify(response).setCode(responseCode);
+        verify(response).setResponseCode(responseCode);
     }
 
     @Test
     public void test_pickDataStreamForGoodCode() throws IOException {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         OutputStream outputStream = mock(OutputStream.class);
-        when(response.payload()).thenReturn(outputStream);
+        when(response.getResponseStream()).thenReturn(outputStream);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = 201;
         InputStream inputStream = mock(InputStream.class);
         when(connection.getInputStream()).thenReturn(inputStream);
         when(connection.getResponseCode()).thenReturn(responseCode);
-        when(response.code()).thenReturn(responseCode);
 
         // business method
         testInstance().execute(request, response);
@@ -185,13 +171,12 @@ public class HttpRequestFactoryImplTest {
 
     @Test
     public void test_pickErrorStreamForBadCode() throws IOException {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         OutputStream outputStream = mock(OutputStream.class);
-        when(response.payload()).thenReturn(outputStream);
+        when(response.getErrorStream()).thenReturn(outputStream);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
         int responseCode = 400;
-        when(response.code()).thenReturn(responseCode);
         when(connection.getResponseCode()).thenReturn(responseCode);
         InputStream inputStream = mock(InputStream.class);
         when(connection.getErrorStream()).thenReturn(inputStream);
@@ -204,44 +189,42 @@ public class HttpRequestFactoryImplTest {
         verify(outputStream).flush(); // verify that stream was copied
     }
 
-
     @Test
-    public void test_getNoStreamForGoodCodeAndNopayload() throws IOException {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+    public void test_doNotCopyResponseStreamToNull() throws IOException {
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
-        int responseCode = 201;
-        when(response.code()).thenReturn(responseCode);
+        when(connection.getResponseCode()).thenReturn(200);
 
         // business method
         testInstance().execute(request, response);
 
         // assertions
         verify(connection, never()).getInputStream();
+        verify(connection, never()).getErrorStream();
     }
 
     @Test
-    public void test_getNoStreamForBadCodeAndNopayload() throws IOException {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+    public void test_doNotCopyErrorStreamToNull() throws IOException {
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
-        int responseCode = 400;
-        when(response.code()).thenReturn(responseCode);
+        when(connection.getResponseCode()).thenReturn(401);
 
         // business method
         testInstance().execute(request, response);
 
         // assertions
         verify(connection, never()).getInputStream();
+        verify(connection, never()).getErrorStream();
     }
 
     @Test
-    public void test_doAdditionalAttemptsInCaseOfNoResponseCode() {
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+    public void test_doAdditionalAttemptsInCaseOfNoResponseCode() throws Exception {
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
-        int responseCode = -1;
-        when(response.code()).thenReturn(responseCode);
+        when(connection.getResponseCode()).thenReturn(-1);
 
         // business method
         testInstance().execute(request, response);
@@ -256,19 +239,15 @@ public class HttpRequestFactoryImplTest {
         List<String> hValue = Collections.singletonList("value");
         Map<String, List<String>> headers = new HashMap<>();
         headers.put(hKey, hValue);
-        HttpResponseImpl response = mock(HttpResponseImpl.class);
+        HttpResponseReceiver response = mock(HttpResponseReceiver.class);
         HttpRequest request = mock(HttpRequest.class);
         when(request.getMethod()).thenReturn(HttpMethod.PUT);
-        int responseCode = 201;
-        when(response.code()).thenReturn(responseCode);
         when(connection.getHeaderFields()).thenReturn(headers);
 
         // business method
         testInstance().execute(request, response);
 
         // assertions
-        verify(response).setHeaders(headers);
+        verify(response).setResponseHeaders(headers);
     }
-
-    */
 }

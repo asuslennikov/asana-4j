@@ -2,6 +2,8 @@ package ru.jewelline.request.http.config;
 
 import org.junit.Test;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.nio.charset.Charset;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -85,5 +87,21 @@ public class SimpleHttpConfigurationTest {
         Charset charset = Charset.defaultCharset();
         config.setUrlCharset(charset);
         assertThat(config.getUrlCharset()).isEqualTo(charset);
+    }
+
+    @Test
+    public void test_setNullProxy(){
+        SimpleHttpConfiguration config = testInstance();
+        config.setProxy(null);
+        assertThat(config.getProxy()).isEqualTo(Proxy.NO_PROXY);
+    }
+
+    @Test
+    public void test_setProxy(){
+        SimpleHttpConfiguration config = testInstance();
+        config.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("example.com", 8080)));
+        assertThat(config.getProxy()).isNotNull();
+        assertThat(((InetSocketAddress) config.getProxy().address()).getPort()).isEqualTo(8080);
+        assertThat(((InetSocketAddress) config.getProxy().address()).getHostName()).isEqualTo("example.com");
     }
 }

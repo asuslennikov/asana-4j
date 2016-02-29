@@ -34,13 +34,24 @@ public final class SimpleHttpConfiguration implements HttpConfiguration {
         return this.connectionTimeout;
     }
 
+    public void setConnectionTimeout(int connectionTimeout) {
+        if (connectionTimeout < 0) {
+            throw new IllegalArgumentException("Connection timeout can not be less then 0");
+        }
+        this.connectionTimeout = connectionTimeout;
+    }
+
     @Override
     public Proxy getProxy() {
         return this.proxy;
     }
 
     public void setProxy(Proxy proxy) {
-        this.proxy = proxy;
+        if (proxy == null) {
+            this.proxy = Proxy.NO_PROXY;
+        } else {
+            this.proxy = proxy;
+        }
     }
 
     @Override
@@ -53,12 +64,5 @@ public final class SimpleHttpConfiguration implements HttpConfiguration {
             throw new IllegalArgumentException("Url charset can not be null.");
         }
         this.urlCharset = urlCharset;
-    }
-
-    public void setConnectionTimeout(int connectionTimeout) {
-        if (connectionTimeout < 0) {
-            throw new IllegalArgumentException("Connection timeout can not be less then 0");
-        }
-        this.connectionTimeout = connectionTimeout;
     }
 }
