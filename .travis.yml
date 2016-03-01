@@ -1,0 +1,7 @@
+language: java
+jdk:
+  - oraclejdk7
+install:
+  - mvn install -P all -DskipTests=true
+script:
+  - mvn test -P all

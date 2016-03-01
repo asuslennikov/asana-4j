@@ -1,4 +1,4 @@
-# Asana-4J 
+# Asana4J 
 An unofficial Java client library for the [Asana](https://asana.com/) API v1.0.
 
 ## License
