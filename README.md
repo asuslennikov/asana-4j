@@ -41,12 +41,12 @@ You can add this library to your project via maven dependencies:
 <dependency>
   <groupId>ru.jewelline.asana4j</groupId>
   <artifactId>api</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 <dependency>
   <groupId>ru.jewelline.asana4j</groupId>
   <artifactId>core</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 See examples in the /examples sub-directory
