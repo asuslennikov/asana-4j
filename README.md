@@ -1,4 +1,4 @@
-# Asana4J 
+# Asana4J [![Build Status](https://travis-ci.org/asuslennikov/asana4j.svg?branch=master)](https://travis-ci.org/asuslennikov/asana4j)
 An unofficial Java client library for the [Asana](https://asana.com/) API v1.0.
 
 ## License
